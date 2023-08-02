@@ -1,5 +1,6 @@
 // backend/routes/index.js
 const express = require('express');
+const apiRouter = require('./api');
 const router = express.Router();
 
 // Test route will set a cookie with a name of "XSRF-TOKEN" with value of req.csrfToken, then sends text "Hello World!" as response body.
@@ -7,6 +8,8 @@ const router = express.Router();
 //     res.cookie('XSRF-TOKEN', req.csrfToken());
 //     res.send('Hello World!');
 // });
+
+router.use('/api', apiRouter);
 
 // Add a XSRF-TOKEN cookie
 router.get("/api/csrf/restore", (req, res) => {
