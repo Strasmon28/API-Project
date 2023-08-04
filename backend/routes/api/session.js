@@ -8,6 +8,16 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
+// Log out
+router.delete(
+    '/',
+    (_req, res) => {
+      res.clearCookie('token');
+      return res.json({ message: 'success' });
+    }
+  );
+
+
 router.post(
     '/',
     async (req, res, next) => {
@@ -43,6 +53,7 @@ router.post(
       });
     }
 );
+
 
 
 module.exports = router;
