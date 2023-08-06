@@ -15,14 +15,14 @@ module.exports = {
       {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: ""
+        // defaultValue: ""
       }
     );
     await queryInterface.addColumn('Users', 'lastName',
     {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: ""
+      // defaultValue: ""
     }
   );
   },
