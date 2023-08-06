@@ -43,5 +43,5 @@ module.exports = {
     }, {});
   }
 };
-
+// redone database
 // /** @type {import('sequelize-cli').Migration} */
