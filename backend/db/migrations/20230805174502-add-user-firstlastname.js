@@ -1,4 +1,5 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 
 const { DataTypes, QueryTypes } = require('sequelize');
 
@@ -8,7 +9,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 options.tableName = "Users";
-/** @type {import('sequelize-cli').Migration} */
 
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -20,14 +20,14 @@ module.exports = {
      */
     await queryInterface.addColumn(options, 'firstName',
       {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
         // defaultValue: ""
       }
     );
     await queryInterface.addColumn(options, 'lastName',
     {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(30),
       allowNull: false,
       // defaultValue: ""
     }
