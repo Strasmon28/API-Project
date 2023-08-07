@@ -13,14 +13,14 @@ module.exports = {
      */
     await queryInterface.addColumn('Users', 'firstName',
       {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
         // defaultValue: ""
       }
     );
     await queryInterface.addColumn('Users', 'lastName',
     {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
       // defaultValue: ""
     }
