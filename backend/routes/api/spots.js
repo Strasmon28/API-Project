@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Spot, SpotImage } = require('../../db/models');
+const { Spot, SpotImage, Review } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { route } = require('./session');
 
@@ -142,7 +142,39 @@ router.put('/:spotId', requireAuth, async(req, res, next) => {
     await updatedSpot.save();
 
     res.json(updatedSpot); //Should be the updated spot but with timestamps
-})
+});
+
+//Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', requireAuth, async(req, res) => {
+    const id = req.params.spotId;
+    const Reviews = Review.findAll({
+        where: {
+            spotId: id
+        }
+    });
+
+    res.json({ Reviews });
+
+});
+
+//Create a Review for a Spot based on the Spot's id
+router.post('/:spotId/reviews', requireAuth, async(req, res) => {
+    const { review, stars } = req.body;
+    const userId = req.user.id;
+    const spotId = req.params.spotId;
+
+    //Do error check
+    
+
+    const newReview = Review.create({
+        userId: userId,
+        spotId: spotId,
+        review,
+        stars
+    });
+
+    res.json(newReview);
+});
 
 // Delete a spot
 router.delete('/:spotId', requireAuth, async(req, res, next) => {
