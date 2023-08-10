@@ -11,16 +11,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Spot, {
+        foreignKey: 'ownerId'
+      });
+      // User.hasMany(models.Bookings, {
+      //   foreignKey: 'userId'
+      // });
+      // User.hasMany(models.Reviews, {
+      //   foreignKey: 'userId'
+      // });
     }
   }
   User.init({
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false
+      // allowNull: false
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false
+      // allowNull: false
     },
     username: {
       type: DataTypes.STRING,

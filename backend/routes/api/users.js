@@ -36,6 +36,23 @@ router.post(
     async (req, res) => {
       const { email, password, username, firstName, lastName } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
+
+      //Check if there are matching usernames or emails in the database
+      // const accounts = User.findAll();
+      //Iterate through each account
+      // accounts.forEach(account => {
+      //   if(email === account.email){
+      //     res.status(500);
+      //     // res.json({
+      //     //   message:
+      //     // })
+      //   }
+      //   if(username === account.username){
+      //     res.status(500);
+
+      //   }
+      // })
+
       const user = await User.create({ email, username, hashedPassword, firstName, lastName });
 
       const safeUser = {
