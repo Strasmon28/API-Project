@@ -9,6 +9,15 @@ router.delete('/:imageId', requireAuth, async(req, res) => {
     const imageId = req.query.imageId;
 
     const deletedImage = ReivewImage.findByPk(imageId);
+    if(!deletedImage){
+        res.status(404);
+        res.json({
+            message: "Review Image couldn't be found"
+        })
+    }
+
+    //Authorization (use the image id and connect the dots?)
+
 
     deletedImage.destroy();
 

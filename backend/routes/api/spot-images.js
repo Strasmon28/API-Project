@@ -7,7 +7,22 @@ const { route } = require('./session');
 //Delete a spot image
 router.delete('/:imageId', requireAuth, async(req, res) => {
     const imageId = req.params.imageId;
+    const userId = req.user.id;
     const deletedImage = SpotImage.findByPk(imageId);
+
+    if(!deletedImage){
+        res.status(404);
+        res.json({
+            message: "Spot Image couldn't be found"
+        })
+    }
+    //Authorization (use imageId and connect the dots?)
+    // if (deletedImage.userId !== userId){ //What to check here?
+    //     res.status(403);
+    //     res.json({
+    //         message: "Forbidden"
+    //     });
+    // }
 
     deletedImage.destroy();
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Spot, SpotImage, Review, Booking } = require('../../db/models');
+const { Spot, SpotImage, Review, ReviewImage, Booking, User } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { route } = require('./session');
 
@@ -44,6 +44,9 @@ router.get("/current", requireAuth, async(req, res) => {
         //Where ownerId = request's ownerId
         where: {
             ownerId: id
+        },
+        include: {
+            model: SpotImage //Needs work for URL
         }
     });
     res.json({ Spots }) //Should the responses be objects?
@@ -53,6 +56,13 @@ router.get("/current", requireAuth, async(req, res) => {
 router.get("/:spotId", async(req, res) => {
     const id = req.query.id;
     const oneSpot = await Spot.findByPk(id);
+    //How to include spotimages and id?
+    if(oneSpot === null){
+        res.status(404);
+        res.json({
+            message: "Spot couldn't be found"
+        });
+    }
 
     res.json(oneSpot)
 });
@@ -60,6 +70,10 @@ router.get("/:spotId", async(req, res) => {
 //Create a spot
 router.post("/", requireAuth, async(req, res, next) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    //Make a body validation error handler
+    //Similar to requireAuth?
+
     const userId = req.user.id;
     const newSpot = await Spot.create({
         ownerId: userId,
@@ -74,7 +88,6 @@ router.post("/", requireAuth, async(req, res, next) => {
         price
     });
 
-
     res.json( newSpot );
 });
 
@@ -82,9 +95,10 @@ router.post("/", requireAuth, async(req, res, next) => {
 router.post('/:spotId/images', requireAuth, async(req, res, next) => {
     const { url, preview } = req.body;
     const id = req.params.spotId;
+
     //If spot could not be found with id, send an error
     const spot = await Spot.findByPk(id);
-    if(spot.length <= 0){
+    if(!spot){
         //send the error
         const err = new Error("Spot couldn't be found");
         err.status = 404;
@@ -105,7 +119,7 @@ router.put('/:spotId', requireAuth, async(req, res, next) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     //Validate the body values, if not good send error
-    //Seems to be an error stack? but how to use?
+    //Similar to requireAuth?
 
     //Take the body and update all of the selected spot
     const updatedSpot = await Spot.findByPk(id);
@@ -114,14 +128,14 @@ router.put('/:spotId', requireAuth, async(req, res, next) => {
     if(!updatedSpot) {
         res.status(404)
         res.json({
-            message: "Spot couldn''t be found"
+            message: "Spot couldn't be found"
         })
     }
 
     //Authorize that the spot must belong to the current user (how?)
     //Take users id and compare to spot? then send error?
     //If the spots owner id does not match the user's id, send error Forbidden
-    if(updatedSpot.userId !== id){ //Is it userId or ownerId?
+    if(updatedSpot.ownerId !== id){ //Is it userId or ownerId?
         res.status(403);
         res.json({
             message: "Forbidden"
@@ -147,16 +161,29 @@ router.put('/:spotId', requireAuth, async(req, res, next) => {
 //REVIEWS SECTION
 
 //Get all Reviews by a Spot's id
-router.get('/:spotId/reviews', requireAuth, async(req, res) => {
+router.get('/:spotId/reviews', async(req, res) => {
     const id = req.params.spotId;
+
+    const spot = Spot.findByPk(id);
+    //If the spot couldn't be found with the given id
+    if(!spot){
+        res.status(404);
+        res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
     const Reviews = Review.findAll({
         where: {
             spotId: id
+        },
+        include: {
+            model: User, //?? specity it belongs to the review
+            model: ReviewImage
         }
     });
 
     res.json({ Reviews });
-
 });
 
 //Create a Review for a Spot based on the Spot's id
@@ -165,8 +192,31 @@ router.post('/:spotId/reviews', requireAuth, async(req, res) => {
     const userId = req.user.id;
     const spotId = req.params.spotId;
 
-    //Do error check
+    //Check if the spot of the given id exists
+    const spot = Spot.findByPk(spotId);
+    if(!spot) {
+        res.status(404);
+        res.json({
+            message: "Spot couldn't be found"
+        })
+    }
 
+    //Check if there is already a review for this spot
+    //Find a review with corresponding spotId
+    const reviewCheck = Review.findOne({
+        where: {
+            spotId: spotId
+        }
+    });
+    if(reviewCheck) { //If a review was found, send an error
+        res.status(500);
+        res.json({
+            message: "User already has a review for this spot"
+        })
+    }
+
+    //Do body validation error check
+    //Similar to requireAuth?
 
     const newReview = Review.create({
         userId: userId,
@@ -183,7 +233,7 @@ router.post('/:spotId/reviews', requireAuth, async(req, res) => {
 //BOOKINGS SECTION
 
 //Get all Bookings for a Spot based on the Spot's id
-router.get('/:spotId/bookings', async(req, res) =>{
+router.get('/:spotId/bookings', requireAuth, async(req, res) =>{
     //Return all the bookings for a spot specified by id
     const spotId = req.params.spotId;
     const Bookings = Booking.findAll({
@@ -191,6 +241,16 @@ router.get('/:spotId/bookings', async(req, res) =>{
             spotId: spotId
         }
     });
+
+    if(Bookings.length <= 0){
+        res.status(404);
+        res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+    //Will have different responses
+    //Check if the user is not the owner(compare userIds)
+    //Check if user is owner
 
     res.json({ Bookings });
 });
@@ -200,6 +260,20 @@ router.post('/:spotId/bookings', requireAuth, async(req, res) => {
     const spotId = req.params.spotId;
     const userId = req.user.id;
     const { startDate, endDate } = req.body;
+
+    //Body validation check
+    //If there is a booking corresponding to the given spotId, send error
+    const checkSpot = Spot.findByPk(spotId);
+    if(!checkSpot){
+        res.status(404)
+        res.json({
+            message: "Spot couldn't be found"
+        })
+    }
+
+    //Check if there is a booking conflict
+    //compare the given start/end dates with existing bookings
+    //if they are the same, send an error
 
     const newBooking = Booking.create({
         spotId: spotId,
@@ -217,23 +291,40 @@ router.post('/:spotId/bookings', requireAuth, async(req, res) => {
 // Delete a spot
 router.delete('/:spotId', requireAuth, async(req, res, next) => {
     const spotId = req.params.spotId; //params.id ?
+    const userId = req.user.id;
     const oneSpot = await Spot.findByPk(spotId);
-    if(oneSpot.length <= 0){ //If checking for empty, check .findAll() length
+
+    if(!oneSpot){ //If checking for empty, check .findAll() length
         //send an error
-        const err = new Error("Spot couldn''t be found");
-        err.status = 401; //What number?
+        // const err = new Error("Spot couldn''t be found");
+        err.status = 404; //What number?
         res.json({
-            message: err.message,
-            code: err.status
+            message: "Spot couldn't be found"
         })
+    }
+
+    //The spot should be found at this point, check authorization
+    //Check authorization, check if ownerId is matching userId
+    if(oneSpot.ownerId !== userId){ //Is it userId or ownerId?
+        res.status(403);
+        res.json({
+            message: "Forbidden"
+        });
     }
 
     //Delete the selected spot found from the given ID
     oneSpot.destroy();
     res.statusCode(200); //Set status code to 200
     res.json({
-        message: "Successfully Deleted"
+        message: "Successfully deleted"
     });
 });
+
+//Error Handler?
+// router.use((err, req, res, next) => {
+//     res.json({
+//         message: "Forbidden"
+//     })
+// });
 
 module.exports = router;
