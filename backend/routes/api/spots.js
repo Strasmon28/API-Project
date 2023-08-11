@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Spot, SpotImage, Review } = require('../../db/models');
+const { Spot, SpotImage, Review, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { route } = require('./session');
 
@@ -144,6 +144,8 @@ router.put('/:spotId', requireAuth, async(req, res, next) => {
     res.json(updatedSpot); //Should be the updated spot but with timestamps
 });
 
+//REVIEWS SECTION
+
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', requireAuth, async(req, res) => {
     const id = req.params.spotId;
@@ -164,7 +166,7 @@ router.post('/:spotId/reviews', requireAuth, async(req, res) => {
     const spotId = req.params.spotId;
 
     //Do error check
-    
+
 
     const newReview = Review.create({
         userId: userId,
@@ -175,6 +177,42 @@ router.post('/:spotId/reviews', requireAuth, async(req, res) => {
 
     res.json(newReview);
 });
+
+//REVIEWS SECTION END
+
+//BOOKINGS SECTION
+
+//Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', async(req, res) =>{
+    //Return all the bookings for a spot specified by id
+    const spotId = req.params.spotId;
+    const Bookings = Booking.findAll({
+        where: {
+            spotId: spotId
+        }
+    });
+
+    res.json({ Bookings });
+});
+
+//Create a Booking from a Spot based on the Spot's id
+router.post('/:spotId/bookings', requireAuth, async(req, res) => {
+    const spotId = req.params.spotId;
+    const userId = req.user.id;
+    const { startDate, endDate } = req.body;
+
+    const newBooking = Booking.create({
+        spotId: spotId,
+        userId: userId,
+        startDate,
+        endDate
+    });
+
+    res.json(newBooking);
+});
+
+
+//BOOKING SECTION END
 
 // Delete a spot
 router.delete('/:spotId', requireAuth, async(req, res, next) => {
