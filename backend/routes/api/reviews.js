@@ -13,10 +13,17 @@ router.get('/current', requireAuth, async(req, res) => {
         where: {
             userId: id
         },
-        include: {
-            model: Spot,
-            model: ReviewImage  //Is this right?
-        }
+        include: [
+            {
+                model: User
+            },
+            {
+                model: Spot
+            },
+            {
+                model: ReviewImage
+            }
+        ]
     });
 
     res.json({ Reviews });
@@ -30,7 +37,14 @@ router.post('/:reviewId/images', requireAuth, async(req, res) => {
 
     //Check authorization: check if review belongs to current user
     //Check if the review of the given id exists
-    const checkReview = Review.findByPk(reviewId);
+    const checkReview = Review.findAll({
+        where: {
+            id: reviewId
+        },
+        include: {
+            model: ReviewImage
+        }
+    });
     if (!checkReview){
         res.status(404);
         res.json({
@@ -39,7 +53,7 @@ router.post('/:reviewId/images', requireAuth, async(req, res) => {
     }
     if(checkReview.userId !== userId){
         //"Review must belong to the current user"
-        res.status(400);
+        res.status(403);
         res.json({
             message: "Forbidden"  //Needs error middleware?
         })
@@ -47,6 +61,13 @@ router.post('/:reviewId/images', requireAuth, async(req, res) => {
 
     //Check if the image limit was reached
     //if the images length === 10
+    //use id's to find the set of images
+    if(checkReview.ReviewImage.length >= 10){
+        res.status(403);
+        res.json({
+            message: "Maximum number of images for this resource was reached"
+        })
+    }
 
     //Do error check
     //Take the review using reviewId then insert the image?
@@ -73,17 +94,15 @@ router.put('/:reviewId', requireAuth, async(req, res) =>{
     }
 
     //Body validation checks
+    //Similar to requireAuth?
 
     //Authorization check
     if (updatedReview.userId !== userId){
-        res.status(400);
+        res.status(403);
         res.json({
             message: "Forbidden"  //Needs error middleware?
         })
     }
-
-    //Body validation checks
-    //Similar to authCheck?
 
     //Update the review
     updatedReview.review = review;
@@ -96,6 +115,7 @@ router.put('/:reviewId', requireAuth, async(req, res) =>{
 //Delete Review
 router.delete('/:reviewId', requireAuth, async(req, res) => {
     const id = req.params.reviewId;
+    const userId = req.user.id;
 
     const oneReview = await Review.findByPk(id);
     //Determine if a review was found
@@ -108,9 +128,9 @@ router.delete('/:reviewId', requireAuth, async(req, res) => {
 
     //Authorization check
     if (oneReview.userId !== userId){
-        res.status(400);
+        res.status(403);
         res.json({
-            message: "Forbidden"  //Needs error middleware?
+            message: "Forbidden"
         })
     }
 

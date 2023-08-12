@@ -7,8 +7,16 @@ const { route } = require('./session');
 //Delete a Review Image
 router.delete('/:imageId', requireAuth, async(req, res) => {
     const imageId = req.query.imageId;
+    const userId = req.user.id;
 
-    const deletedImage = ReivewImage.findByPk(imageId);
+    const deletedImage = await ReivewImage.findByPk(imageId);
+
+    const checkReview = await ReivewImage.findByPk(imageId, {
+        include: {
+            model: Review
+        }
+    });
+
     if(!deletedImage){
         res.status(404);
         res.json({
@@ -17,7 +25,12 @@ router.delete('/:imageId', requireAuth, async(req, res) => {
     }
 
     //Authorization (use the image id and connect the dots?)
-
+    if (checkReview.Review.userId !== userId){
+        res.status(403);
+        res.json({
+            message: "Forbidden"
+        })
+    }
 
     deletedImage.destroy();
 

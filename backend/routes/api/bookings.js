@@ -25,12 +25,22 @@ router.put('/:bookingId', requireAuth, async(req, res) => {
     const bookingId = req.params.bookingId;
 
     const editBooking = Booking.findByPk(bookingId);
+
+    if(!editBooking){
+        res.status(404);
+        res.json({
+            message: "Booking couldn't be found"
+        })
+    }
+
     if (editBooking.userId !== userId){
         res.status(403);
         res.json({
             message: "Forbidden"
         });
     }
+
+
 
     //Body validation
 
