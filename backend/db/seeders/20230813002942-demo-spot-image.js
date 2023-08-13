@@ -2,6 +2,8 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
+const { SpotImage } = require('../models');
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -18,6 +20,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+
   },
 
   async down (queryInterface, Sequelize) {
@@ -27,5 +30,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    options.tableName = 'SpotImages'
+    return queryInterface.bulkDelete(options, null, {});
   }
 };

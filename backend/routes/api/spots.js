@@ -21,10 +21,10 @@ const { handleValidationErrors } = require('../../utils/validation');
 //can use .optional
 const queryFilter = [
     check('page')
-        .isInt({min: 1, max: 10})
+        .isInt({min: 1, max: 10}) //How to default? default: 1 ?
         .withMessage("Page must be greater than or equal to 1"),
     check('size')
-        .isInt({min: 1, max: 20})
+        .isInt({min: 1, max: 20}) //How to default? default: 20?
         .withMessage("Size must be greater than or equal to 1"),
     check('maxLat')
         .isDecimal()
@@ -53,39 +53,44 @@ const queryFilter = [
     handleValidationErrors
 ];
 
+//queryfilter
+
 //Get all spots
-router.get("/", queryFilter, async(req, res) => {
+router.get("/", async(req, res) => {
     const Spots = await Spot.findAll({
-        include: //[
+        include: [
+            {
+                model: Review
+            },
             {
                 model: SpotImage,
                 attributes: ["id", "url", "preview"]
             }
-        // ]
+        ]
     }); //Wants all info, exclusions not needed.
 
     //Find avgRating and previewimage
     //avgRating AGGREGATE find this out
     //previewImage
-    // let spotList = [];
-    // Spots.forEach(spot => {
-    //     spotList.push(spot.toJSON())
-    // });
+    let spotList = [];
+    Spots.forEach(spot => {
+        spotList.push(spot.toJSON())
+    });
 
     //If preiview is true set the image (?) NEEDS WORK
-    // spotList.forEach(spot => {
-    //     spot.SpotImages.forEach(image => { //Needs stuff inside
-    //         // console.log(image.url);
-    //         image.url
-    //         console.log("tested")
-    //     })
-    //     delete spot.SpotImages;
-    // });
+    spotList.forEach(spot => {
+        spot.SpotImages.forEach(image => { //Needs stuff inside
+            // console.log(image.url);
+            image.url
+            console.log("tested")
+        })
+        delete spot.SpotImages;
+    });
 
     res.json({ Spots });
 });
 
-//Get spots owned by current user
+//Get all spots owned by the Current User
 router.get("/current", requireAuth, async(req, res) => {
     const id = req.user.id;
 
@@ -105,19 +110,20 @@ router.get("/current", requireAuth, async(req, res) => {
 
 //Get spot details from an id
 router.get("/:spotId", async(req, res) => {
-    const id = req.query.spotId;
+    const id = req.params.spotId;
+    console.log(id);
     const oneSpot = await Spot.findAll({
         where: { id: id },
         include: [  //is it bracket or brace?
         {
-            model: Review
+            model: Review //Needs numReviews and avgStarRating
         },
         {
             model: SpotImage,
             attributes: ["id", "url", "preview"]
         },
         {
-            model: User, //How to name as Owner
+            model: User, //How to name as Owner??
             attributes: ["id", "firstName", "lastName"]
         }
     ]
@@ -158,7 +164,7 @@ router.post("/", requireAuth, async(req, res) => {
 });
 
 //Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', requireAuth, async(req, res, next) => {
+router.post('/:spotId/images', requireAuth, async(req, res) => {
     const { url, preview } = req.body;
     const id = req.params.spotId;
     const userId = req.user.id;
@@ -261,11 +267,12 @@ router.get('/:spotId/reviews', async(req, res) => {
             spotId: id
         },
         include: {
-            model: User, //?? specity it belongs to the review
+            model: User, //?? specify it belongs to the review
             model: ReviewImage
         }
     });
 
+    res.status(200);
     res.json({ Reviews });
 });
 

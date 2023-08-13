@@ -4,7 +4,7 @@ const { Spot } = require("../models");
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;
+  options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 /** @type {import('sequelize-cli').Migration} */
@@ -30,13 +30,9 @@ module.exports = {
         lng: -122.4730327,
         name: "App Academy",
         description: "Place where web developers are created",
-        price: 123,
-        createdAt: "2021-11-19 20:39:36",
-        updatedAt: "2021-11-19 20:39:36",
-        avgRating: 4.5,
-        previewImage: "image url"
+        price: 123
       }
-    ], { validate: true })
+    ])
   },
 
   async down (queryInterface, Sequelize) {
@@ -46,7 +42,8 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    options.tableName = "Spots";
+    optional.tableName = "Spots";
+    // const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, null, {});
   }
 };
