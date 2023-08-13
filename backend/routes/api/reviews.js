@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Review, ReviewImage, Spot } = require('../../db/models');
+const { Review, ReviewImage, Spot, User } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { route } = require('./session');
 const { check } = require('express-validator');
@@ -15,13 +15,16 @@ router.get('/current', requireAuth, async(req, res) => {
         },
         include: [
             {
-                model: User
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
             },
             {
-                model: Spot
+                model: Spot,
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
             },
             {
-                model: ReviewImage
+                model: ReviewImage,
+                attributes: { exclude: ['reviewId', 'createdAt', 'updatedAt'] }
             }
         ]
     });
@@ -37,32 +40,32 @@ router.post('/:reviewId/images', requireAuth, async(req, res) => {
 
     //Check authorization: check if review belongs to current user
     //Check if the review of the given id exists
-    const checkReview = Review.findAll({
-        where: {
-            id: reviewId
-        },
+    const checkReview = Review.findByPk(reviewId, {
         include: {
             model: ReviewImage
         }
     });
+
     if (!checkReview){
         res.status(404);
         res.json({
             message: "Review couldn't be found"
         })
     }
+    
+    console.log(checkReview);
     if(checkReview.userId !== userId){
         //"Review must belong to the current user"
         res.status(403);
         res.json({
-            message: "Forbidden"  //Needs error middleware?
+            message: "Forbidden"
         })
     }
 
     //Check if the image limit was reached
-    //if the images length === 10
+    //if the images length === 10 or (somehow) above 10
     //use id's to find the set of images
-    if(checkReview.ReviewImage.length >= 10){
+    if(checkReview.ReviewImage.length >= 10){ //Does .length work?
         res.status(403);
         res.json({
             message: "Maximum number of images for this resource was reached"
@@ -74,6 +77,7 @@ router.post('/:reviewId/images', requireAuth, async(req, res) => {
     const addImage = await ReviewImage.create({
         url
     });
+
     res.json(addImage);
 })
 

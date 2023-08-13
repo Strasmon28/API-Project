@@ -37,6 +37,7 @@ router.post(
       const { email, password, username, firstName, lastName } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
 
+      //Use findAll where: ?
       //Check if there are matching usernames or emails in the database
       // const accounts = User.findAll();
       //Iterate through each account

@@ -193,7 +193,7 @@ router.get("/:spotId", async(req, res) => {
     res.json(Spots[0]) //[0] to remove the extra brackets
 });
 
-const validateCreateSpot = [
+const validateStuffSpot = [
     check('address')
         .notEmpty()
         .withMessage("Street address is required"),
@@ -227,7 +227,7 @@ const validateCreateSpot = [
 ];
 
 //Create a spot
-router.post("/", requireAuth, validateCreateSpot, async(req, res) => {
+router.post("/", requireAuth, validateStuffSpot, async(req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     //Make a body validation error handler
@@ -265,7 +265,8 @@ router.post('/:spotId/images', requireAuth, async(req, res) => {
         });
     }
 
-    //Authorize if spot belongs to current user
+    // console.log(spot.ownerId);
+    //Authorize if spot belongs to current user //(CHECK THIS)
     if(spot.ownerId !== userId){
         res.status(403);
         res.json({
@@ -284,14 +285,11 @@ router.post('/:spotId/images', requireAuth, async(req, res) => {
 });
 
 //Edit a Spot
-router.put('/:spotId', requireAuth, async(req, res, next) => {
+router.put('/:spotId', requireAuth, validateStuffSpot, async(req, res) => {
     const id = req.params.spotId;
     const userId = req.user.id;
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
-
-    //Validate the body values, if not good send error
-    //Similar to requireAuth?
 
     //Take the body and update all of the selected spot
     const updatedSpot = await Spot.findByPk(id);
@@ -307,6 +305,8 @@ router.put('/:spotId', requireAuth, async(req, res, next) => {
     //Authorize that the spot must belong to the current user (how?)
     //Take users id and compare to spot? then send error?
     //If the spots owner id does not match the user's id, send error Forbidden
+    // console.log(updatedSpot.ownerId);
+    // console.log(userId);
     if(updatedSpot.ownerId !== userId){ //Is it userId or ownerId?
         res.status(403);
         res.json({
@@ -315,15 +315,27 @@ router.put('/:spotId', requireAuth, async(req, res, next) => {
     }
 
     //Update the spot
-    updatedSpot.address = address;
-    updatedSpot.city = city;
-    updatedSpot.state = state;
-    updatedSpot.country = country;
-    updatedSpot.lat = lat;
-    updatedSpot.lng = lng;
-    updatedSpot.name = name;
-    updatedSpot.description = description;
-    updatedSpot.price = price;
+    updatedSpot.set({
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        lat: lat,
+        lng: lng,
+        name: name,
+        description: description,
+        price: price
+    });
+
+    // updatedSpot.address = address;
+    // updatedSpot.city = city;
+    // updatedSpot.state = state;
+    // updatedSpot.country = country;
+    // updatedSpot.lat = lat;
+    // updatedSpot.lng = lng;
+    // updatedSpot.name = name;
+    // updatedSpot.description = description;
+    // updatedSpot.price = price;
 
     await updatedSpot.save();
 
@@ -349,18 +361,34 @@ router.get('/:spotId/reviews', async(req, res) => {
         where: {
             spotId: id
         },
-        include: {
-            model: User, //?? specify it belongs to the review
-            model: ReviewImage
+        include: [
+        {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName']
+        },
+        {
+            model: ReviewImage,
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
         }
+        ]
     });
 
     res.status(200);
     res.json({ Reviews });
 });
 
+const validateReviewStuff = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage("Review text is required"),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5})
+        .withMessage("Stars must be an integer from 1 to 5")
+]
+
 //Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, async(req, res) => {
+router.post('/:spotId/reviews', requireAuth, validateReviewStuff, async(req, res) => {
     const { review, stars } = req.body;
     const userId = req.user.id;
     const spotId = req.params.spotId;
@@ -378,18 +406,18 @@ router.post('/:spotId/reviews', requireAuth, async(req, res) => {
     //Find a review with corresponding spotId
     const reviewCheck = await Review.findOne({
         where: {
-            spotId: spotId
+            spotId: spotId,
+            userId: userId
         }
     });
-    if(reviewCheck) { //If a review was found, send an error
+
+    //If found, that means there is a matching user id with the corresponding spot
+    if(reviewCheck) { //If a review was found within where clause, send an error
         res.status(500);
         res.json({
             message: "User already has a review for this spot"
         })
     }
-
-    //Do body validation error check
-    //Similar to requireAuth?
 
     const newReview = await Review.create({
         userId: userId,
@@ -478,10 +506,10 @@ router.delete('/:spotId', requireAuth, async(req, res) => {
 
     const oneSpot = await Spot.findByPk(spotId);
 
-    if(!oneSpot){ //If checking for empty, check .findAll() length
+    if(!oneSpot){ //Checking if nothing was found
         //send an error
         // const err = new Error("Spot couldn''t be found");
-        res.status(404); //What number?
+        res.status(404);
         res.json({
             message: "Spot couldn't be found"
         })
@@ -489,6 +517,8 @@ router.delete('/:spotId', requireAuth, async(req, res) => {
 
     //The spot should be found at this point, check authorization
     //Check authorization, check if ownerId is matching userId
+    console.log(oneSpot.ownerId);
+    console.log(userId);
     if(oneSpot.ownerId !== userId){ //Is it userId or ownerId?
         res.status(403);
         res.json({
@@ -498,7 +528,8 @@ router.delete('/:spotId', requireAuth, async(req, res) => {
 
     //Delete the selected spot found from the given ID
     oneSpot.destroy();
-    res.statusCode(200); //Set status code to 200
+
+    res.status(200); //Set status code to 200
     res.json({
         message: "Successfully deleted"
     });
