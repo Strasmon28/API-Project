@@ -20,8 +20,14 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-
-  },
+    await SpotImage.bulkCreate([
+      {
+        spotId: 1,
+        url: "image url",
+        preview: true
+      }
+    ], { validate: true })
+},
 
   async down (queryInterface, Sequelize) {
     /**
@@ -31,6 +37,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'SpotImages'
-    return queryInterface.bulkDelete(options, null, {});
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };

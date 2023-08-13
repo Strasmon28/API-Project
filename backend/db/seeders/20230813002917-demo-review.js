@@ -26,8 +26,14 @@ module.exports = {
         userId: 1,
         review: "Its pretty good",
         stars: 3
+      },
+      {
+        spotId: 1,
+        userId: 1,
+        review: "Its probably alright",
+        stars: 2
       }
-    ])
+    ], { validate: true })
   },
 
   async down (queryInterface, Sequelize) {
@@ -38,6 +44,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'Reviews'
-    return queryInterface.bulkDelete(options, null, {});
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };
