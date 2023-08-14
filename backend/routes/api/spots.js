@@ -484,20 +484,20 @@ router.get('/:spotId/bookings', requireAuth, async(req, res) =>{
     }
 });
 
-const checkDates = (req, res, next) => {
-    if (endDate < startDate){
-        res.status(400);
-        res.json({
-            message: "Bad Request",
-            errors: {
-                endDate: "endDate cannot be on or before startDate"
-            }
-        })
-    }
-}
+// const checkDates = (req, res, next) => {
+//     if (endDate < startDate){
+//         res.status(400);
+//         res.json({
+//             message: "Bad Request",
+//             errors: {
+//                 endDate: "endDate cannot be on or before startDate"
+//             }
+//         })
+//     }
+// }
 
 //Create a Booking from a Spot based on the Spot's id
-router.post('/:spotId/bookings', requireAuth, checkDates, async(req, res) => {
+router.post('/:spotId/bookings', requireAuth, async(req, res) => {
     const spotId = parseInt(req.params.spotId);
     const userId = req.user.id;
     const { startDate, endDate } = req.body;
