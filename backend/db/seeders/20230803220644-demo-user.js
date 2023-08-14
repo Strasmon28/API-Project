@@ -1,7 +1,6 @@
 'use strict';
-const bcrypt = require("bcryptjs");
-
 const { User } = require('../models');
+const bcrypt = require("bcryptjs");
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -14,6 +13,8 @@ module.exports = {
     await User.bulkCreate([
       {
         email: 'demo@user.io',
+        firstName: "name1",
+        lastName: "last1",
         username: 'Demo-lition',
         firstName: 'test1',
         lastName: 'test2',
@@ -21,6 +22,8 @@ module.exports = {
       },
       {
         email: 'user1@user.io',
+        firstName: "name2",
+        lastName: "last2",
         username: 'FakeUser1',
         firstName: 'test4',
         lastName: 'test5',
@@ -28,6 +31,8 @@ module.exports = {
       },
       {
         email: 'user2@user.io',
+        firstName: "name",
+        lastName: "last",
         username: 'FakeUser2',
         firstName: 'test6',
         lastName: 'test7',

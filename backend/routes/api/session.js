@@ -14,10 +14,10 @@ const validateLogin = [
   check('credential')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
+    .withMessage('Email or username is required'),
   check('password')
     .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
+    .withMessage('Password is required'),
   handleValidationErrors
 ];
 
@@ -56,6 +56,8 @@ router.post(
 
       const safeUser = {
         id: user.id,
+        firstName: user.firstName, //added
+        lastName: user.lastName, //added
         email: user.email,
         username: user.username,
       };
@@ -76,6 +78,8 @@ router.get(
       if (user) {
         const safeUser = {
           id: user.id,
+          firstName: user.firstName, //added
+          lastName: user.lastName, //added
           email: user.email,
           username: user.username,
         };
@@ -86,6 +90,7 @@ router.get(
     }
   );
 //complete
+
 
 
 
