@@ -6,7 +6,7 @@ const { route } = require('./session');
 
 //Delete a spot image (Does this need delete cascade?)
 router.delete('/:imageId', requireAuth, async(req, res) => {
-    const imageId = req.params.imageId;
+    const imageId = parseInt(req.params.imageId);
     const userId = req.user.id;
     const deletedImage = await SpotImage.findByPk(imageId);
 

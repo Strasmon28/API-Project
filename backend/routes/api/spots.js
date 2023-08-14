@@ -5,6 +5,7 @@ const { requireAuth } = require('../../utils/auth');
 const { route } = require('./session');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const spot = require('../../db/models/spot');
 
 // const validateLogin = [
 //     check('credential')
@@ -30,7 +31,7 @@ const queryFilter = [
         .isDecimal()
         .optional()
         .withMessage("Maximum latitude is invalid"),
-    check('mixLat')
+    check('minLat')
         .isDecimal()
         .optional()
         .withMessage("Minimum latitude is invalid"),
@@ -56,7 +57,8 @@ const queryFilter = [
 //queryfilter
 
 //Get all spots (Check query filter) CHECK LOGIN STUFF TOO
-router.get("/", async(req, res) => {
+router.get("/", queryFilter, async(req, res) => {
+    const { page, size , maxLat, minLat, minLng, maxLng, minPrice, maxPrice } = req.query;
     const allSpots = await Spot.findAll({
         include: [
             {
@@ -97,7 +99,11 @@ router.get("/", async(req, res) => {
         delete spot.SpotImages;
     });
 
-    res.json({ Spots });
+    res.json({
+        Spots,
+        page,
+        size
+    });
 });
 
 //Get all spots owned by the Current User
@@ -380,19 +386,23 @@ router.get('/:spotId/reviews', async(req, res) => {
 const validateReviewStuff = [
     check('review')
         .exists({ checkFalsy: true })
+        .notEmpty()
         .withMessage("Review text is required"),
     check('stars')
-        .exists({ checkFalsy: true })
         .isInt({ min: 1, max: 5})
-        .withMessage("Stars must be an integer from 1 to 5")
+        .withMessage("Stars must be an integer from 1 to 5"),
+        handleValidationErrors
 ]
 
 //Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, validateReviewStuff, async(req, res) => {
-    const { review, stars } = req.body;
     const userId = req.user.id;
-    const spotId = req.params.spotId;
+    const spotId = parseInt(req.params.spotId);
+    const { review, stars } = req.body;
 
+    console.log('spotId', spotId);
+    console.log(typeof spotId);
+    //Why is spotId a string? use parseInt?
     //Check if the spot of the given id exists
     const spot = await Spot.findByPk(spotId);
     if(!spot) {
@@ -436,14 +446,13 @@ router.post('/:spotId/reviews', requireAuth, validateReviewStuff, async(req, res
 //Get all Bookings for a Spot based on the Spot's id
 router.get('/:spotId/bookings', requireAuth, async(req, res) =>{
     //Return all the bookings for a spot specified by id
-    const spotId = req.params.spotId;
-    const Bookings = await Booking.findAll({
-        where: {
-            spotId: spotId
-        }
-    });
+    const spotId = parseInt(req.params.spotId);
+    const userId = req.user.id;
 
-    if(Bookings.length <= 0){
+
+    const spotCheck = await Spot.findByPk(spotId);
+
+    if(!spotCheck){
         res.status(404);
         res.json({
             message: "Spot couldn't be found"
@@ -452,14 +461,44 @@ router.get('/:spotId/bookings', requireAuth, async(req, res) =>{
 
     //Will have different responses
     //Check if the user is not the owner(compare userIds)
-    //Check if user is owner
-
-    res.json({ Bookings });
+    if(spotCheck.ownerId !== userId){
+        const Bookings = await Booking.findAll({
+            where: {
+                spotId: spotId
+            }
+        });
+        res.json({ Bookings });
+    } else {  //Else, the user is the owner
+        const Bookings = await Booking.findAll({
+            where: {
+                spotId: spotId
+            },
+            include: [
+                {
+                    model: User,
+                    attributes: ['id', 'firstName', 'lastName']
+                }
+            ]
+        });
+        res.json({ Bookings });
+    }
 });
 
+const checkDates = (req, res, next) => {
+    if (endDate < startDate){
+        res.status(400);
+        res.json({
+            message: "Bad Request",
+            errors: {
+                endDate: "endDate cannot be on or before startDate"
+            }
+        })
+    }
+}
+
 //Create a Booking from a Spot based on the Spot's id
-router.post('/:spotId/bookings', requireAuth, async(req, res) => {
-    const spotId = req.params.spotId;
+router.post('/:spotId/bookings', requireAuth, checkDates, async(req, res) => {
+    const spotId = parseInt(req.params.spotId);
     const userId = req.user.id;
     const { startDate, endDate } = req.body;
 
@@ -475,7 +514,9 @@ router.post('/:spotId/bookings', requireAuth, async(req, res) => {
     }
 
     //Authorization
-    if(checkSpot.ownerId !== userId){ //Is it userId or ownerId?
+    //Spot must NOT belong to the current user.
+    //If it does, throw an error
+    if(checkSpot.ownerId === userId){ //Is it userId or ownerId?
         res.status(403);
         res.json({
             message: "Forbidden"
@@ -484,6 +525,16 @@ router.post('/:spotId/bookings', requireAuth, async(req, res) => {
 
     //Check if there is a booking conflict
     //compare the given start/end dates with existing bookings
+    // if (){
+    //     res.status(403);
+    //     res.json({
+    //         message: "Sorry, this spot is already booked for the specific dates",
+    //         errors: {
+    //             startDate: "Start date conflicts with an existing booking",
+    //             endDate: "End date conflicts with an existing booking"
+    //         }
+    //     })
+    // }
     //if they are the same, send an error
 
     const newBooking = await Booking.create({

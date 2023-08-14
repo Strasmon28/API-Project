@@ -3,6 +3,7 @@ const router = express.Router();
 const { Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { route } = require('./session');
+const { handleValidationErrors } = require('../../utils/validation');
 
 //Get all of the Current User's Bookings
 router.get('/current', requireAuth, async(req, res) => {
@@ -17,12 +18,24 @@ router.get('/current', requireAuth, async(req, res) => {
     res.json({ Bookings });
 });
 
+const checkDates = (req, res, next) => {
+    if (endDate < startDate){
+        res.status(400);
+        res.json({
+            message: "Bad Request",
+            errors: {
+                endDate: "endDate cannot be on or before startDate"
+            }
+        })
+    }
+}
+
 //Edit a Booking
 //Update and return an existing booking
-router.put('/:bookingId', requireAuth, async(req, res) => {
+router.put('/:bookingId', requireAuth, checkDates, async(req, res) => {
     const { startDate, endDate } = req.body;
     const userId = req.user.id;
-    const bookingId = req.params.bookingId;
+    const bookingId = parseInt(req.params.bookingId);
 
     const editBooking = Booking.findByPk(bookingId);
 
@@ -41,7 +54,6 @@ router.put('/:bookingId', requireAuth, async(req, res) => {
     }
 
 
-
     //Body validation
 
     //Check if the booking is expired (?)
@@ -58,7 +70,7 @@ router.put('/:bookingId', requireAuth, async(req, res) => {
 //Delete a Booking
 router.delete('/:bookingId', requireAuth, async(req, res) => {
     //Find the booking by the given id then destroy it
-    const bookingId = req.params.bookingId;
+    const bookingId = parseInt(req.params.bookingId);
     const userId = req.user.id;
 
     const deleteBooking = Booking.findByPk(bookingId);
@@ -77,6 +89,7 @@ router.delete('/:bookingId', requireAuth, async(req, res) => {
         });
     }
 
+    let currentDate = new Date();
     //Cant delete bookings that have been started
     //Check if current date passes the start date and if it does, send error
     // if()
