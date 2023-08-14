@@ -20,6 +20,12 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+   await ReviewImage.bulkCreate([
+    {
+      reviewId: 1,
+      url: "image url"
+    }
+   ], { validate: true })
   },
 
   async down (queryInterface, Sequelize) {
@@ -30,6 +36,9 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'ReviewImages'
-    return queryInterface.bulkDelete(options, {}, {});
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      reviewId: { [Op.in]: 1 }
+    }, {});
   }
 };
