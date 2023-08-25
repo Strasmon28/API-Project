@@ -23,9 +23,11 @@ const spot = require('../../db/models/spot');
 const queryFilter = [
     check('page')
         .isInt({min: 1, max: 10}) //How to default? default: 1 ?
+        .optional
         .withMessage("Page must be greater than or equal to 1"),
     check('size')
         .isInt({min: 1, max: 20}) //How to default? default: 20?
+        .optional
         .withMessage("Size must be greater than or equal to 1"),
     check('maxLat')
         .isDecimal()
