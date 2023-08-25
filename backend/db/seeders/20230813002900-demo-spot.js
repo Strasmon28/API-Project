@@ -31,19 +31,19 @@ module.exports = {
         name: "App Academy",
         description: "Place where web developers are created",
         price: 123
+      },
+      {
+        ownerId: 2,
+        address: "Big lans 124",
+        city: "Houston",
+        state: "Texas",
+        country: "United States of America",
+        lat: 76.7645358,
+        lng: -188.4730327,
+        name: "Big House",
+        description: "Come to thea bighouse",
+        price: 123
       }
-      // {
-      //   ownerId: 2,
-      //   address: "Big lans 124",
-      //   city: "Houston",
-      //   state: "Texas",
-      //   country: "United States of America",
-      //   lat: 76.7645358,
-      //   lng: -188.4730327,
-      //   name: "Big House",
-      //   description: "Come to da bighouse",
-      //   price: 123
-      // }
     ], { validate: true })
   },
 

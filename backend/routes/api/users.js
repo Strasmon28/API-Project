@@ -12,6 +12,7 @@ const router = express.Router();
 const validateSignup = [
   check('email')
     .exists({ checkFalsy: true })
+    .notEmpty()
     .isEmail()
     .withMessage('Invalid email'),
   check('username')
@@ -19,12 +20,14 @@ const validateSignup = [
     .notEmpty()
     .isLength({ min: 4 })
     .withMessage('Username is required'),
-  check('username')
+  check('firstName')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .not()
-    .isEmail()
-    .withMessage('Username cannot be an email.'),
+    .withMessage("First Name is required"),
+  check('lastName')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Last Name is required"),
   check('password')
     .exists({ checkFalsy: true })
     .notEmpty()
@@ -45,18 +48,34 @@ router.post(
       //Check if there are matching usernames or emails in the database
       // const accounts = User.findAll();
       //Iterate through each account
-      // accounts.forEach(account => {
-      //   if(email === account.email){
-      //     res.status(500);
-      //     // res.json({
-      //     //   message:
-      //     // })
-      //   }
-      //   if(username === account.username){
-      //     res.status(500);
+      const emailCheck = await User.findOne({
+        where: { email: email }
+      })
 
-      //   }
-      // })
+      //If matching email was found, send an error
+      if (emailCheck){
+        res.status(500)
+        res.json({
+            message: "User already exists",
+            errors: {
+              email: "User with that email already exists"
+            }
+        })
+      }
+
+      const userCheck = await User.findOne({
+        where: { username: username }
+      })
+
+      if (userCheck) {
+        res.status(500)
+        res.json({
+          message: "User already exists",
+            errors: {
+              email: "User with that username already exists"
+            }
+        })
+      }
 
       const user = await User.create({ email, username, hashedPassword, firstName, lastName });
 
@@ -75,7 +94,5 @@ router.post(
       });
     }
 );
-
-
 
 module.exports = router;

@@ -23,9 +23,11 @@ const spot = require('../../db/models/spot');
 const queryFilter = [
     check('page')
         .isInt({min: 1, max: 10}) //How to default? default: 1 ?
+        .optional
         .withMessage("Page must be greater than or equal to 1"),
     check('size')
         .isInt({min: 1, max: 20}) //How to default? default: 20?
+        .optional
         .withMessage("Size must be greater than or equal to 1"),
     check('maxLat')
         .isDecimal()
@@ -484,20 +486,20 @@ router.get('/:spotId/bookings', requireAuth, async(req, res) =>{
     }
 });
 
-const checkDates = (req, res, next) => {
-    if (endDate < startDate){
-        res.status(400);
-        res.json({
-            message: "Bad Request",
-            errors: {
-                endDate: "endDate cannot be on or before startDate"
-            }
-        })
-    }
-}
+// const checkDates = (req, res, next) => {
+//     if (endDate < startDate){
+//         res.status(400);
+//         res.json({
+//             message: "Bad Request",
+//             errors: {
+//                 endDate: "endDate cannot be on or before startDate"
+//             }
+//         })
+//     }
+// }
 
 //Create a Booking from a Spot based on the Spot's id
-router.post('/:spotId/bookings', requireAuth, checkDates, async(req, res) => {
+router.post('/:spotId/bookings', requireAuth, async(req, res) => {
     const spotId = parseInt(req.params.spotId);
     const userId = req.user.id;
     const { startDate, endDate } = req.body;

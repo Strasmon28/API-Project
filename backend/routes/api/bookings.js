@@ -9,7 +9,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 router.get('/current', requireAuth, async(req, res) => {
     //Find all of the bookings of the current user (using their id)
     const id = req.user.id;
-    const Bookings = Booking.findAll({
+    const Bookings = await Booking.findAll({
         where: {
             userId: id
         }
@@ -37,7 +37,7 @@ router.put('/:bookingId', requireAuth, checkDates, async(req, res) => {
     const userId = req.user.id;
     const bookingId = parseInt(req.params.bookingId);
 
-    const editBooking = Booking.findByPk(bookingId);
+    const editBooking = await Booking.findByPk(bookingId);
 
     if(!editBooking){
         res.status(404);
@@ -54,12 +54,6 @@ router.put('/:bookingId', requireAuth, checkDates, async(req, res) => {
     }
 
 
-    //Body validation
-
-    //Check if the booking is expired (?)
-
-    //Check if booking dates conflict
-
     //Update booking
     editBooking.startDate = startDate;
     editBooking.endDate = endDate;
@@ -73,7 +67,7 @@ router.delete('/:bookingId', requireAuth, async(req, res) => {
     const bookingId = parseInt(req.params.bookingId);
     const userId = req.user.id;
 
-    const deleteBooking = Booking.findByPk(bookingId);
+    const deleteBooking = await Booking.findByPk(bookingId);
     if (!deleteBooking){
         //Couldn't find a booking with the specified id
         res.status(404);

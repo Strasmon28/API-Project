@@ -20,6 +20,14 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+    await Booking.bulkCreate([
+      {
+        spotId: 1,
+        userId: 1,
+        startDate: new Date("2021-11-19"),
+        endDate: new Date("2021-11-20")
+      }
+    ])
   },
 
   async down (queryInterface, Sequelize) {
@@ -30,6 +38,9 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'Bookings'
-    return queryInterface.bulkDelete(options, {}, {});
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      spotId: { [Op.in]: 1 }
+    }, {});
   }
 };

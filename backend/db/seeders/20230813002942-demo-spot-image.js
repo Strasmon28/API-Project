@@ -37,6 +37,9 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'SpotImages'
-    return queryInterface.bulkDelete(options, {}, {});
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      url: { [Op.in]: "image url" }
+    }, {});
   }
 };
