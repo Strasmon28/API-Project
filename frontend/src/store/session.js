@@ -21,6 +21,8 @@ const removeUser = () => {
 };
 
 // Thunk action creators (function w/ inner function)
+
+//Login thunk action
 export const login = (user) => async (dispatch) => {
     const { credential, password } = user;
     const response = await csrfFetch('/api/session', {
@@ -36,6 +38,7 @@ export const login = (user) => async (dispatch) => {
     return response;
   };
 
+//Restore user thunk action
 export const restoreUser = () => async (dispatch) => {
     const response = await csrfFetch("/api/session");
     const data = await response.json();
@@ -43,6 +46,7 @@ export const restoreUser = () => async (dispatch) => {
     return response;
 };
 
+//Signup user thunk action
 export const signup = (user) => async (dispatch) => {
     const { username, firstName, lastName, email, password } = user;
     const response = await csrfFetch("/api/users", {
@@ -59,6 +63,17 @@ export const signup = (user) => async (dispatch) => {
     dispatch(setUser(data.user));
     return response;
 };
+
+//Logout user thunk action
+export const logout = () => async (dispatch) => {
+    const response = await csrfFetch('/api/session', {
+      method: 'DELETE',
+    });
+    dispatch(removeUser());
+    return response;
+  };
+
+//----End of thunk action creators-----
 
 const initialState = { user: null };
 
