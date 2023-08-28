@@ -14,12 +14,21 @@ const READ_SPOT = "spots/readSpot"
 //     }
 // };
 
+//How should I have the action creators?
+//Multiple and single?
 const readSpots = (spots) => {
     return {
         type: READ_SPOT,
         payload: spots
     }
 };
+
+const oneSpot = (spot) => {
+    return {
+        type: READ_ONE,
+        payload: spot
+    }
+}
 
 // const updateSpot = () => {
 //     return {
@@ -34,34 +43,19 @@ const readSpots = (spots) => {
 // };
 
 //Thunk action creators
-export const allSpots = (spots) => async (dispatch) => {
-    const response = await fetch("/api/spots", {
-        method: "GET",
-        body: JSON.stringify({
-            ownerId,
-            address,
-            city,
-            state,
-            country,
-            lat,
-            lng,
-            name,   //Deprecated name?
-            description,
-            price
-        })
-    });
+export const allSpots = () => async (dispatch) => {
+    const response = await fetch("/api/spots");
     const data = await response.json();
     dispatch(readSpots(data.spots));
     return response;
 }
 
-export const singleSpot = () => async (dispatch) => {
-    const response = await fetch("/api/spots/:spotId", {
-        method: "GET", //is this needed?
-        body: JSON.stringify({
-
-        })
-    })
+export const singleSpot = (spotId) => async (dispatch) => {
+    const response = await fetch(`/api/spots/${spotId}`)
+    if(response.ok){
+        const spot = await response.json();
+        dispatch(oneSpot(spot));
+    }
 }
 
 const initialState = {};
@@ -70,9 +64,13 @@ const initialState = {};
 const spotsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
+        //How are these cases done?
         case READ_SPOT:
-            newState = Object.assign({}, state);
-            return newState;
+            // newState = Object.assign({}, state);
+            return [...state, action.spots];
+        case READ_ONE:
+            // newState = Object.assign({}, state);
+            return [...state, action.spots];
         default:
             return state;
     }
