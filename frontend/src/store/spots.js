@@ -3,7 +3,8 @@
 //One for all spots, one for single spot
 
 // const CREATE_SPOT = "spots/createSpot"
-const READ_SPOT = "spots/readSpot"
+const READ_SPOT = "spots/readSpots"
+const READ_ONE = "spots/readSpot"
 // const UPDATE_SPOT = "spots/updateSpot"
 // const DELETE_SPOT = "spots/deleteSpot"
 
@@ -46,7 +47,7 @@ const oneSpot = (spot) => {
 export const allSpots = () => async (dispatch) => {
     const response = await fetch("/api/spots");
     const data = await response.json();
-    dispatch(readSpots(data.spots));
+    dispatch(readSpots(data.Spots));
     return response;
 }
 
@@ -64,13 +65,14 @@ const initialState = {};
 const spotsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
-        //How are these cases done?
         case READ_SPOT:
-            // newState = Object.assign({}, state);
-            return [...state, action.spots];
+            // newState = {...state, spots: action.payload};
+            newState = Object.assign({}, state);
+            newState.spots = action.payload;
+            return newState;
         case READ_ONE:
-            // newState = Object.assign({}, state);
-            return [...state, action.spots];
+            newState = {...state, spot: action.payload};
+            return newState;
         default:
             return state;
     }

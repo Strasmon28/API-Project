@@ -1,0 +1,12 @@
+.border {
+    display: flex;
+    justify-content: space-between;
+    border: solid black;
+    padding: 20px;
+}
+
+.border div{
+    border: solid red;
+    padding: 10px;
+    margin: 20px;
+}

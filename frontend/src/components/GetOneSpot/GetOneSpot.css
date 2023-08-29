@@ -1,0 +1,17 @@
+.primary{
+    border: solid black;
+    padding: 20px;
+}
+
+.secondary{
+    border: solid red;
+}
+
+.hosting{
+    border: solid orange;
+}
+
+.reserve{
+    border: solid black;
+    margin: 20px;
+}
