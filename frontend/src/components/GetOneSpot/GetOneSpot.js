@@ -1,39 +1,59 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { singleSpot } from "../../store/spots";
-import "./GetOneSpot.css"
+import "./GetOneSpot.css";
 //Should get all info of one spot and display its information
 function GetOneSpot() {
-    const dispatch = useDispatch();
-    const { spotId } = useParams();
+  const dispatch = useDispatch();
+  const { spotId } = useParams();
+  console.log(spotId);
 
-    useEffect(() => {
-        dispatch(singleSpot(spotId))
-    })
+  useEffect(() => {
+    dispatch(singleSpot(spotId));
+  }, [dispatch, spotId]);
 
-    const spot = useState((state) => state.spotState.spot)
+  const spot = useSelector((state) => state.spotsStore.spot);
 
-    return(
-        <div className="primary">
-            <div className="secondary">
-                <h1>SPOT NAME</h1>
-                <h2>CITY, STATE, COUNTRY</h2>
-                <p>text placeholder: image goes here</p>
-            </div>
-            <div className="hosting">
-                <h3>HOSTED BY... </h3>
-                <p>spot general description</p>
-                <div className="reserve">
-                    separate block with...
-                    <p>price</p>
-                    <p>review avg</p>
-                    <p># of reviews</p>
-                    <button>reserve button</button>
-                </div>
-            </div>
+  // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
+  //     return null;
+  // }
+
+  console.log("THE SPOT", spot);
+  return (
+    <div className="primary">
+      <div className="secondary">
+        <h1>{spot.address}</h1>
+        <h2>
+          {spot.city}, {spot.state}, {spot.country}
+        </h2>
+        <p>text placeholder: image goes here</p>
+      </div>
+      <div className="hosting">
+        <h3>
+          HOSTED BY {spot.Owner.firstName} {spot.Owner.lastName}{" "}
+        </h3>
+        <p>{spot.description}</p>
+        <div className="reserve">
+          separate block with...
+          <p>${spot.price} night</p>
+          <p>review avg IF NO REVIEWS, SET TO "NEW"</p>
+          <p># of reviews</p>
+          <button>
+            reserve button OPENS AN ALERT WITH MESSAGE "Feature Coming Soon..."
+          </button>
         </div>
-    )
+      </div>
+      <div>
+        <p>star icon</p>
+        <p>avg star rating</p>
+        <p># of reviews</p>
+      </div>
+      <div>
+        <p>MAP REVIEWS, use ul, li Firstname, Month/date, Review,</p>
+      </div>
+    </div>
+  );
 }
 
 export default GetOneSpot;

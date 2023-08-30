@@ -12,11 +12,10 @@ function Home() {
 
   const spots = useSelector((state) => state.spotsStore.spots);
 
-  if (!spots){
+  if (!spots){ //check this
     return null;
   }
 
-// const everySpot = Object.values(spots);
   //For each spot, make an element
   return (
     <div className="border">

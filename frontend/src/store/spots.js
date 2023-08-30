@@ -59,6 +59,13 @@ export const singleSpot = (spotId) => async (dispatch) => {
     }
 }
 
+export const userSpots = () => async (dispatch) => {
+    const response = await fetch("/api/spots/current");
+    const data = await response.json();
+    dispatch(readSpots(data.spots))
+    return response;
+}
+
 const initialState = {};
 
 //Reducer

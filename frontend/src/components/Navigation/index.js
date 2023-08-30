@@ -36,7 +36,7 @@ function Navigation({ isLoaded }) {
     <ul>
       <li>
         <NavLink exact to="/">
-          Home
+          CloudyRestBnB
         </NavLink>
       </li>
       {isLoaded && sessionLinks}
