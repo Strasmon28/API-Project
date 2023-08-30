@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { singleSpot } from "../../store/spots";
 import "./GetOneSpot.css"
 //Should get all info of one spot and display its information
 function GetOneSpot() {
     const dispatch = useDispatch();
+    const { spotId } = useParams();
 
     useEffect(() => {
-        dispatch(singleSpot())
+        dispatch(singleSpot(spotId))
     })
 
-    
+    const spot = useState((state) => state.spotState.spot)
 
     return(
         <div className="primary">
