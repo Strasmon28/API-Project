@@ -15,16 +15,12 @@ function Home() {
   if (!spots){ //check this
     return null;
   }
-
+  //City, state review avg, price
   //For each spot, make an element
   return (
     <div className="border">
-      <div>
-        lorem ipsum
-        <p>description</p>
-      </div>
       {spots.map((spot) => (
-        <div key={spot.id}>{spot.address}</div>
+        <div key={spot.id}>{spot.address} {spot.city} {spot.state} {spot.avgRating} ${spot.price}</div>
       ))}
     </div>
   );
