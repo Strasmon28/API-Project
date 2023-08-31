@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { userSpots } from "../../store/spots";
 import "./ManageSpot.css";
 
@@ -19,10 +19,12 @@ function ManageSpot() {
 //     return null;
 //   }
   if (!spots) {
+    console.log("checking undefined")
     return null;
   }
 
-  const formRedirect = () => {
+  const formRedirect = (e) => {
+    e.preventDefault();
     history.push("/form")
   }
   //   const ownedSpots = spots.Spots;

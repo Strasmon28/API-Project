@@ -6,7 +6,7 @@ import Navigation from "./components/Navigation";
 import Home from "./components/Home/Home.js";
 import MangageSpot from "./components/ManageSpot/ManageSpot.js";
 import GetOneSpot from "./components/GetOneSpot/GetOneSpot";
-import SpotForm from "./components/SpotForm/SpotForm";
+import CreateSpotForm from "./components/CreateSpotForm/CreateSpotForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,11 +26,11 @@ function App() {
         <Route exact path="/manage">
           <MangageSpot />
         </Route>
-        <Route exact path="/getOneSpot/:spotId">
+        <Route exact path="/spotDetail/:spotId">
           <GetOneSpot />
         </Route>
         <Route exact path="/form">
-          <SpotForm />
+          <CreateSpotForm />
         </Route>
       </Switch>}
 

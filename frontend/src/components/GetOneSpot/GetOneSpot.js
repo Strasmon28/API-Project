@@ -18,6 +18,9 @@ function GetOneSpot() {
   // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
   //     return null;
   // }
+  if (!spot) {
+    return null;
+  }
 
   console.log("THE SPOT", spot);
   return (

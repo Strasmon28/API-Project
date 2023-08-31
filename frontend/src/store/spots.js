@@ -6,7 +6,7 @@
 const READ_SPOT = "spots/readSpots"
 const READ_ONE = "spots/readSpot"
 // const UPDATE_SPOT = "spots/updateSpot"
-// const DELETE_SPOT = "spots/deleteSpot"
+const REMOVE_SPOT = "spots/removeSpot"
 
 //Action creators
 // const createSpot = () => {
@@ -37,11 +37,11 @@ const oneSpot = (spot) => {
 //     }
 // };
 
-// const deleteSpot = () => {
-//     return {
-//         type: DELETE_SPOT
-//     }
-// };
+const removeSpot = () => {
+    return {
+        type: REMOVE_SPOT
+    }
+};
 
 //Thunk action creators
 export const allSpots = () => async (dispatch) => {
@@ -65,6 +65,61 @@ export const userSpots = () => async (dispatch) => {
     dispatch(readSpots(data.Spots))
     return response;
 }
+
+export const addSpot = (spotData) => async (dispatch) => {
+    const response = await fetch('/api/spots', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(spotData)
+    });
+    console.log("ADDING A SPOT", response);
+    const data = await response.json();
+    console.log("NEW SPOT DATA CHECK", data);
+    dispatch(readSpots(data.Spots));
+    return response;
+}
+
+export const addSpotImages = (imageData, spotId) => async (dispatch) => {
+    const response = await fetch(`/api/spots/${spotId}/images`,{
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(imageData)
+    });
+    console.log("ADDING AN IMAGE", response);
+    const data = await response.json();
+    console.log("NEW IMAGE DATA CHECK", data);
+    dispatch(readSpots(data.Spots))
+    return response;
+}
+
+export const deleteSpot = (spotId) => async(dispatch) => {
+    const response = await fetch(`/api/spots/${spotId}`,{
+        method: "DELETE",
+    });
+    if(response.ok){
+        dispatch(deleteSpot())
+    }
+
+}
+
+// export const updateSpot = (spotId) => async (dispatch) => {
+//     const response = await fetch(`/api/spots/${spotId}`,{
+//         method: "PUT",
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body:
+//         country,
+
+//     });
+//     const data = await response.json();
+//     dispatch(readSpots(data.Spots))
+//     return response;
+// }
 
 const initialState = {};
 

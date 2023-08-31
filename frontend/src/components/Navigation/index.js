@@ -31,11 +31,25 @@ function Navigation({ isLoaded }) {
   //     </li>
   //   );
   // }
-
+  //if there is a current user, show the manage spots link
+  // const manageRedirect = (e) => {
+  //   e.preventDefault();
+  //   history.push("/manage");
+  // }
+  // //If there isnt a user, do
+  // if(Object.keys(sessionUser).length !== 0){
+  //   manageLink = <NavLink></NavLink>
+  // }
+  //{sessionUser && <li>
+        // <NavLink exact to="/manage">Manage Your Spots</NavLink>
+        // </li> }
   return (
     <ul>
       <li>
         <NavLink exact to="/">CloudyRestBnb</NavLink>
+      </li>
+      <li>
+        <NavLink exact to="/manage">Manage Your Spots</NavLink>
       </li>
       {isLoaded && (
         <li>

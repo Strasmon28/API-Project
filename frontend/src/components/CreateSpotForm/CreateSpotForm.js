@@ -1,42 +1,64 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { userSpots } from "../../store/spots";
+import { useHistory } from "react-router-dom";
+import { addSpot, addSpotImages } from "../../store/spots";
 import "./SpotForm.css";
 
-function SpotForm() {
+function CreateSpotForm() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [lat, setLat] = useState(null);
-  const [lng, setLng] = useState(null);
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
   const [description, setDescription] = useState("");
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState(null);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [previewImage, setPreviewImage] = useState("");
-
+  const [img1, setImg1] = useState("");
+  const [img2, setImg2] = useState("");
+  const [img3, setImg3] = useState("");
+  const [img4, setImg4] = useState("");
 
   //useStates needed
   //use an onSubmit event, take info from the input fields to update the chosen spot
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   return dispatch(
-  //   spotActions.spots(?)({
-  // country,
-  // address,
-  // city,
-  // state,
-  // lat,
-  // lng,
-  // description,
-  // title,
-  // price,
-  // image,
-  //})
-  //)
-  // }
+
+  //Update the spot, then add images after
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const spotData = {
+      country,
+      address,
+      city,
+      state,
+      lat,
+      lng,
+      description,
+      name,
+      price,
+    };
+
+    const imageData = {
+      previewImage,
+      img1,
+      img2,
+      img3,
+      img4,
+    };
+
+    //Dispatch info to have it add it to the store
+    const newSpot = await dispatch(addSpot(spotData));
+    //Give the image data to the spot, use the newSpot's id
+    const addImages = await dispatch(addSpotImages(imageData, newSpot.id))
+    //Try, catch needed?
+
+    //After the store has been updated, redirect the user to the new spot
+
+    history.push(`spotDetail/${newSpot.id}`);
+  };
 
   //if create was chosen, use regular form
   //if update was chosen, use spotForm, but with image optional
@@ -44,7 +66,7 @@ function SpotForm() {
   //LAT AND LNG ARE OPTIONAL
   return (
     <div>
-      <form>
+      <form onSubmit={onSubmit}>
         <h1>Update your spot</h1>
         <h2>Where's your place located?</h2>
         <p>
@@ -82,14 +104,14 @@ function SpotForm() {
         <p>Latitude</p>
         <input
           type="number"
-          value={lat} //Not required, exclude?
+          value={lat}
           onChange={(e) => setLat(e.target.value)}
           required
         ></input>
         <p>Longitude</p>
         <input
           type="number"
-          value={lng} //Not required, exclude?
+          value={lng}
           onChange={(e) => setLng(e.target.value)}
           required
         ></input>
@@ -107,8 +129,8 @@ function SpotForm() {
         </p>
         <input
           type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         ></input>
         <h2>Set a base price for your spot</h2>
@@ -121,19 +143,35 @@ function SpotForm() {
         ></input>
         <h2>Place some photos</h2>
         <input
-          type="number"
+          type="url"
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
           required
         ></input>
-        <input></input>
-        <input></input>
-        <input></input>
-        <input></input>
-        <button>CREATE SPOT</button>
+        <input
+          type="url"
+          value={img1}
+          onChange={(e) => setImg1(e.target.value)}
+        ></input>
+        <input
+          type="url"
+          value={img2}
+          onChange={(e) => setImg2(e.target.value)}
+        ></input>
+        <input
+          type="url"
+          value={img3}
+          onChange={(e) => setImg3(e.target.value)}
+        ></input>
+        <input
+          type="url"
+          value={img4}
+          onChange={(e) => setImg4(e.target.value)}
+        ></input>
+        <button type="submit">CREATE SPOT</button>
       </form>
     </div>
-  );  //CHECK IF INPUTS END WITH .png, .jpg, or .jpeg
+  ); //CHECK IF IMAGE INPUTS END WITH .png, .jpg, or .jpeg
 }
 
-export default SpotForm;
+export default CreateSpotForm;
