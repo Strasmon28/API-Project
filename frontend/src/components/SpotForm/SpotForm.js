@@ -10,14 +10,14 @@ function SpotForm() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [lat, setLat] = useState(""); //Should it be default string?
-  const [lng, setLng] = useState("");
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState(""); //Should it be default string?
+  const [price, setPrice] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
 
-  
+
   //useStates needed
   //use an onSubmit event, take info from the input fields to update the chosen spot
   // const onSubmit = (e) => {
