@@ -10,52 +10,36 @@ import "./Navigation.css";
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
 
-  // let sessionLinks;
-  // if (sessionUser) {
-  //   sessionLinks = (
-  //     <li>
-  //       <ProfileButton user={sessionUser} />
-  //     </li>
-  //   );
-  // } else {
-  //   sessionLinks = (
-  //     <li>
-  //       <OpenModalButton
-  //         buttonText="Log In"
-  //         modalComponent={<LoginFormModal />}
-  //       />
-  //       <OpenModalButton
-  //         buttonText="Sign Up"
-  //         modalComponent={<SignupFormModal />}
-  //       />
-  //     </li>
-  //   );
-  // }
-  //if there is a current user, show the manage spots link
-  // const manageRedirect = (e) => {
-  //   e.preventDefault();
-  //   history.push("/manage");
-  // }
-  // //If there isnt a user, do
-  // if(Object.keys(sessionUser).length !== 0){
-  //   manageLink = <NavLink></NavLink>
-  // }
-  //{sessionUser && <li>
-        // <NavLink exact to="/manage">Manage Your Spots</NavLink>
-        // </li> }
+  let sessionLinks;
+  if (sessionUser) {
+    sessionLinks = (
+      <li>
+        <ProfileButton user={sessionUser} />
+      </li>
+    );
+  } else {
+    sessionLinks = (
+      <li>
+        <OpenModalButton
+          buttonText="Log In"
+          modalComponent={<LoginFormModal />}
+        />
+        <OpenModalButton
+          buttonText="Sign Up"
+          modalComponent={<SignupFormModal />}
+        />
+      </li>
+    );
+  }
+
   return (
     <ul>
       <li>
-        <NavLink exact to="/">CloudyRestBnb</NavLink>
+        <NavLink exact to="/">
+          Home
+        </NavLink>
       </li>
-      <li>
-        <NavLink exact to="/manage">Manage Your Spots</NavLink>
-      </li>
-      {isLoaded && (
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-      )}
+      {isLoaded && sessionLinks}
     </ul>
   );
 }
