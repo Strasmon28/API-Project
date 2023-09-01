@@ -1,17 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { userSpots } from "../../store/spots";
 import "./ManageSpot.css";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import DeleteSpotModal from "../DeleteSpotModal/DeleteSpot";
 
 //Should take all the current user's spots and have them displayed
 //Simliar layout to homepage, but with 2 buttons for update and delete
 function ManageSpot() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [showMenu, setShowMenu] = useState(false);
+  const ulRef = useRef();
   useEffect(() => {
     dispatch(userSpots());
-  }, [dispatch]);
+    if (!showMenu) return;
+
+    const closeMenu = (e) => {
+      if (!ulRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener('click', closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [dispatch, showMenu]);
 
   const spots = useSelector((state) => state.spotsStore.spots);
 
@@ -27,6 +42,8 @@ function ManageSpot() {
     e.preventDefault();
     history.push("/form")
   }
+
+  const closeMenu = () => setShowMenu(false);
   //   const ownedSpots = spots.Spots;
   //Delete button will be a modal menu
   console.log("spots", spots);
@@ -47,7 +64,7 @@ function ManageSpot() {
             <p>star rating</p>
             <p>${spot.price} per night</p>
             <button>UPDATE</button>
-            <button>DELETE</button>
+            <button><OpenModalMenuItem itemText="DELETE" onItemClick={closeMenu} modalComponent={<DeleteSpotModal />} /></button>
           </div>
         ))}
       </div>

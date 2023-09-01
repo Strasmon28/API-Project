@@ -55,8 +55,7 @@ function CreateSpotForm() {
     const addImages = await dispatch(addSpotImages(imageData, newSpot.id))
     //Try, catch needed?
 
-    //After the store has been updated, redirect the user to the new spot
-
+    //After the store has been updated with the new spot, redirect the user to the new spot using the id
     history.push(`spotDetail/${newSpot.id}`);
   };
 

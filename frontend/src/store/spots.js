@@ -77,7 +77,7 @@ export const addSpot = (spotData) => async (dispatch) => {
     console.log("ADDING A SPOT", response);
     const data = await response.json();
     console.log("NEW SPOT DATA CHECK", data);
-    dispatch(readSpots(data.Spots));
+    dispatch(readSpots(data.Spots)); //CHECK DISPATCH
     return response;
 }
 
@@ -92,7 +92,7 @@ export const addSpotImages = (imageData, spotId) => async (dispatch) => {
     console.log("ADDING AN IMAGE", response);
     const data = await response.json();
     console.log("NEW IMAGE DATA CHECK", data);
-    dispatch(readSpots(data.Spots))
+    dispatch(readSpots(data.Spots)) //CHECK DISPATCH
     return response;
 }
 
@@ -101,9 +101,11 @@ export const deleteSpot = (spotId) => async(dispatch) => {
         method: "DELETE",
     });
     if(response.ok){
-        dispatch(deleteSpot())
+        dispatch(removeSpot())
+    } else {
+        const errors = await response.json();
+        return errors;
     }
-
 }
 
 // export const updateSpot = (spotId) => async (dispatch) => {
