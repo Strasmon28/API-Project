@@ -216,7 +216,7 @@ const validateStuffSpot = [
         .withMessage("Country is required"),
     check('lat')
         .isFloat({ min: -90, max: 90})
-    .withMessage("Latitude is not valid"),
+        .withMessage("Latitude is not valid"),
     check('lng')
         .isFloat({ min: -180, max: 180})
         .withMessage("Longitude is not valid"),

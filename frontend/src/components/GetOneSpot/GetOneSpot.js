@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { singleSpot } from "../../store/spots";
+import spotsReducer, { singleSpot } from "../../store/spots";
 import "./GetOneSpot.css";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "../CreateReview/CreateReviewModal";
@@ -30,6 +30,10 @@ function GetOneSpot() {
   // }
 
   if (!spot) {
+    return null;
+  }
+
+  if(!spot.Owner.firstName || !spot.Owner.lastName){
     return null;
   }
 

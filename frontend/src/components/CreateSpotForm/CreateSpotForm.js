@@ -41,28 +41,44 @@ function CreateSpotForm() {
       price,
     };
 
-    const imageData = {
-      previewImage,
-      img1,
-      img2,
-      img3,
-      img4,
-    };
+    // const imageData = {
+    //   previewImage,
+    // };
+
+    // const imageData1 = {
+    //   img1,
+    // };
+
+    // const imageData2 = {
+    //   img2,
+    // };
+
+    // const imageData3 = {
+    //   img3,
+    // };
+
+    // const imageData4 = {
+    //   img4,
+    // };
 
     //Dispatch info to have it add it to the store
     const newSpot = await dispatch(addSpot(spotData));
     //Give the image data to the spot, use the newSpot's id
-    const addImages = await dispatch(addSpotImages(imageData, newSpot.id))
+    //Image creation takes a single url string
+    // const addImages = await dispatch(addSpotImages(imageData, newSpot.id));
     //Try, catch needed?
-
+    console.log("New spot check in frontend code", newSpot);
+    console.log("newSpot.id", newSpot.id);
+    // console.log("New spot in the frontend", newSpot.spot);
+    // console.log("New spot's id check", newSpot.spot.id);
     //After the store has been updated with the new spot, redirect the user to the new spot using the id
-    history.push(`spotDetail/${newSpot.id}`);
+    history.push(`/spotDetail/${newSpot.id}`);
   };
 
-  //if create was chosen, use regular form
-  //if update was chosen, use spotForm, but with image optional
+
 
   //LAT AND LNG ARE OPTIONAL
+  //Lat range is -90 to 90 and lng range is -180 to 180
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -142,7 +158,7 @@ function CreateSpotForm() {
         ></input>
         <h2>Place some photos</h2>
         <input
-          type="url"
+          type="text" //it is text for now, for testing purposes
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
           required

@@ -1,9 +1,11 @@
 .border {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     border: solid black;
     padding: 20px;
 }
+/* maybe use grid?? */
 
 .border div{
     border: solid red;

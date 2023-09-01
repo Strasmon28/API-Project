@@ -2,6 +2,8 @@
 //CRUD - Create, Read, Update, Delete
 //One for all spots, one for single spot
 
+import { csrfFetch } from "./csrf";
+
 // const CREATE_SPOT = "spots/createSpot"
 const READ_SPOT = "spots/readSpots"
 const READ_ONE = "spots/readSpot"
@@ -46,29 +48,30 @@ const removeSpot = (spotId) => {
 
 //Thunk action creators
 export const allSpots = () => async (dispatch) => {
-    const response = await fetch("/api/spots");
+    const response = await csrfFetch("/api/spots");
     const data = await response.json();
     dispatch(readSpots(data.Spots));
     return response;
 }
 
 export const singleSpot = (spotId) => async (dispatch) => {
-    const response = await fetch(`/api/spots/${spotId}`)
+    const response = await csrfFetch(`/api/spots/${spotId}`)
     if(response.ok){
         const spot = await response.json();
         dispatch(oneSpot(spot));
     }
+    return response
 }
 
 export const userSpots = () => async (dispatch) => {
-    const response = await fetch("/api/spots/current");
+    const response = await csrfFetch("/api/spots/current");
     const data = await response.json();
     dispatch(readSpots(data.Spots))
     return response;
 }
 
 export const addSpot = (spotData) => async (dispatch) => {
-    const response = await fetch('/api/spots', {
+    const response = await csrfFetch('/api/spots', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -78,13 +81,13 @@ export const addSpot = (spotData) => async (dispatch) => {
     console.log("ADDING A SPOT", response);
     const data = await response.json();
     console.log("NEW SPOT DATA CHECK", data);
-    dispatch(readSpots(data.Spots)); //CHECK DISPATCH
-    return response;
+    dispatch(oneSpot(data)); //CHECK DISPATCH
+    return data;
 }
 
 export const addSpotImages = (imageData, spotId) => async (dispatch) => {
-    const response = await fetch(`/api/spots/${spotId}/images`,{
-        method: "PUT",
+    const response = await csrfFetch(`/api/spots/${spotId}/images`,{
+        method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
@@ -93,12 +96,12 @@ export const addSpotImages = (imageData, spotId) => async (dispatch) => {
     console.log("ADDING AN IMAGE", response);
     const data = await response.json();
     console.log("NEW IMAGE DATA CHECK", data);
-    dispatch(readSpots(data.Spots)) //CHECK DISPATCH
+    dispatch(readSpots(data)) //CHECK DISPATCH
     return response;
 }
 
 export const deleteSpot = (spotId) => async(dispatch) => {
-    const response = await fetch(`/api/spots/${spotId}`, {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
         method: "DELETE",
     });
     if(response.ok){
