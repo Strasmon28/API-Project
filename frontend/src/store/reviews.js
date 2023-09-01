@@ -15,22 +15,24 @@ const loadReviews = (reviews) => {
 //Thunk action creators
 
 //All reviews from a certain user
-export const allReviews = () => async(dispatch) => {
-    const response = await fetch("/api/reviews/current")
+export const allReviews = (spotId) => async(dispatch) => {
+    const response = await fetch(`/api/spots/${spotId}/reviews`)
     if(response.ok){
         const reviews = await response.json();
         dispatch(loadReviews(reviews));
     }
 }
 
+
+
 const initialState = {}
 
 //Reducer
 const reviewsReducer = (state = initialState, action) => {
-    let newState
+    let newState;
     switch(action.type){
         case LOAD_REVIEW:
-
+            newState = {...state, reviews: action.payload }
         default:
             return state;
     }

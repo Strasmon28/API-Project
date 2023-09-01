@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { singleSpot } from "../../store/spots";
 import "./GetOneSpot.css";
+import OpenModalButton from "../OpenModalButton";
+import CreateReviewModal from "../CreateReview/CreateReviewModal";
+
 //Should get all info of one spot and display its information
 function GetOneSpot() {
   const dispatch = useDispatch();
@@ -14,10 +17,18 @@ function GetOneSpot() {
   }, [dispatch, spotId]);
 
   const spot = useSelector((state) => state.spotsStore.spot);
+  // const reviews = useSelector((state) => state.reviewsStore.reviews);
 
   // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
   //     return null;
   // }
+  //The reviews are needed as well, dispatch to grab all reviews corresponding to the spot (spotId) then map it
+  // if(reviews){
+  //   const displayReviews = {reviews.map((review) => {
+
+  //   })}
+  // }
+
   if (!spot) {
     return null;
   }
@@ -52,6 +63,7 @@ function GetOneSpot() {
         <p>avg star rating</p>
         <p># of reviews</p>
       </div>
+      <OpenModalButton buttonText="Post your Review" modalComponent={<CreateReviewModal spotId={spot.id}/>}></OpenModalButton>
       <div>
         <p>MAP REVIEWS, use ul, li Firstname, Month/date, Review,</p>
       </div>

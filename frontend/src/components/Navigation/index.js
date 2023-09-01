@@ -39,6 +39,13 @@ function Navigation({ isLoaded }) {
           Home
         </NavLink>
       </li>
+      {sessionUser && (
+        <li>
+          <NavLink exact to="/manage">
+            Manage Your Spots
+          </NavLink>
+        </li>
+      )}
       {isLoaded && sessionLinks}
     </ul>
   );

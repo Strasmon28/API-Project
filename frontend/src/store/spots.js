@@ -37,9 +37,10 @@ const oneSpot = (spot) => {
 //     }
 // };
 
-const removeSpot = () => {
+const removeSpot = (spotId) => {
     return {
-        type: REMOVE_SPOT
+        type: REMOVE_SPOT,
+        payload: spotId
     }
 };
 
@@ -97,7 +98,7 @@ export const addSpotImages = (imageData, spotId) => async (dispatch) => {
 }
 
 export const deleteSpot = (spotId) => async(dispatch) => {
-    const response = await fetch(`/api/spots/${spotId}`,{
+    const response = await fetch(`/api/spots/${spotId}`, {
         method: "DELETE",
     });
     if(response.ok){
@@ -136,6 +137,9 @@ const spotsReducer = (state = initialState, action) => {
             return newState;
         case READ_ONE:
             newState = {...state, spot: action.payload};
+            return newState;
+        case REMOVE_SPOT:
+            newState = {...state}
             return newState;
         default:
             return state;
