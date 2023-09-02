@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { singleSpot } from "../../store/spots";
+import { allReviews } from "../../store/reviews";
 import "./GetOneSpot.css";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "../CreateReview/CreateReviewModal";
@@ -14,11 +15,14 @@ function GetOneSpot() {
 
   useEffect(() => {
     dispatch(singleSpot(spotId));
+    dispatch(allReviews(spotId));
   }, [dispatch, spotId]);
 
   const spot = useSelector((state) => state.spotsStore.spot);
+  const reviews = useSelector((state) => state.reviewsStore.reviews);
   // const reviews = useSelector((state) => state.reviewsStore.reviews);
-
+  console.log("REVIEWS", reviews);
+  console.log(typeof reviews);
   // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
   //     return null;
   // }
@@ -29,7 +33,7 @@ function GetOneSpot() {
   //   })}
   // }
 
-  if (!spot || !spot.Owner.firstName || !spot.Owner.lastName) {
+  if (!spot || !spot.Owner.firstName || !spot.Owner.lastName || !reviews) {
     return null;
   }
 
@@ -59,13 +63,18 @@ function GetOneSpot() {
         </div>
       </div>
       <div>
-        <p>star icon</p>
-        <p>avg star rating</p>
-        <p># of reviews</p>
+        <p>STAR ICON {spot.avgStarRating}</p>
+        <p>{reviews.length} review</p>
       </div>
       <OpenModalButton buttonText="Post your Review" modalComponent={<CreateReviewModal spotId={spot.id}/>}></OpenModalButton>
       <div>
-        <p>MAP REVIEWS, use ul, li Firstname, Month/date, Review,</p>
+        {reviews.map((oneReview) => (
+          <div key={oneReview.id}>
+            <h3>{oneReview.User.firstName}</h3>
+            <p>{oneReview.createdAt}</p>
+            <p>{oneReview.review}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

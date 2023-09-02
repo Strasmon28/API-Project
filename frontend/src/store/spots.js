@@ -50,6 +50,8 @@ const removeSpot = (spotId) => {
 export const allSpots = () => async (dispatch) => {
     const response = await csrfFetch("/api/spots");
     const data = await response.json();
+    console.log("spot data",data);
+    console.log("data.Spots", data.Spots);
     dispatch(readSpots(data.Spots));
     return response;
 }
@@ -100,9 +102,9 @@ export const addSpotImages = (imageData, spotId) => async (dispatch) => {
     return response;
 }
 
-export const updateSpot = (spotId) => async(dispatch) => {
-    
-}
+// export const updateSpot = (spotId) => async(dispatch) => {
+
+// }
 
 export const deleteSpot = (spotId) => async(dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {

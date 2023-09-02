@@ -4,14 +4,15 @@
 
 import { csrfFetch } from "./csrf";
 
-const LOAD_REVIEW = "reviews/getReviews";
+const LOAD_REVIEWS = "reviews/getReviews";
 const ADD_REVIEW = "reviews/createReview";
 //const REMOVE_REVIEW = "reviews/removereview";
 
 //Action creator
+
 const loadReviews = (reviews) => {
     return{
-        type: LOAD_REVIEW,
+        type: LOAD_REVIEWS,
         payload: reviews
     }
 }
@@ -35,13 +36,20 @@ const addReview = (review) => {
 export const allReviews = (spotId) => async(dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: "GET"
-    })
+    });
     if(response.ok){
-        const reviews = await response.json();
-        dispatch(loadReviews(reviews));
+        const data = await response.json();
+        console.log("data", data);
+        console.log("data.Reviews", data.Reviews);
+        dispatch(loadReviews(data.Reviews));
+        return response;
+    } else {
+        const errors = await response.json();
+        return errors;
     }
 }
 
+//Create a new review
 export const createReview = (reviewData, spotId) => async(dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: "POST",
@@ -50,9 +58,13 @@ export const createReview = (reviewData, spotId) => async(dispatch) => {
     if(response.ok){
         const review = await response.json();
         dispatch(addReview(review))
+    } else {
+        const errors = await response.json();
+        return errors;
     }
 }
 
+//Delete a review
 export const deleteReview = (reviewId) => async(dispatch) => {
     const response = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: "DELETE"
@@ -62,20 +74,23 @@ export const deleteReview = (reviewId) => async(dispatch) => {
     }
 }
 
-
 const initialState = {}
 
 //Reducer
 const reviewsReducer = (state = initialState, action) => {
     let newState;
     switch(action.type){
-        case LOAD_REVIEW:
-            newState = {...state, reviews: action.payload }
-        // case ADD_REVIEW:
-        //     newState = {...state, review: action.payload }
+        case LOAD_REVIEWS:
+            // newState = {...state, reviews: action.payload }
+            newState = Object.assign({}, state);
+            newState.reviews = action.payload;
+            return newState;
+        case ADD_REVIEW:
+            newState = {...state, review: action.payload }
+            return newState;
         default:
             return state;
     }
 }
 
-export default reviewsReducer
+export default reviewsReducer;
