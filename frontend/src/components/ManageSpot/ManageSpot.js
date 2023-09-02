@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { userSpots } from "../../store/spots";
@@ -12,13 +12,12 @@ import OpenModalButton from "../OpenModalButton";
 function ManageSpot() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const spots = useSelector((state) => state.spotsStore.spots);
 
+  //should useEffect should trigger again on a modal close?
   useEffect(() => {
     dispatch(userSpots());
-
   }, [dispatch]);
-
-  const spots = useSelector((state) => state.spotsStore.spots);
 
   //   if(Object.keys(spots).length === 0){
   //     return null;
@@ -31,6 +30,11 @@ function ManageSpot() {
   const formRedirect = (e) => {
     e.preventDefault();
     history.push("/form");
+  };
+
+  const updateFormRedirect = (e) => {
+    e.preventDefault();
+    history.push("/form"); //MUST BE UPDATE FORM
   };
 
   //   const ownedSpots = spots.Spots;
@@ -54,7 +58,7 @@ function ManageSpot() {
             <button>UPDATE</button>
             <OpenModalButton
               buttonText="DELETE"
-              modalComponent={<DeleteSpotModal spotId={spot.id}/>}
+              modalComponent={<DeleteSpotModal spotId={spot.id} />}
             />
           </div>
         ))}
