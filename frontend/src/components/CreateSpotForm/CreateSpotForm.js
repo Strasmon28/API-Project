@@ -26,7 +26,7 @@ function CreateSpotForm() {
   //use an onSubmit event, take info from the input fields to update the chosen spot
 
   //Update the spot, then add images after
-  const onSubmit = async (e) => {
+  const onSubmit = async (e) => { //Should we async?
     e.preventDefault();
 
     const spotData = {
