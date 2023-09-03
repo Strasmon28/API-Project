@@ -42,9 +42,8 @@ function ProfileButton({ user }) {
         <i className="fa-solid fa-user"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
         <li>
-          {user.firstName} {user.lastName}
+          Hello, {user.firstName}
         </li>
         <li>{user.email}</li>
         <NavLink exact to="/manage">Manage Spots</NavLink>

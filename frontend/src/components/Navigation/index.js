@@ -6,6 +6,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
+import logo from "./CloudyRestBnbIcon.png";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -36,7 +37,8 @@ function Navigation({ isLoaded }) {
     <ul>
       <li>
         <NavLink exact to="/">
-          Home
+          <img className="homeIcon" src={logo} alt="Texty"/>
+          <p>HOMIE</p>
         </NavLink>
       </li>
       {sessionUser && (
