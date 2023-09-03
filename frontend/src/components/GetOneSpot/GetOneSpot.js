@@ -51,7 +51,7 @@ function GetOneSpot() {
 
   //If there is a user, check to see if they own the spot
   //If they own it, prevent making a review
-  if(sessionUser.id === spot.ownerId){
+  if(sessionUser && sessionUser.id === spot.ownerId){
     makeNewReview = null;
     firstReview = null;
   }

@@ -26,7 +26,8 @@ function CreateSpotForm() {
   //use an onSubmit event, take info from the input fields to update the chosen spot
 
   //Update the spot, then add images after
-  const onSubmit = async (e) => { //Should we async?
+  const onSubmit = async (e) => {
+    //Should we async?
     e.preventDefault();
 
     const spotData = {
@@ -75,14 +76,12 @@ function CreateSpotForm() {
     history.push(`/spotDetail/${newSpot.id}`);
   };
 
-
-
   //LAT AND LNG ARE OPTIONAL
   //Lat range is -90 to 90 and lng range is -180 to 180
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <h1>Update your spot</h1>
+        <h1>Create a New Spot</h1>
         <h2>Where's your place located?</h2>
         <p>
           Guests will only get your exact address once they booked a
@@ -91,6 +90,7 @@ function CreateSpotForm() {
         <p>Country</p>
         <input
           type="text"
+          placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
           required
@@ -98,6 +98,7 @@ function CreateSpotForm() {
         <p>Street Address</p>
         <input
           type="text"
+          placeholder="Street Address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           required
@@ -105,6 +106,7 @@ function CreateSpotForm() {
         <p>City</p>
         <input
           type="text"
+          placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           required
@@ -112,6 +114,7 @@ function CreateSpotForm() {
         <p>State</p>
         <input
           type="text"
+          placeholder="State"
           value={state}
           onChange={(e) => setState(e.target.value)}
           required
@@ -131,8 +134,13 @@ function CreateSpotForm() {
           required
         ></input>
         <h2>Describe your place to guests</h2>
+        <h3>
+          Mention the best features of your space, any special amentities like
+          fast wifi or parking, and what you love about the neighborhood.
+        </h3>
         <input
           type="text"
+          placeholder="Please write at least 30 characters"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           //Check if there is 30 characters
@@ -144,46 +152,58 @@ function CreateSpotForm() {
         </p>
         <input
           type="text"
+          placeholder="Name your spot"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         ></input>
         <h2>Set a base price for your spot</h2>
+        <h3>
+          Competitive pricing can help your listing stand out and rank higher in
+          search results.
+        </h3>
         <p>$</p>
         <input
           type="number"
+          placeholder="Price per night (USD)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           required
         ></input>
-        <h2>Place some photos</h2>
+        <h2>Liven up your spot with photos</h2>
+        <h3>Submit a link to at least one photo to publish your spot.</h3>
         <input
-          type="text" //it is text for now, for testing purposes
+          type="text" //it is text for now, for testing purposes CHANGE IT
+          placeholder="Preview Image URL"
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
           required
         ></input>
         <input
           type="url"
+          placeholder="Image URL"
           value={img1}
           onChange={(e) => setImg1(e.target.value)}
         ></input>
         <input
           type="url"
+          placeholder="Image URL"
           value={img2}
           onChange={(e) => setImg2(e.target.value)}
         ></input>
         <input
           type="url"
+          placeholder="Image URL"
           value={img3}
           onChange={(e) => setImg3(e.target.value)}
         ></input>
         <input
           type="url"
+          placeholder="Image URL"
           value={img4}
           onChange={(e) => setImg4(e.target.value)}
         ></input>
-        <button type="submit">CREATE SPOT</button>
+        <button type="submit">Create Spot</button>
       </form>
     </div>
   ); //CHECK IF IMAGE INPUTS END WITH .png, .jpg, or .jpeg

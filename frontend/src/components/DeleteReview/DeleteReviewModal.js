@@ -23,8 +23,8 @@ function DeleteReviewModal({reviewId}) {
     <>
       <h1>Confirm Delete</h1>
       <h3>Are you sure you want to delete this review?</h3>
-      <button onClick={confirmDelete}>Yes (Delete Review)</button>
-      <button onClick={cancelDelete}>No (Keep Review)</button>
+      <button className="confirmDelete" onClick={confirmDelete}>Yes (Delete Review)</button>
+      <button className="cancelDelete" onClick={cancelDelete}>No (Keep Review)</button>
     </>
   );
 }

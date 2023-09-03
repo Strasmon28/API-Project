@@ -36,11 +36,12 @@ function CreateReviewModal({ spotId }) {
     <div>
       <form onSubmit={onSubmit}>
         <h1>How was your stay?</h1>
-        <input
+        <textarea
           type="text"
+          placeholder="Leave your review here..."
           value={review}
           onChange={(e) => setReview(e.target.value)}
-        ></input>
+        ></textarea>
         <div className="starRating">
           <div className={starRating >= 1 ? "filled" : "empty"}>
             <i

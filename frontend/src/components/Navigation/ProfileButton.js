@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 
@@ -39,7 +39,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={openMenu}>
-        <i class="fa-solid fa-user"></i>
+        <i className="fa-solid fa-user"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
         <li>{user.username}</li>
@@ -47,6 +47,7 @@ function ProfileButton({ user }) {
           {user.firstName} {user.lastName}
         </li>
         <li>{user.email}</li>
+        <NavLink exact to="/manage">Manage Spots</NavLink>
         <li>
           <button onClick={logout}>Log Out</button>
         </li>

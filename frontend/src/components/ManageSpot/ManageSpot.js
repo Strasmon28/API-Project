@@ -44,7 +44,7 @@ function ManageSpot() {
   //USE A PROP TO SEND AN ID TO THE DELETESPOT MODAL
   return (
     <div>
-      <h1>Manage Your Spots</h1>
+      <h1>Manage Spots</h1>
       <button onClick={formRedirect}>Create a New Spot</button>
       <div className="spotsContainer">
         {spots.map((spot) => (

@@ -41,8 +41,8 @@ function Navigation({ isLoaded }) {
       </li>
       {sessionUser && (
         <li>
-          <NavLink exact to="/manage">
-            Manage Your Spots
+          <NavLink exact to="/form">
+            Create a New Spot
           </NavLink>
         </li>
       )}
