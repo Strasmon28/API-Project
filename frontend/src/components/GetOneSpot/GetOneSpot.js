@@ -6,6 +6,7 @@ import { allReviews } from "../../store/reviews";
 import "./GetOneSpot.css";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "../CreateReview/CreateReviewModal";
+import DeleteReviewModal from "../DeleteReview/DeleteReviewModal";
 
 //Should get all info of one spot and display its information
 function GetOneSpot() {
@@ -18,6 +19,7 @@ function GetOneSpot() {
     dispatch(allReviews(spotId));
   }, [dispatch, spotId]);
 
+  const sessionUser = useSelector((state) => state.session.user);
   const spot = useSelector((state) => state.spotsStore.spot);
   const reviews = useSelector((state) => state.reviewsStore.reviews);
   // const reviews = useSelector((state) => state.reviewsStore.reviews);
@@ -26,17 +28,13 @@ function GetOneSpot() {
   // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
   //     return null;
   // }
-  //The reviews are needed as well, dispatch to grab all reviews corresponding to the spot (spotId) then map it
-  // if(reviews){
-  //   const displayReviews = {reviews.map((review) => {
-
-  //   })}
-  // }
 
   if (!spot || !spot.Owner.firstName || !spot.Owner.lastName || !reviews) {
     return null;
   }
 
+  //if the review belongs to the user, show delete button
+  //IF NO REVIEWS, SET TO "NEW"
   console.log("THE SPOT", spot);
   return (
     <div className="primary">
@@ -55,15 +53,19 @@ function GetOneSpot() {
         <div className="reserve">
           separate block with...
           <p>${spot.price} night</p>
-          <p>review avg IF NO REVIEWS, SET TO "NEW"</p>
-          <p># of reviews</p>
+          <i class="fa-solid fa-star"></i>
+          <p>{spot.avgStarRating}</p>
+          <i class="fa-solid fa-circle fa-2xs"></i>
+          <p>{reviews.length} review</p>
           <button>
             reserve button OPENS AN ALERT WITH MESSAGE "Feature Coming Soon..."
           </button>
         </div>
       </div>
-      <div>
-        <p>STAR ICON {spot.avgStarRating}</p>
+      <div className="reviewNumbers">
+        <i class="fa-solid fa-star"></i>
+        <p>{spot.avgStarRating}</p>
+        <i class="fa-solid fa-circle fa-2xs"></i>
         <p>{reviews.length} review</p>
       </div>
       <OpenModalButton buttonText="Post your Review" modalComponent={<CreateReviewModal spotId={spot.id}/>}></OpenModalButton>
@@ -73,6 +75,7 @@ function GetOneSpot() {
             <h3>{oneReview.User.firstName}</h3>
             <p>{oneReview.createdAt}</p>
             <p>{oneReview.review}</p>
+            {sessionUser.id === oneReview.userId ? <OpenModalButton buttonText="Delete" modalComponent={<DeleteReviewModal reviewId={oneReview.id} />}></OpenModalButton> : null}
           </div>
         ))}
       </div>

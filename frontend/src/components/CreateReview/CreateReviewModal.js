@@ -19,7 +19,7 @@ function CreateReviewModal({ spotId }) {
     e.preventDefault();
     const reviewData = {
       review,
-      stars, //Should this be Stars?
+      stars,
     };
 
     dispatch(createReview(reviewData, spotId));
@@ -30,9 +30,6 @@ function CreateReviewModal({ spotId }) {
     setStars(number);
   };
 
-//   useEffect(() => {
-//     setStars(stars);
-//   }, [stars])
   console.log('stars', stars);
   console.log('Actual star rating', starRating)
   return (

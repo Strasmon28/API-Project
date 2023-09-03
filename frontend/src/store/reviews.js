@@ -6,7 +6,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_REVIEWS = "reviews/getReviews";
 const ADD_REVIEW = "reviews/createReview";
-//const REMOVE_REVIEW = "reviews/removereview";
+const REMOVE_REVIEW = "reviews/removeReview";
 
 //Action creator
 
@@ -24,15 +24,16 @@ const addReview = (review) => {
     }
 }
 
-// const removeReview = () => {
-//     return{
-//         type: REMOVE_REVIEW,
-//     }
-// }
+const removeReview = (reviewId) => {
+    return{
+        type: REMOVE_REVIEW,
+        payload: reviewId
+    }
+}
 
 //Thunk action creators
 
-//All reviews from a certain user
+//All reviews from a certain SPOT
 export const allReviews = (spotId) => async(dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: "GET"
@@ -48,6 +49,11 @@ export const allReviews = (spotId) => async(dispatch) => {
         return errors;
     }
 }
+
+//THIS IS FOR MANAGE REVIEWS, is this required for MVP?
+// export const userReviews = () => async(dispatch) => {
+//     const response = await csrfFetch(`/review/current`)
+// }
 
 //Create a new review
 export const createReview = (reviewData, spotId) => async(dispatch) => {
@@ -70,7 +76,10 @@ export const deleteReview = (reviewId) => async(dispatch) => {
         method: "DELETE"
     })
     if(response.ok){
-        dispatch()
+        dispatch(removeReview(reviewId));
+    }  else {
+        const errors = await response.json();
+        return errors;
     }
 }
 
@@ -87,6 +96,10 @@ const reviewsReducer = (state = initialState, action) => {
             return newState;
         case ADD_REVIEW:
             newState = {...state, review: action.payload }
+            return newState;
+        case REMOVE_REVIEW:
+            newState = {...state}
+            delete newState[action.payload];
             return newState;
         default:
             return state;
