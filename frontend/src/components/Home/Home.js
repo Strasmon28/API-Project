@@ -26,7 +26,7 @@ function Home() {
           <div>
             <NavLink to={`/spotDetail/${spot.id}`}>placeholder for image</NavLink>
           </div>
-          {spot.address} {spot.city} {spot.state} {spot.avgRating} ${spot.price}
+          {spot.address} {spot.city} {spot.state} {spot.avgRating} ${spot.price} night
         </div>
       ))}
     </div>

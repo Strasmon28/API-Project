@@ -29,10 +29,52 @@ function GetOneSpot() {
   //     return null;
   // }
 
+  const featureAlert = (e) => {
+    e.preventDefault();
+    window.alert("Feature coming soon");
+  };
+
   if (!spot || !spot.Owner.firstName || !spot.Owner.lastName || !reviews) {
     return null;
   }
 
+  let makeNewReview = (
+     <OpenModalButton
+      buttonText="Post your Review"
+      modalComponent={<CreateReviewModal spotId={spot.id} />}
+    ></OpenModalButton>
+  );
+
+  let firstReview = <p>Be the first to post a review!</p>
+  //If no current user, cannot post a review
+  if (!sessionUser) makeNewReview = null;
+
+  //If there is a user, check to see if they own the spot
+  //If they own it, prevent making a review
+  if(sessionUser.id === spot.ownerId){
+    makeNewReview = null;
+    firstReview = null;
+  }
+
+  //Iterate through reviews of this spot to see if one matches, if so don't show the create button.
+  reviews.forEach((review) => {
+    if (sessionUser && (sessionUser.id === review.userId)) {
+      makeNewReview = null;
+    }
+  });
+
+
+  let reviewDot = null;
+  let reviewCounter = null;
+  if (reviews.length > 0) {
+    reviewDot = <i className="fa-solid fa-circle fa-2xs"></i>;
+    reviewCounter = (
+      <p>
+        {reviews.length} {reviews.length > 1 ? "Reviews" : "Review"}
+      </p>
+    );
+    firstReview = null;
+  }
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
   console.log("THE SPOT", spot);
@@ -53,29 +95,33 @@ function GetOneSpot() {
         <div className="reserve">
           separate block with...
           <p>${spot.price} night</p>
-          <i class="fa-solid fa-star"></i>
-          <p>{spot.avgStarRating}</p>
-          <i class="fa-solid fa-circle fa-2xs"></i>
-          <p>{reviews.length} review</p>
-          <button>
-            reserve button OPENS AN ALERT WITH MESSAGE "Feature Coming Soon..."
-          </button>
+          <i className="fa-solid fa-star"></i>
+          <p>{reviews.length > 0 ? spot.avgStarRating : "New"}</p>
+          {reviewDot}
+          {reviewCounter}
+          <button onClick={featureAlert}>Reserve</button>
         </div>
       </div>
       <div className="reviewNumbers">
-        <i class="fa-solid fa-star"></i>
-        <p>{spot.avgStarRating}</p>
-        <i class="fa-solid fa-circle fa-2xs"></i>
-        <p>{reviews.length} review</p>
+        <i className="fa-solid fa-star"></i>
+        <p>{reviews.length > 0 ? spot.avgStarRating : "New"}</p>
+        {reviewDot}
+        {reviewCounter}
+        {firstReview}
       </div>
-      <OpenModalButton buttonText="Post your Review" modalComponent={<CreateReviewModal spotId={spot.id}/>}></OpenModalButton>
+      {makeNewReview}
       <div>
         {reviews.map((oneReview) => (
           <div key={oneReview.id}>
             <h3>{oneReview.User.firstName}</h3>
             <p>{oneReview.createdAt}</p>
             <p>{oneReview.review}</p>
-            {sessionUser.id === oneReview.userId ? <OpenModalButton buttonText="Delete" modalComponent={<DeleteReviewModal reviewId={oneReview.id} />}></OpenModalButton> : null}
+            {sessionUser && (sessionUser.id === oneReview.userId) ? (
+              <OpenModalButton
+                buttonText="Delete"
+                modalComponent={<DeleteReviewModal reviewId={oneReview.id} />}
+              ></OpenModalButton>
+            ) : null}
           </div>
         ))}
       </div>
