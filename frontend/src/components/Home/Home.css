@@ -1,21 +1,52 @@
 .border {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     border: solid black;
-    padding: 20px;
-}
-/* maybe use grid?? */
-
-.border div{
-    border: solid red;
+    width: 100%;
     padding: 10px;
-    margin: 20px;
+}
+
+.oneSpot{
+    border: solid red;
+    /* width: 70%; */
+    height: 200px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.placeholder{
+    display: flex;
+    height: 100px;
+    margin: 0;
+}
+
+.rating{
+    padding-top: 15px;
 }
 
 .tooltipText{
     visibility: hidden;
-    position: absolute;
+    /* position: absolute; */
+}
+
+.spotImage{
+    width: 200px;
+    height: 100px;
+}
+
+.section2{
+    display: flex;
+    justify-content: space-between;
+}
+
+.leftInfo{
+    margin:0;
+}
+
+.imageHover{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .imageHover:hover .tooltipText{
