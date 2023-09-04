@@ -34,22 +34,24 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">
+    <div className="topHeader">
+      <div className="homeContainer">
+        <NavLink className="homeLink"exact to="/">
           <img className="homeIcon" src={logo} alt="Texty"/>
-          <p>HOMIE</p>
+          <p>CloudyRestBnb</p>
         </NavLink>
-      </li>
+      </div>
+      <div className="userContainer">
       {sessionUser && (
-        <li>
+        <div>
           <NavLink exact to="/form">
             Create a New Spot
           </NavLink>
-        </li>
+        </div>
       )}
       {isLoaded && sessionLinks}
-    </ul>
+      </div>
+    </div>
   );
 }
 

@@ -68,7 +68,7 @@ function GetOneSpot() {
   let reviewDot = null;
   let reviewCounter = null;
   if (reviews.length > 0) {
-    reviewDot = <i className="fa-solid fa-circle fa-2xs"></i>;
+    reviewDot = <p className="reviewDot">·</p>
     reviewCounter = (
       <p>
         {reviews.length} {reviews.length > 1 ? "Reviews" : "Review"}

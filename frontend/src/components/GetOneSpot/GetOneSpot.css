@@ -68,3 +68,8 @@
     background-color: red;
     color: white;
 }
+
+.reviewDot{
+    font-size: 30px;
+    margin: 10px;
+}
