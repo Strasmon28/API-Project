@@ -26,6 +26,12 @@ li{
     width: 100%;
 }
 
+.noUserProfile{
+    display: flex;
+    flex-direction: column;
+}
+
+
 .homeIcon{
     width: 50px
 }
@@ -45,9 +51,31 @@ li{
     background: lightgray;
 }
 
+.noprofile-dropdown{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center;
+    visibility: visible;
+    position: absolute;
+    background-color: lightgrey;
+    height: 50px;
+}
+
+.noUserButton{
+    display: flex;
+    align-self: center;
+}
+
+.nouserContainer{
+    display: flex;
+    flex-direction: column;
+}
+
 .hidden{
     visibility: hidden;
     position: absolute;
+    background-color: red;
 }
 
 .userButtonList{

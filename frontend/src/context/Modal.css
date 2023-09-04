@@ -23,7 +23,7 @@
   }
 
   #modal-content {
-    position: absolute;
+    position: relative;
     width: 500px;
     height: 350px;
     background-color: white;

@@ -49,6 +49,8 @@ function LoginFormModal() {
           required
         />
 
+        {errors.credential && <p>{errors.credential}</p>}
+        
         <input
           type="password"
           placeholder="Password"
@@ -57,7 +59,8 @@ function LoginFormModal() {
           required
         />
 
-        {errors.credential && <p>{errors.credential}</p>}
+        {errors.password && <p>{errors.password}</p>}
+
         <button
           type="submit"
           disabled={credential.length < 4 || password.length < 6}

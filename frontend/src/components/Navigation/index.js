@@ -2,9 +2,10 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
-import OpenModalButton from "../OpenModalButton";
-import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
+// import OpenModalButton from "../OpenModalButton";
+// import LoginFormModal from "../LoginFormModal";
+// import SignupFormModal from "../SignupFormModal";
+import NoUserProfileButton from "./NoUserProfileButton";
 import "./Navigation.css";
 import logo from "./CloudyRestBnbIcon.png";
 
@@ -21,14 +22,7 @@ function Navigation({ isLoaded }) {
   } else {
     sessionLinks = (
       <li>
-        <OpenModalButton
-          buttonText="Log In"
-          modalComponent={<LoginFormModal />}
-        />
-        <OpenModalButton
-          buttonText="Sign Up"
-          modalComponent={<SignupFormModal />}
-        />
+        <NoUserProfileButton />
       </li>
     );
   }
