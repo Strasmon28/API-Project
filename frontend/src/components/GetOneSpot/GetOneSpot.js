@@ -7,6 +7,8 @@ import "./GetOneSpot.css";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "../CreateReview/CreateReviewModal";
 import DeleteReviewModal from "../DeleteReview/DeleteReviewModal";
+import preview from "./OneSpotImages/na.jpg";
+import secondaryImage from "./OneSpotImages/No-Image-Placeholder.png";
 
 //Should get all info of one spot and display its information
 function GetOneSpot() {
@@ -39,30 +41,29 @@ function GetOneSpot() {
   }
 
   let makeNewReview = (
-     <OpenModalButton
+    <OpenModalButton
       buttonText="Post your Review"
       modalComponent={<CreateReviewModal spotId={spot.id} />}
     ></OpenModalButton>
   );
 
-  let firstReview = <p>Be the first to post a review!</p>
+  let firstReview = <p>Be the first to post a review!</p>;
   //If no current user, cannot post a review
   if (!sessionUser) makeNewReview = null;
 
   //If there is a user, check to see if they own the spot
   //If they own it, prevent making a review
-  if(sessionUser && sessionUser.id === spot.ownerId){
+  if (sessionUser && sessionUser.id === spot.ownerId) {
     makeNewReview = null;
     firstReview = null;
   }
 
   //Iterate through reviews of this spot to see if one matches, if so don't show the create button.
   reviews.forEach((review) => {
-    if (sessionUser && (sessionUser.id === review.userId)) {
+    if (sessionUser && sessionUser.id === review.userId) {
       makeNewReview = null;
     }
   });
-
 
   let reviewDot = null;
   let reviewCounter = null;
@@ -81,30 +82,43 @@ function GetOneSpot() {
   return (
     <div className="primary">
       <div className="secondary">
-        <h1>{spot.address}</h1>
+        <h1>{spot.name}</h1>
         <h2>
           {spot.city}, {spot.state}, {spot.country}
         </h2>
-        <p>text placeholder: image goes here</p>
+        <div className="imageContainer">
+          <img className="previewImage" src={preview} alt="Preview" />
+          <img className="image" src={secondaryImage} alt="First pic" />
+          <img className="image" src={secondaryImage} alt="Second pic" />
+          <img className="image" src={secondaryImage} alt="Third pic" />
+          <img className="image" src={secondaryImage} alt="Fourth pic" />
+        </div>
       </div>
       <div className="hosting">
-        <h3>
-          HOSTED BY {spot.Owner.firstName} {spot.Owner.lastName}{" "}
-        </h3>
-        <p>{spot.description}</p>
+        <div className="hostDetails">
+          <h3>
+            HOSTED BY {spot.Owner.firstName} {spot.Owner.lastName}{" "}
+          </h3>
+          <p>{spot.description}</p>
+        </div>
         <div className="reserve">
-          separate block with...
-          <p>${spot.price} night</p>
-          <i className="fa-solid fa-star"></i>
-          <p>{reviews.length > 0 ? spot.avgStarRating : "New"}</p>
-          {reviewDot}
-          {reviewCounter}
+          <div className="priceReview">
+            <p>${spot.price} night</p>
+            <div className="reserveReviews">
+            <i className="fa-solid fa-star">
+              {reviews.length > 0 ? spot.avgStarRating : "New"}
+            </i>
+            {reviewDot}
+            {reviewCounter}
+            </div>
+          </div>
           <button onClick={featureAlert}>Reserve</button>
         </div>
       </div>
       <div className="reviewNumbers">
-        <i className="fa-solid fa-star"></i>
-        <p>{reviews.length > 0 ? spot.avgStarRating : "New"}</p>
+        <i className="fa-solid fa-star">
+          {reviews.length > 0 ? spot.avgStarRating : "New"}
+        </i>
         {reviewDot}
         {reviewCounter}
         {firstReview}
@@ -116,7 +130,7 @@ function GetOneSpot() {
             <h3>{oneReview.User.firstName}</h3>
             <p>{oneReview.createdAt}</p>
             <p>{oneReview.review}</p>
-            {sessionUser && (sessionUser.id === oneReview.userId) ? (
+            {sessionUser && sessionUser.id === oneReview.userId ? (
               <OpenModalButton
                 buttonText="Delete"
                 modalComponent={<DeleteReviewModal reviewId={oneReview.id} />}

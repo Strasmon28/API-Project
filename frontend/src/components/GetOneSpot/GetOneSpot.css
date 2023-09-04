@@ -20,3 +20,51 @@
     display: flex;
     align-items: center;
 }
+
+/* Images CSS */
+.previewImage{
+    width: 300px;
+    height: 300px;
+}
+
+.image{
+    width: 150px;
+    height: 150px;
+}
+
+.hosting{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* .hostDetail{
+
+} */
+
+.reserve{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
+    height: 100px;
+    width: 400px
+}
+
+.priceReview{
+    display: flex;
+    justify-content: space-evenly;
+    width: 90%
+}
+
+.reserveReviews{
+    display: flex;
+    align-items: center;
+}
+
+.reserve button{
+    height: 100px;
+    width: 250px;
+    background-color: red;
+    color: white;
+}
