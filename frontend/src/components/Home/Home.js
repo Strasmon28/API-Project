@@ -19,15 +19,21 @@ function Home() {
   }
   //City, state review avg, price
   //For each spot, make an element
+
   return (
+
     <div className="border">
       {spots.map((spot) => (
+        <NavLink to={`/spotDetail/${spot.id}`}>
         <div key={spot.id}>
-          <div>
-            <NavLink to={`/spotDetail/${spot.id}`}>placeholder for image</NavLink>
+          <div className="imageHover">
+            {spot.previewImage}
+            <span className="tooltipText">{spot.name}</span>
           </div>
-          {spot.address} {spot.city} {spot.state} {spot.avgRating} ${spot.price} night
+          <div className="leftInfo">{spot.city} {spot.state} ${spot.price} night</div>
+          {spot.address}  {spot.avgRating}
         </div>
+        </NavLink>
       ))}
     </div>
   );

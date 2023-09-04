@@ -124,27 +124,25 @@ function CreateSpotForm() {
           type="number"
           value={lat}
           onChange={(e) => setLat(e.target.value)}
-          required
         ></input>
         <p>Longitude</p>
         <input
           type="number"
           value={lng}
           onChange={(e) => setLng(e.target.value)}
-          required
         ></input>
         <h2>Describe your place to guests</h2>
         <h3>
           Mention the best features of your space, any special amentities like
           fast wifi or parking, and what you love about the neighborhood.
         </h3>
-        <input
+        <textarea
           type="text"
           placeholder="Please write at least 30 characters"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           //Check if there is 30 characters
-        ></input>
+        ></textarea>
         <h2>Create a title for your spot</h2>
         <p>
           Catch guests' attention with a spot title that highlights what makes
@@ -173,7 +171,7 @@ function CreateSpotForm() {
         <h2>Liven up your spot with photos</h2>
         <h3>Submit a link to at least one photo to publish your spot.</h3>
         <input
-          type="text" //it is text for now, for testing purposes CHANGE IT
+          type="url" //it is text for now, for testing purposes CHANGE IT
           placeholder="Preview Image URL"
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}

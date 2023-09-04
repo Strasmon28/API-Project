@@ -12,3 +12,12 @@
     padding: 10px;
     margin: 20px;
 }
+
+.tooltipText{
+    visibility: hidden;
+    position: absolute;
+}
+
+.imageHover:hover .tooltipText{
+    visibility: visible;
+}

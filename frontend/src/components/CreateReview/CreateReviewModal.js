@@ -30,6 +30,7 @@ function CreateReviewModal({ spotId }) {
     setStars(number);
   };
 
+
   console.log('stars', stars);
   console.log('Actual star rating', starRating)
   return (
@@ -104,7 +105,7 @@ function CreateReviewModal({ spotId }) {
             ></i>
           </div>
         </div>
-        <button type="submit">Submit Your Review</button>
+        <button type="submit" disabled={review.length < 10 || stars === 0}>Submit Your Review</button>
       </form>
     </div>
   );
