@@ -12,6 +12,10 @@
     align-items: center;
 }
 
+.signupForm input{
+    margin: 5px 0;
+}
+
 /* .modal-content{
     width: 500px;
 } */
