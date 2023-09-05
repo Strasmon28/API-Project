@@ -11,6 +11,7 @@ function CreateReviewModal({ spotId }) {
   //STAR RATING IS JUST FOR SHOW
   const [stars, setStars] = useState(0);
   const [starRating, setStarRating] = useState(0);
+  const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const disabled = false;
   //Dispatch to store with corresponding spotId and create the review
@@ -22,14 +23,18 @@ function CreateReviewModal({ spotId }) {
       stars,
     };
 
-    dispatch(createReview(reviewData, spotId));
-    closeModal();
+    //The thunk should return a response with data or an error message
+    const newReview = dispatch(createReview(reviewData, spotId));
+    if(newReview.message){
+      setErrors(newReview.message);
+    } else{
+      closeModal();
+    }
   };
 
   const onClick = (number) => {
     setStars(number);
   };
-
 
   console.log('stars', stars);
   console.log('Actual star rating', starRating)
@@ -37,6 +42,7 @@ function CreateReviewModal({ spotId }) {
     <div>
       <form onSubmit={onSubmit}>
         <h1>How was your stay?</h1>
+        {errors.errors && <p>{errors.errors}</p>}
         <textarea
           type="text"
           placeholder="Leave your review here..."

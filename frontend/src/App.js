@@ -7,6 +7,7 @@ import Home from "./components/Home/Home.js";
 import MangageSpot from "./components/ManageSpot/ManageSpot.js";
 import GetOneSpot from "./components/GetOneSpot/GetOneSpot";
 import CreateSpotForm from "./components/CreateSpotForm/CreateSpotForm";
+import UpdateSpotForm from "./components/UpdateSpotForm/UpdateSpot";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,9 @@ function App() {
         </Route>
         <Route exact path="/form">
           <CreateSpotForm />
+        </Route>
+        <Route exact path="/updateform/:spotId">
+          <UpdateSpotForm />
         </Route>
       </Switch>}
 

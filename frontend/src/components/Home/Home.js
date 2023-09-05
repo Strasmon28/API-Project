@@ -40,7 +40,7 @@ function Home() {
                 <p>${spot.price} night</p>
               </div>
               {spot.avgRating ? (
-                <i className="fa-solid fa-star rating">{spot.avgRating}</i>
+                <i className="fa-solid fa-star rating">{spot.avgRating.toFixed(2)}</i>
               ) : (
                 <i className="fa-solid fa-star rating">New</i>
               )}

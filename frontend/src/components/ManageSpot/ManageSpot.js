@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import { userSpots } from "../../store/spots";
 import "./ManageSpot.css";
 // import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
@@ -32,11 +32,6 @@ function ManageSpot() {
     history.push("/form");
   };
 
-  const updateFormRedirect = (e) => {
-    e.preventDefault();
-    history.push("/form"); //MUST BE UPDATE FORM
-  };
-
   //   const ownedSpots = spots.Spots;
   //Delete button will be a modal menu
   console.log("spots", spots);
@@ -55,7 +50,9 @@ function ManageSpot() {
             </p>
             <p>star rating</p>
             <p>${spot.price} per night</p>
-            <button>UPDATE</button>
+            <NavLink to={`/updateform/${spot.id}`}>
+            <button >UPDATE</button>
+            </NavLink>
             <OpenModalButton
               buttonText="DELETE"
               modalComponent={<DeleteSpotModal spotId={spot.id} />}

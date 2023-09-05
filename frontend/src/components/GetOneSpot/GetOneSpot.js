@@ -16,17 +16,16 @@ function GetOneSpot() {
   const { spotId } = useParams();
   console.log(spotId);
 
-  useEffect(() => {
-    dispatch(singleSpot(spotId));
-    dispatch(allReviews(spotId));
-  }, [dispatch, spotId]);
-
   const sessionUser = useSelector((state) => state.session.user);
   const spot = useSelector((state) => state.spotsStore.spot);
   const reviews = useSelector((state) => state.reviewsStore.reviews);
+  useEffect(() => {
+    dispatch(singleSpot(spotId));
+    dispatch(allReviews(spotId));
+  }, [dispatch]);
+
+
   // const reviews = useSelector((state) => state.reviewsStore.reviews);
-  console.log("REVIEWS", reviews);
-  console.log(typeof reviews);
   // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
   //     return null;
   // }
@@ -35,8 +34,10 @@ function GetOneSpot() {
     e.preventDefault();
     window.alert("Feature coming soon");
   };
+  console.log(spot);
+  // console.log(spot.Owner.firstName);
 
-  if (!spot || !spot.Owner.firstName || !spot.Owner.lastName || !reviews) {
+  if (!spot || !reviews) {
     return null;
   }
 
@@ -76,6 +77,8 @@ function GetOneSpot() {
     );
     firstReview = null;
   }
+
+
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
   console.log("THE SPOT", spot);
@@ -106,7 +109,7 @@ function GetOneSpot() {
             <p>${spot.price} night</p>
             <div className="reserveReviews">
             <i className="fa-solid fa-star">
-              {reviews.length > 0 ? spot.avgStarRating : "New"}
+              {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
             </i>
             {reviewDot}
             {reviewCounter}
@@ -117,7 +120,7 @@ function GetOneSpot() {
       </div>
       <div className="reviewNumbers">
         <i className="fa-solid fa-star">
-          {reviews.length > 0 ? spot.avgStarRating : "New"}
+          {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
         </i>
         {reviewDot}
         {reviewCounter}
@@ -128,7 +131,7 @@ function GetOneSpot() {
         {reviews.map((oneReview) => (
           <div key={oneReview.id}>
             <h3>{oneReview.User.firstName}</h3>
-            <p>{oneReview.createdAt}</p>
+            <p>{oneReview.createdAt.slice(0,10)}</p>
             <p>{oneReview.review}</p>
             {sessionUser && sessionUser.id === oneReview.userId ? (
               <OpenModalButton

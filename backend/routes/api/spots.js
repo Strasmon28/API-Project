@@ -227,6 +227,9 @@ const validateStuffSpot = [
     check('description')
         .notEmpty()
         .withMessage("Description is required"),
+    check('description')
+        .isLength({ min: 30 })
+        .withMessage("Description must be at least 30 characters"),
     check('price')
         .exists({ checkFalsy: true })
         .isDecimal({ min: 0 })
