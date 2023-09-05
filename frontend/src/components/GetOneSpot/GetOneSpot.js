@@ -66,6 +66,15 @@ function GetOneSpot() {
     }
   });
 
+  let firstName;
+  let lastName;
+  if(spot.Owner.firstName){
+    firstName = spot.Owner.firstName;
+  }
+  if(spot.Owner.lastName){
+    lastName = spot.Owner.lastName;
+  }
+
   let reviewDot = null;
   let reviewCounter = null;
   if (reviews.length > 0) {
@@ -77,7 +86,6 @@ function GetOneSpot() {
     );
     firstReview = null;
   }
-
 
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
@@ -100,7 +108,7 @@ function GetOneSpot() {
       <div className="hosting">
         <div className="hostDetails">
           <h3>
-            HOSTED BY {spot.Owner.firstName} {spot.Owner.lastName}{" "}
+            HOSTED BY {firstName} {lastName}{" "}
           </h3>
           <p>{spot.description}</p>
         </div>
