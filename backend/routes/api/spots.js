@@ -216,7 +216,7 @@ const validateStuffSpot = [
         .withMessage("Country is required"),
     check('lat')
         .isFloat({ min: -90, max: 90})
-    .withMessage("Latitude is not valid"),
+        .withMessage("Latitude is not valid"),
     check('lng')
         .isFloat({ min: -180, max: 180})
         .withMessage("Longitude is not valid"),
@@ -227,6 +227,9 @@ const validateStuffSpot = [
     check('description')
         .notEmpty()
         .withMessage("Description is required"),
+    check('description')
+        .isLength({ min: 30 })
+        .withMessage("Description must be at least 30 characters"),
     check('price')
         .exists({ checkFalsy: true })
         .isDecimal({ min: 0 })
@@ -428,17 +431,18 @@ router.post('/:spotId/reviews', requireAuth, validateReviewStuff, async(req, res
         res.status(500);
         res.json({
             message: "User already has a review for this spot"
-        })
+        });
+
+    } else {
+        const newReview = await Review.create({
+            userId: userId,
+            spotId: spotId,
+            review,
+            stars
+        });
+
+        res.json(newReview);
     }
-
-    const newReview = await Review.create({
-        userId: userId,
-        spotId: spotId,
-        review,
-        stars
-    });
-
-    res.json(newReview);
 });
 
 //REVIEWS SECTION END

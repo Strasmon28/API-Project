@@ -1,0 +1,40 @@
+.createContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border: solid red;
+}
+
+.imageInputs{
+    display: flex;
+    flex-direction: column;
+}
+
+.citystate{
+    display: flex;
+}
+
+textarea{
+    width: 350px;
+    height: 100px;
+}
+
+.pricing {
+    display: flex;
+    align-items: center;
+}
+
+.pricing input{
+    height: 15px;
+}
+
+.imageInputs input{
+    margin-bottom: 5px;
+    width: 200px;
+}
+
+.titleWrap{
+    overflow-wrap: break-word;
+}

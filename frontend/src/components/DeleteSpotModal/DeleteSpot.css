@@ -1,0 +1,9 @@
+.confirmDelete{
+    background-color: red;
+    color: white
+}
+
+.cancelDelete{
+    background-color: darkgrey;
+    color: white
+}

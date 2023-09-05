@@ -1,0 +1,84 @@
+ul {
+    list-style-type: none;
+}
+
+li{
+    list-style-type: none;
+}
+
+.topHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px 0 10px;
+    margin-bottom: 50px;
+}
+
+.homeContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 175px;
+}
+
+.homeLink{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.noUserProfile{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.homeIcon{
+    width: 50px
+}
+
+.userContainer{
+    display: flex;
+    margin-right: 25px;
+    justify-content: space-between;
+    width: 200px;
+}
+
+.profile-dropdown{
+    visibility: visible;
+    position: absolute;
+    border: black;
+    border-radius: 30px;
+    background: lightgray;
+}
+
+.noprofile-dropdown{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center;
+    visibility: visible;
+    position: absolute;
+    background-color: lightgrey;
+    height: 50px;
+}
+
+.noUserButton{
+    display: flex;
+    align-self: center;
+}
+
+.nouserContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden{
+    visibility: hidden;
+    position: absolute;
+    background-color: red;
+}
+
+.userButtonList{
+    display: flex;
+    justify-content: center;
+}

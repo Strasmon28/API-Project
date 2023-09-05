@@ -1,0 +1,54 @@
+.border {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    border: solid black;
+    width: 100%;
+    padding: 10px;
+}
+
+.oneSpot{
+    border: solid red;
+    /* width: 70%; */
+    height: 200px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.placeholder{
+    display: flex;
+    height: 100px;
+    margin: 0;
+}
+
+.rating{
+    padding-top: 15px;
+}
+
+.tooltipText{
+    visibility: hidden;
+    /* position: absolute; */
+}
+
+.spotImage{
+    width: 200px;
+    height: 100px;
+}
+
+.section2{
+    display: flex;
+    justify-content: space-between;
+}
+
+.leftInfo{
+    margin:0;
+}
+
+.imageHover{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imageHover:hover .tooltipText{
+    visibility: visible;
+}

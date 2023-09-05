@@ -2,10 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
-import OpenModalButton from "../OpenModalButton";
-import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
+// import OpenModalButton from "../OpenModalButton";
+// import LoginFormModal from "../LoginFormModal";
+// import SignupFormModal from "../SignupFormModal";
+import NoUserProfileButton from "./NoUserProfileButton";
 import "./Navigation.css";
+import logo from "./CloudyRestBnbIcon.png";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -20,27 +22,30 @@ function Navigation({ isLoaded }) {
   } else {
     sessionLinks = (
       <li>
-        <OpenModalButton
-          buttonText="Log In"
-          modalComponent={<LoginFormModal />}
-        />
-        <OpenModalButton
-          buttonText="Sign Up"
-          modalComponent={<SignupFormModal />}
-        />
+        <NoUserProfileButton />
       </li>
     );
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">
-          Home
+    <div className="topHeader">
+      <div className="homeContainer">
+        <NavLink className="homeLink"exact to="/">
+          <img className="homeIcon" src={logo} alt="Texty"/>
+          <p>CloudyRestBnb</p>
         </NavLink>
-      </li>
+      </div>
+      <div className="userContainer">
+      {sessionUser && (
+        <div>
+          <NavLink exact to="/form">
+            Create a New Spot
+          </NavLink>
+        </div>
+      )}
       {isLoaded && sessionLinks}
-    </ul>
+      </div>
+    </div>
   );
 }
 
