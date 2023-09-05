@@ -66,8 +66,8 @@ function GetOneSpot() {
     }
   });
 
-  let firstName;
-  let lastName;
+  let firstName = null;
+  let lastName = null;
   if(spot.Owner.firstName){
     firstName = spot.Owner.firstName;
   }
