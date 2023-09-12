@@ -27,7 +27,7 @@ function LoginFormModal() {
   const demoUser = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential: "Demo", password: "password" }))
+    return dispatch(sessionActions.login({ credential: "test", password: "thepassword" }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
@@ -50,7 +50,7 @@ function LoginFormModal() {
         />
 
         {errors.credential && <p>{errors.credential}</p>}
-        
+
         <input
           type="password"
           placeholder="Password"

@@ -41,7 +41,7 @@ module.exports = {
         lat: 76.7645358,
         lng: -188.4730327,
         name: "Big House",
-        description: "Come to thea bighouse",
+        description: "Come to the bighouse",
         price: 123
       }
     ], { validate: true })
