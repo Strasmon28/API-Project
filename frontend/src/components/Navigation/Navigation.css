@@ -12,6 +12,7 @@ li{
     align-items: center;
     padding: 20px 40px 0 10px;
     margin-bottom: 50px;
+    border-bottom: 1px solid black;
 }
 
 .homeContainer{
@@ -23,7 +24,13 @@ li{
 .homeLink{
     display: flex;
     justify-content: space-between;
+    text-decoration: none;
     width: 100%;
+}
+
+.homeLink h3{
+    font-family: "fira-sans", sans-serif;
+    color: blue;
 }
 
 .noUserProfile{
@@ -41,6 +48,12 @@ li{
     margin-right: 25px;
     justify-content: space-between;
     width: 200px;
+}
+
+#new-spot-link{
+    font-family: Arial, sans-serif;
+    color: black;
+    text-decoration: none;
 }
 
 .profile-dropdown{

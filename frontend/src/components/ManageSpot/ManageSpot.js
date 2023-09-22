@@ -13,19 +13,23 @@ function ManageSpot() {
   const dispatch = useDispatch();
   const history = useHistory();
   const spots = useSelector((state) => state.spotsStore.spots);
+  // console.log("THE SPOTS", typeof spots);
+  //should useEffect should trigger again on a modal close? use context?
 
-  //should useEffect should trigger again on a modal close?
   useEffect(() => {
     dispatch(userSpots());
   }, [dispatch]);
 
-  //   if(Object.keys(spots).length === 0){
-  //     return null;
-  //   }
   if (!spots) {
     console.log("checking undefined");
     return null;
   }
+
+
+  //   if(Object.keys(spots).length === 0){
+  //     return null;
+  //   }
+
 
   const formRedirect = (e) => {
     e.preventDefault();
@@ -36,11 +40,12 @@ function ManageSpot() {
   //Delete button will be a modal menu
   console.log("spots", spots);
   //   console.log("spots.Spots", spots.Spots);
-  //USE A PROP TO SEND AN ID TO THE DELETESPOT MODAL
+  //USE A PROP TO SEND AN ID TO THE DELETESPOT MODAL??
+  //IMPLEMENT IMAGE LINKS
   return (
     <div>
-      <h1>Manage Spots</h1>
-      <button onClick={formRedirect}>Create a New Spot</button>
+      <h1 id="title">Manage Your Spots</h1>
+      <button id="create-button" onClick={formRedirect}>Create a New Spot</button>
       <div className="spotsContainer">
         {spots.map((spot) => (
           <div key={spot.id} className="spot">
@@ -51,7 +56,7 @@ function ManageSpot() {
             <p>star rating</p>
             <p>${spot.price} per night</p>
             <NavLink to={`/updateform/${spot.id}`}>
-            <button >UPDATE</button>
+            <button>UPDATE</button>
             </NavLink>
             <OpenModalButton
               buttonText="DELETE"

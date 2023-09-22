@@ -28,6 +28,7 @@ function CreateSpotForm() {
   //use an onSubmit event, take info from the input fields to update the chosen spot
 
   //Update the spot, then add images after
+  //DO NOT USE ASYNC, refactor this.
   const onSubmit = async (e) => {
     //Should we async?
     e.preventDefault();
@@ -106,7 +107,7 @@ function CreateSpotForm() {
   //Lat range is -90 to 90 and lng range is -180 to 180
   return (
     <div className="createContainer">
-      <form onSubmit={onSubmit}>
+      <form id="form-container" onSubmit={onSubmit}>
         <h1>Create a New Spot</h1>
         <h2>Where's your place located?</h2>
         <p>
@@ -131,7 +132,7 @@ function CreateSpotForm() {
           required
         ></input>
         {errors.address && <p>{errors.address}</p>}
-        <div className="cityState">
+        <div className="city-state">
         <p>City</p>
         <input
           type="text"
@@ -151,6 +152,7 @@ function CreateSpotForm() {
         ></input>
         {errors.state && <p>{errors.state}</p>}
         </div>
+        <div className="lat-lng">
         <p>Latitude</p>
         <input
           type="number"
@@ -167,6 +169,7 @@ function CreateSpotForm() {
           onChange={(e) => setLng(e.target.value)}
         ></input>
         {errors.lng && <p>{errors.lng}</p>}
+        </div>
         <h2>Describe your place to guests</h2>
         <h3 className="titleWrap">
           Mention the best features of your space, any special amentities like

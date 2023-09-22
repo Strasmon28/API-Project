@@ -7,7 +7,7 @@ import { csrfFetch } from "./csrf";
 // const CREATE_SPOT = "spots/createSpot"
 const READ_SPOT = "spots/readSpots";
 const READ_ONE = "spots/readSpot";
-// const UPDATE_SPOT = "spots/updateSpot"
+const UPDATE_SPOT = "spots/updateSpot"
 const REMOVE_SPOT = "spots/removeSpot";
 const READ_IMAGES = "spots/spotImages";
 
@@ -41,11 +41,13 @@ const oneSpot = (spot) => {
   };
 };
 
-// const updateSpot = () => {
-//     return {
-//         type: UPDATE_SPOT
-//     }
-// };
+const updateSpot = (spotId, spotData) => {
+    return {
+        type: UPDATE_SPOT,
+        spotId,
+        spotData
+    }
+};
 
 const removeSpot = (spotId) => {
   return {
@@ -63,7 +65,7 @@ export const allSpots = () => async (dispatch) => {
     console.log("spot data", data);
     console.log("data.Spots", data.Spots);
     dispatch(readSpots(data.Spots));
-    return response;
+    return data; //switched to return data from return response
   } else {
     const errors = await response.json();
     return errors;
@@ -76,7 +78,7 @@ export const singleSpot = (spotId) => async (dispatch) => {
   if (response.ok) {
     const spot = await response.json();
     dispatch(oneSpot(spot));
-    return response;
+    return spot;  //switched to return spot from return response
   } else {
     const errors = await response.json();
     return errors;
@@ -89,7 +91,7 @@ export const userSpots = () => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(readSpots(data.Spots));
-    return response;
+    return data; //switched to return data from return response
   } else {
     const errors = await response.json();
     return errors;
@@ -138,7 +140,7 @@ export const addSpotImages = (imageData, spotId) => async (dispatch) => {
   }
 };
 
-export const updateSpot = (spotData, spotId) => async (dispatch) => {
+export const thunkUpdateSpot = (spotData, spotId) => async (dispatch) => {
   const response = await fetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: {
@@ -173,18 +175,22 @@ const initialState = {};
 
 //Reducer
 const spotsReducer = (state = initialState, action) => {
-  let newState;
+  let newState = {};
   switch (action.type) {
     case READ_SPOT:
-      // newState = {...state, spots: action.payload};
-      newState = Object.assign({}, state);
-      newState.spots = action.payload;
+      newState = {...state, spots: action.payload};
+      // newState = Object.assign({}, state);
+      // newState.spots = action.payload;
       return newState;
     case READ_ONE:
       newState = { ...state, spot: action.payload };
       return newState;
     case READ_IMAGES:
       newState = { ...state, images: action.payload };
+      return newState;
+    case UPDATE_SPOT:
+      newState = { ...state }
+      newState[action.spotId] = action.spotData;
       return newState;
     case REMOVE_SPOT:
       newState = { ...state };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { updateSpot } from "../../store/spots";
+import { thunkUpdateSpot } from "../../store/spots";
 import './UpdateSpot.css';
 
 function UpdateSpotForm() {
@@ -19,6 +19,8 @@ function UpdateSpotForm() {
 
 
   //useStates needed
+  //is a useSelector needed?
+  //is a useEffect needed for getting the spot info? have the useselector then dispatch with a matching spotId to retrieve info for the desired spot.
   //use an onSubmit event, take info from the input fields to update the chosen spot
 
   //Update the spot, then add images after
@@ -40,11 +42,14 @@ function UpdateSpotForm() {
 
     //Dispatch info to have it add it to the store
     //Should update the info
-    dispatch(updateSpot(spotData));
-
-    history.push(`/spotDetail/${spotId}`);
+    const updatedSpot = dispatch(thunkUpdateSpot(spotData, spotId));
+    //If there are errors, display those errors and do not redirect
+    if(updatedSpot.errors){
+      setErrors(updatedSpot.errors);
+    } else {
+    history.push(`/spotDetail/${updatedSpot.id}`); //or is it spotId useparams?
+    }
   };
-
 
 
   //LAT AND LNG ARE OPTIONAL
