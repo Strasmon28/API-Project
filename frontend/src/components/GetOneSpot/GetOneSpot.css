@@ -22,14 +22,25 @@
 }
 
 /* Images CSS */
+.imageContainer{
+    display: flex;
+    border: solid blue
+}
+
+.secondary-images{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
 .previewImage{
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 500px;
 }
 
 .image{
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
 }
 
 .hosting{
@@ -46,6 +57,7 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    border-radius: 20px;
     padding: 20px;
     height: 100px;
     width: 400px
@@ -54,7 +66,19 @@
 .priceReview{
     display: flex;
     justify-content: space-evenly;
-    width: 90%
+    align-items: center;
+    width: 90%;
+    height: 50px
+}
+
+#price-per-night{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#price-per-night span{
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .reserveReviews{
@@ -65,8 +89,9 @@
 .reserve button{
     height: 100px;
     width: 250px;
-    background-color: red;
+    background-color: rgb(245, 56, 56);
     color: white;
+    box-shadow: 5px 5px 5px black;
 }
 
 .reviewDot{

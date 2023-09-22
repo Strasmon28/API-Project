@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { addSpot, addSpotImages } from "../../store/spots";
+import { addSpot, addSpotImage } from "../../store/spots";
 import "./SpotForm.css";
 
 function CreateSpotForm() {
@@ -33,8 +33,8 @@ function CreateSpotForm() {
     //Should we async?
     e.preventDefault();
 
-    if(!previewImage){
-      return setPhotoErrors("Preview image is required")
+    if (!previewImage) {
+      return setPhotoErrors("Preview image is required");
     }
 
     const spotData = {
@@ -81,26 +81,18 @@ function CreateSpotForm() {
     // console.log("New spot in the frontend", newSpot.spot);
     // console.log("New spot's id check", newSpot.spot.id);
 
-    const newImage = dispatch(addSpotImages(previewImage, newSpot.id));
+    const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
 
+    //Image data WILL be a URL, API will only return a 
     //If creating the spot had an error, set those errors
-    if(newSpot && newSpot.errors){
+    if (newSpot && newSpot.errors) {
       setErrors(newSpot.errors);
-    }
-
-    //If adding an image had an error, set those errors
-    if(newImage && newImage.errors){
-      setPhotoErrors(newImage.errors);
-    }
-
-    //If there are no errors, redirect to new spot
-    if(!newSpot.errors && !newImage.errors){
-      //After the store has been updated with the new spot, redirect the user to the new spot using the id
+      //If adding an image had an error, set those errors
+      if (newImage && newImage.message) setPhotoErrors(newImage.message);
+    } else {
+      //(!newSpot.errors && !newImage.errors)
       history.push(`/spotDetail/${newSpot.id}`);
-    } else { //Otherwise, return all the errors
-
     }
-
   };
 
   //LAT AND LNG ARE OPTIONAL
@@ -133,42 +125,42 @@ function CreateSpotForm() {
         ></input>
         {errors.address && <p>{errors.address}</p>}
         <div className="city-state">
-        <p>City</p>
-        <input
-          type="text"
-          placeholder="City"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          required
-        ></input>
-        {errors.city && <p>{errors.city}</p>}
-        <p>State</p>
-        <input
-          type="text"
-          placeholder="State"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-          required
-        ></input>
-        {errors.state && <p>{errors.state}</p>}
+          <p>City</p>
+          <input
+            type="text"
+            placeholder="City"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+          ></input>
+          {errors.city && <p>{errors.city}</p>}
+          <p>State</p>
+          <input
+            type="text"
+            placeholder="State"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            required
+          ></input>
+          {errors.state && <p>{errors.state}</p>}
         </div>
         <div className="lat-lng">
-        <p>Latitude</p>
-        <input
-          type="number"
-          placeholder="Enter number -90 to 90"
-          value={lat}
-          onChange={(e) => setLat(e.target.value)}
-        ></input>
-        {errors.lat && <p>{errors.lat}</p>}
-        <p>Longitude</p>
-        <input
-          type="number"
-          placeholder="Enter number -180 to 180"
-          value={lng}
-          onChange={(e) => setLng(e.target.value)}
-        ></input>
-        {errors.lng && <p>{errors.lng}</p>}
+          <p>Latitude</p>
+          <input
+            type="number"
+            placeholder="Enter number -90 to 90"
+            value={lat}
+            onChange={(e) => setLat(e.target.value)}
+          ></input>
+          {errors.lat && <p>{errors.lat}</p>}
+          <p>Longitude</p>
+          <input
+            type="number"
+            placeholder="Enter number -180 to 180"
+            value={lng}
+            onChange={(e) => setLng(e.target.value)}
+          ></input>
+          {errors.lng && <p>{errors.lng}</p>}
         </div>
         <h2>Describe your place to guests</h2>
         <h3 className="titleWrap">
@@ -201,49 +193,50 @@ function CreateSpotForm() {
           search results.
         </h3>
         <div className="pricing">
-        <p>$</p>
-        <input
-          type="number"
-          placeholder="Price per night (USD)"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        ></input>
+          <p>$</p>
+          <input
+            type="number"
+            placeholder="Price per night (USD)"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+          ></input>
         </div>
         <h2>Liven up your spot with photos</h2>
         <h3>Submit a link to at least one photo to publish your spot.</h3>
         <div className="imageInputs">
-        <input
-          type="url" //it is text for now, for testing purposes CHANGE IT
-          placeholder="Preview Image URL"
-          value={previewImage}
-          onChange={(e) => setPreviewImage(e.target.value)}
-          required
-        ></input>
-        <input
-          type="url"
-          placeholder="Image URL"
-          value={img1}
-          onChange={(e) => setImg1(e.target.value)}
-        ></input>
-        <input
-          type="url"
-          placeholder="Image URL"
-          value={img2}
-          onChange={(e) => setImg2(e.target.value)}
-        ></input>
-        <input
-          type="url"
-          placeholder="Image URL"
-          value={img3}
-          onChange={(e) => setImg3(e.target.value)}
-        ></input>
-        <input
-          type="url"
-          placeholder="Image URL"
-          value={img4}
-          onChange={(e) => setImg4(e.target.value)}
-        ></input>
+          <input
+            type="url" //it is text for now, for testing purposes CHANGE IT
+            placeholder="Preview Image URL"
+            value={previewImage}
+            onChange={(e) => setPreviewImage(e.target.value)}
+            required
+          ></input>
+          {errors.photoErrors && <p>{errors.photoErrors}</p>}
+          <input
+            type="url"
+            placeholder="Image URL"
+            value={img1}
+            onChange={(e) => setImg1(e.target.value)}
+          ></input>
+          <input
+            type="url"
+            placeholder="Image URL"
+            value={img2}
+            onChange={(e) => setImg2(e.target.value)}
+          ></input>
+          <input
+            type="url"
+            placeholder="Image URL"
+            value={img3}
+            onChange={(e) => setImg3(e.target.value)}
+          ></input>
+          <input
+            type="url"
+            placeholder="Image URL"
+            value={img4}
+            onChange={(e) => setImg4(e.target.value)}
+          ></input>
         </div>
         <button type="submit">Create Spot</button>
       </form>

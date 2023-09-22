@@ -119,7 +119,7 @@ export const addSpot = (spotData) => async (dispatch) => {
   }
 };
 
-export const addSpotImages = (imageData, spotId) => async (dispatch) => {
+export const addSpotImage = (imageData, spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}/images`, {
     method: "POST",
     headers: {
