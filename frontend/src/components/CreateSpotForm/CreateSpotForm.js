@@ -35,9 +35,9 @@ function CreateSpotForm() {
 
     console.log("submit happened");
     if (!previewImage) {
-      setPhotoErrors({errors: "Preview image is required"});
+      setPhotoErrors({ errors: "Preview image is required" });
     }
-    console.log("another submit check")
+    console.log("another submit check");
     const spotData = {
       country,
       address,
@@ -79,18 +79,21 @@ function CreateSpotForm() {
 
     //Try, catch needed?
     console.log("New spot check in frontend code", newSpot);
-    console.log("newSpot.id", newSpot.id);
+    // console.log("newSpot.id", newSpot.id);
     // console.log("New spot in the frontend", newSpot.spot);
     // console.log("New spot's id check", newSpot.spot.id);
 
-    const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
+    //if no spot was created, don't add the image
+    if (newSpot.id) {
+      const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
+    }
 
     //Image data WILL be a URL, API will only return a
     //If creating the spot had an error, set those errors
     if (newSpot && newSpot.errors) {
       setErrors(newSpot.errors);
       //If adding an image had an error, set those errors
-      if (newImage && newImage.message) setPhotoErrors(newImage.message);
+      // if (newImage && newImage.message) setPhotoErrors(newImage.message);
     } else {
       //(!newSpot.errors && !newImage.errors)
       history.push(`/spotDetail/${newSpot.id}`);
@@ -178,7 +181,9 @@ function CreateSpotForm() {
           //Check if there is 30 characters
         ></textarea>
         {errors.description && <p>{errors.description}</p>}
-        {description.length < 30 && <p>Description needs a minimum of 30 characters</p>}
+        {description.length < 30 && (
+          <p>Description needs a minimum of 30 characters</p>
+        )}
         <h2>Create a title for your spot</h2>
         <p>
           Catch guests' attention with a spot title that highlights what makes
