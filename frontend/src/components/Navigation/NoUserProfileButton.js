@@ -41,13 +41,13 @@ function NoUserProfileButton() {
         <i className="fa-solid fa-user"></i>
       </button>
       <div className={ulClassName} ref={ulRef}>
-        <div>
+        <div className="login-button">
           <OpenModalButton
             buttonText="Log In"
             modalComponent={<LoginFormModal />}
           />
         </div>
-        <div>
+        <div className="signup-button">
           <OpenModalButton
             buttonText="Sign Up"
             modalComponent={<SignupFormModal />}

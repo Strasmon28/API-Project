@@ -52,7 +52,7 @@ const updateSpot = (spotId, spotData) => {
 const removeSpot = (spotId) => {
   return {
     type: REMOVE_SPOT,
-    payload: spotId,
+    spotId,
   };
 };
 
@@ -99,6 +99,7 @@ export const userSpots = () => async (dispatch) => {
 };
 
 export const addSpot = (spotData) => async (dispatch) => {
+  console.log("start to add")
   const response = await csrfFetch("/api/spots", {
     method: "POST",
     headers: {
@@ -114,6 +115,7 @@ export const addSpot = (spotData) => async (dispatch) => {
     dispatch(oneSpot(data)); //CHECK DISPATCH
     return data;
   } else {
+    console.log("ERROR STRUCK")
     const errors = await response.json();
     return errors;
   }
@@ -141,7 +143,7 @@ export const addSpotImage = (imageData, spotId) => async (dispatch) => {
 };
 
 export const thunkUpdateSpot = (spotData, spotId) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}`, {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -175,10 +177,11 @@ const initialState = {};
 
 //Reducer
 const spotsReducer = (state = initialState, action) => {
-  let newState = {};
+  let newState;
   switch (action.type) {
     case READ_SPOT:
       newState = {...state, spots: action.payload};
+      console.log("NEWSTATE:: ", newState);
       // newState = Object.assign({}, state);
       // newState.spots = action.payload;
       return newState;
@@ -194,7 +197,7 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     case REMOVE_SPOT:
       newState = { ...state };
-      delete newState[action.payload];
+      delete newState[action.spotId];
       return newState;
     default:
       return state;

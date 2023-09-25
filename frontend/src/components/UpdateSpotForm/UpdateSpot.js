@@ -12,11 +12,27 @@ function UpdateSpotForm() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const [lat, setLat] = useState(40);
+  const [lng, setLng] = useState(100);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [errors, setErrors] = useState({});
 
+
+  // const spot = useSelector(store => store.spotStore.spot[spotId]);
+
+  // if(!spot){
+  //   return null;
+  // }
+
+  // setCountry(spot.country);
+  // setAddress(spot.address);
+  // setCity(spot.city);
+  // setState(spot.state);
+  // setDescription(spot.description);
+  // setName(spot.name);
+  // setPrice(spot.errors);
 
   //useStates needed
   //is a useSelector needed?
@@ -24,17 +40,18 @@ function UpdateSpotForm() {
   //use an onSubmit event, take info from the input fields to update the chosen spot
 
   //Update the spot, then add images after
-  const onSubmit = (e) => {
+  const onSubmit = async(e) => {
     //Should we async?
     e.preventDefault();
-
+    setLat(40);
+    setLng(100);
     const spotData = {
       country,
       address,
       city,
       state,
-    //   lat,
-    //   lng,
+      lat,
+      lng,
       description,
       name,
       price,
@@ -42,7 +59,7 @@ function UpdateSpotForm() {
 
     //Dispatch info to have it add it to the store
     //Should update the info
-    const updatedSpot = dispatch(thunkUpdateSpot(spotData, spotId));
+    const updatedSpot = await dispatch(thunkUpdateSpot(spotData, spotId));
     //If there are errors, display those errors and do not redirect
     if(updatedSpot.errors){
       setErrors(updatedSpot.errors);
@@ -108,12 +125,13 @@ function UpdateSpotForm() {
         </h3>
         <textarea
           type="text"
-          placeholder="Please write at least 30 characters"
+          placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           //Check if there is 30 characters
         ></textarea>
         {errors.description && <p>{errors.description}</p>}
+        {description.length < 30 && <p>Description needs a minimum of 30 characters</p>}
         <h2>Create a title for your spot</h2>
         <p>
           Catch guests' attention with a spot title that highlights what makes
@@ -126,6 +144,7 @@ function UpdateSpotForm() {
           onChange={(e) => setName(e.target.value)}
           required
         ></input>
+        {errors.name && <p>{errors.name}</p>}
         <h2>Set a base price for your spot</h2>
         <h3>
           Competitive pricing can help your listing stand out and rank higher in
@@ -140,8 +159,9 @@ function UpdateSpotForm() {
           onChange={(e) => setPrice(e.target.value)}
           required
         ></input>
+        {errors.price && <p>{errors.price}</p>}
         </div>
-        <button type="submit">Create Spot</button>
+        <button type="submit">Update Spot</button>
       </form>
     </div>
   ); //CHECK IF IMAGE INPUTS END WITH .png, .jpg, or .jpeg

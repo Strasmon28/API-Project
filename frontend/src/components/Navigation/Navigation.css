@@ -64,6 +64,7 @@ li{
     background: lightgray;
 }
 
+/* No user profile button */
 .noprofile-dropdown{
     display: flex;
     flex-direction: column;
@@ -84,6 +85,10 @@ li{
     height: 30px;
     width: 45px;
     border-radius: 35px;
+}
+
+.login-button{
+    color: blue;
 }
 
 .nouserContainer{

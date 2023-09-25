@@ -2,14 +2,14 @@
     font-family: "Georgia", serif;
 }
 
-#create-button{
-    
-}
+/* #create-button{
+
+} */
 
 .spotsContainer{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    border: solid orange;
+    /* border: solid orange; */
     width: 100%;
     padding: 10px;
 }

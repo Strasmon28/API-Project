@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     align-content: center;
-    border: solid red;
+    /* border: solid red; */
 }
 
 #form-container{
@@ -51,5 +51,5 @@ textarea{
 
 .titleWrap{
     word-wrap: break-word;
-    color: red;
+    /* color: red; */
 }

@@ -11,8 +11,8 @@ function CreateSpotForm() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
+  const [lat, setLat] = useState(40);
+  const [lng, setLng] = useState(100);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -33,10 +33,11 @@ function CreateSpotForm() {
     //Should we async?
     e.preventDefault();
 
+    console.log("submit happened");
     if (!previewImage) {
-      return setPhotoErrors("Preview image is required");
+      setPhotoErrors({errors: "Preview image is required"});
     }
-
+    console.log("another submit check")
     const spotData = {
       country,
       address,
@@ -71,10 +72,11 @@ function CreateSpotForm() {
 
     //Dispatch info to have it add it to the store
     const newSpot = await dispatch(addSpot(spotData));
-
+    console.log("newSpot submit check");
     //Give the image data to the spot, use the newSpot's id
     //Image creation takes a single url string
-    // const addImages = await dispatch(addSpotImages(imageData, newSpot.id));
+    //Error response is only if the spot could not be found
+
     //Try, catch needed?
     console.log("New spot check in frontend code", newSpot);
     console.log("newSpot.id", newSpot.id);
@@ -83,7 +85,7 @@ function CreateSpotForm() {
 
     const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
 
-    //Image data WILL be a URL, API will only return a 
+    //Image data WILL be a URL, API will only return a
     //If creating the spot had an error, set those errors
     if (newSpot && newSpot.errors) {
       setErrors(newSpot.errors);
@@ -112,7 +114,8 @@ function CreateSpotForm() {
           placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          required
+          // required
+          optional
         ></input>
         {errors.country && <p>{errors.country}</p>}
         <p>Street Address</p>
@@ -121,7 +124,7 @@ function CreateSpotForm() {
           placeholder="Street Address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          required
+          // required
         ></input>
         {errors.address && <p>{errors.address}</p>}
         <div className="city-state">
@@ -131,7 +134,7 @@ function CreateSpotForm() {
             placeholder="City"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            required
+            // required
           ></input>
           {errors.city && <p>{errors.city}</p>}
           <p>State</p>
@@ -140,7 +143,7 @@ function CreateSpotForm() {
             placeholder="State"
             value={state}
             onChange={(e) => setState(e.target.value)}
-            required
+            // required
           ></input>
           {errors.state && <p>{errors.state}</p>}
         </div>
@@ -169,12 +172,13 @@ function CreateSpotForm() {
         </h3>
         <textarea
           type="text"
-          placeholder="Please write at least 30 characters"
+          placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           //Check if there is 30 characters
         ></textarea>
         {errors.description && <p>{errors.description}</p>}
+        {description.length < 30 && <p>Description needs a minimum of 30 characters</p>}
         <h2>Create a title for your spot</h2>
         <p>
           Catch guests' attention with a spot title that highlights what makes
@@ -185,7 +189,7 @@ function CreateSpotForm() {
           placeholder="Name your spot"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
+          // required
         ></input>
         <h2>Set a base price for your spot</h2>
         <h3>
@@ -199,7 +203,7 @@ function CreateSpotForm() {
             placeholder="Price per night (USD)"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            required
+            // required
           ></input>
         </div>
         <h2>Liven up your spot with photos</h2>
@@ -210,9 +214,9 @@ function CreateSpotForm() {
             placeholder="Preview Image URL"
             value={previewImage}
             onChange={(e) => setPreviewImage(e.target.value)}
-            required
+            // required
           ></input>
-          {errors.photoErrors && <p>{errors.photoErrors}</p>}
+          {photoErrors.errors && <p>{photoErrors.errors}</p>}
           <input
             type="url"
             placeholder="Image URL"

@@ -1,14 +1,14 @@
 .primary{
-    border: solid black;
+    /* border: solid black; */
     padding: 20px;
 }
 
 .secondary{
-    border: solid red;
+    /* border: solid red; */
 }
 
 .hosting{
-    border: solid orange;
+    /* border: solid orange; */
 }
 
 .reserve{
@@ -24,7 +24,7 @@
 /* Images CSS */
 .imageContainer{
     display: flex;
-    border: solid blue
+    /* border: solid blue; */
 }
 
 .secondary-images{
@@ -36,11 +36,13 @@
 .previewImage{
     width: 400px;
     height: 500px;
+    border: solid 2px black;
 }
 
 .image{
     width: 250px;
     height: 250px;
+    border: solid 2px black;
 }
 
 .hosting{

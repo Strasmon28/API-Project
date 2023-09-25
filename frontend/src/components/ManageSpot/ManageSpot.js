@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, NavLink } from "react-router-dom";
-import { userSpots } from "../../store/spots";
+import { deleteSpot, userSpots } from "../../store/spots";
 import "./ManageSpot.css";
 // import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteSpotModal from "../DeleteSpotModal/DeleteSpot";
@@ -13,6 +13,8 @@ function ManageSpot() {
   const dispatch = useDispatch();
   const history = useHistory();
   const spots = useSelector((state) => state.spotsStore.spots);
+  const spotcheck = useSelector((state) => console.log("THE STATE::", state.spotsStore))
+  const [modalCheck, setModalCheck] = useState(false);
   // console.log("THE SPOTS", typeof spots);
   //should useEffect should trigger again on a modal close? use context?
 
@@ -24,7 +26,6 @@ function ManageSpot() {
     console.log("checking undefined");
     return null;
   }
-
 
   //   if(Object.keys(spots).length === 0){
   //     return null;
@@ -40,7 +41,6 @@ function ManageSpot() {
   //Delete button will be a modal menu
   console.log("spots", spots);
   //   console.log("spots.Spots", spots.Spots);
-  //USE A PROP TO SEND AN ID TO THE DELETESPOT MODAL??
   //IMPLEMENT IMAGE LINKS
   return (
     <div>
