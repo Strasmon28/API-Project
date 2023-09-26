@@ -76,7 +76,7 @@ module.exports = {
         country: "United States of America",
         lat: 82,
         lng: 94,
-        name: "Mega Apartment",
+        name: "Rested Home",
         description: "Most spacious apartment ever",
         price: 400
       },
@@ -93,7 +93,7 @@ module.exports = {
     options.tableName = "Spots";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['App Academy', "Big House", "Mega Apartment"] }
+      name: { [Op.in]: ['App Academy', "Big House", "Mega Apartment", "The cafe", "Rested Home"] }
     }, {});
   }
 };
