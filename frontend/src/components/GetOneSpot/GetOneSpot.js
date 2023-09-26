@@ -22,8 +22,7 @@ function GetOneSpot() {
   useEffect(() => {
     dispatch(singleSpot(spotId));
     dispatch(allReviews(spotId));
-  }, [dispatch]);
-
+  }, [dispatch, spotId]);
 
   // const reviews = useSelector((state) => state.reviewsStore.reviews);
   // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
@@ -68,17 +67,17 @@ function GetOneSpot() {
 
   let firstName = null;
   let lastName = null;
-  if(spot.Owner.firstName){
+  if (spot.Owner.firstName) {
     firstName = spot.Owner.firstName;
   }
-  if(spot.Owner.lastName){
+  if (spot.Owner.lastName) {
     lastName = spot.Owner.lastName;
   }
 
   let reviewDot = null;
   let reviewCounter = null;
   if (reviews.length > 0) {
-    reviewDot = <p className="reviewDot">·</p>
+    reviewDot = <p className="reviewDot">·</p>;
     reviewCounter = (
       <p>
         {reviews.length} {reviews.length > 1 ? "Reviews" : "Review"}
@@ -99,10 +98,12 @@ function GetOneSpot() {
         </h2>
         <div className="imageContainer">
           <img className="previewImage" src={preview} alt="Preview" />
-          <img className="image" src={secondaryImage} alt="First pic" />
-          <img className="image" src={secondaryImage} alt="Second pic" />
-          <img className="image" src={secondaryImage} alt="Third pic" />
-          <img className="image" src={secondaryImage} alt="Fourth pic" />
+          <div className="secondary-images">
+            <img className="image" src={secondaryImage} alt="First pic" />
+            <img className="image" src={secondaryImage} alt="Second pic" />
+            <img className="image" src={secondaryImage} alt="Third pic" />
+            <img className="image" src={secondaryImage} alt="Fourth pic" />
+          </div>
         </div>
       </div>
       <div className="hosting">
@@ -114,13 +115,13 @@ function GetOneSpot() {
         </div>
         <div className="reserve">
           <div className="priceReview">
-            <p>${spot.price} night</p>
+            <p id="price-per-night">${spot.price} <span>night</span></p>
             <div className="reserveReviews">
-            <i className="fa-solid fa-star">
-              {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
-            </i>
-            {reviewDot}
-            {reviewCounter}
+              <i className="fa-solid fa-star">
+                {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
+              </i>
+              {reviewDot}
+              {reviewCounter}
             </div>
           </div>
           <button onClick={featureAlert}>Reserve</button>
@@ -139,7 +140,7 @@ function GetOneSpot() {
         {reviews.map((oneReview) => (
           <div key={oneReview.id}>
             <h3>{oneReview.User.firstName}</h3>
-            <p>{oneReview.createdAt.slice(0,10)}</p>
+            <p>{oneReview.createdAt.slice(0, 10)}</p>
             <p>{oneReview.review}</p>
             {sessionUser && sessionUser.id === oneReview.userId ? (
               <OpenModalButton

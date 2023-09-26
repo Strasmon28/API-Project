@@ -12,6 +12,7 @@ li{
     align-items: center;
     padding: 20px 40px 0 10px;
     margin-bottom: 50px;
+    border-bottom: 1px solid black;
 }
 
 .homeContainer{
@@ -23,7 +24,13 @@ li{
 .homeLink{
     display: flex;
     justify-content: space-between;
+    text-decoration: none;
     width: 100%;
+}
+
+.homeLink h3{
+    font-family: "fira-sans", sans-serif;
+    color: blue;
 }
 
 .noUserProfile{
@@ -43,6 +50,12 @@ li{
     width: 200px;
 }
 
+#new-spot-link{
+    font-family: Arial, sans-serif;
+    color: black;
+    text-decoration: none;
+}
+
 .profile-dropdown{
     visibility: visible;
     position: absolute;
@@ -51,6 +64,7 @@ li{
     background: lightgray;
 }
 
+/* No user profile button */
 .noprofile-dropdown{
     display: flex;
     flex-direction: column;
@@ -64,7 +78,17 @@ li{
 
 .noUserButton{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
     align-self: center;
+    height: 30px;
+    width: 45px;
+    border-radius: 35px;
+}
+
+.login-button{
+    color: blue;
 }
 
 .nouserContainer{
@@ -75,7 +99,7 @@ li{
 .hidden{
     visibility: hidden;
     position: absolute;
-    background-color: red;
+    /* background-color: red; */
 }
 
 .userButtonList{

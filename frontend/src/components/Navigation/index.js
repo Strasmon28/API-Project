@@ -31,14 +31,14 @@ function Navigation({ isLoaded }) {
     <div className="topHeader">
       <div className="homeContainer">
         <NavLink className="homeLink"exact to="/">
-          <img className="homeIcon" src={logo} alt="Texty"/>
-          <p>CloudyRestBnb</p>
+          <img className="homeIcon" src={logo} alt="Home"/>
+          <h3>CloudyRestBnb</h3>
         </NavLink>
       </div>
       <div className="userContainer">
       {sessionUser && (
         <div>
-          <NavLink exact to="/form">
+          <NavLink id="new-spot-link" exact to="/form">
             Create a New Spot
           </NavLink>
         </div>

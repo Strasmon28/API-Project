@@ -7,7 +7,7 @@ import { csrfFetch } from "./csrf";
 // const CREATE_SPOT = "spots/createSpot"
 const READ_SPOT = "spots/readSpots";
 const READ_ONE = "spots/readSpot";
-// const UPDATE_SPOT = "spots/updateSpot"
+const UPDATE_SPOT = "spots/updateSpot";
 const REMOVE_SPOT = "spots/removeSpot";
 const READ_IMAGES = "spots/spotImages";
 
@@ -18,8 +18,6 @@ const READ_IMAGES = "spots/spotImages";
 //     }
 // };
 
-//How should I have the action creators?
-//Multiple and single?
 const readSpots = (spots) => {
   return {
     type: READ_SPOT,
@@ -41,16 +39,18 @@ const oneSpot = (spot) => {
   };
 };
 
-// const updateSpot = () => {
-//     return {
-//         type: UPDATE_SPOT
-//     }
-// };
+const updateSpot = (spotId, spotData) => {
+  return {
+    type: UPDATE_SPOT,
+    spotId,
+    spotData,
+  };
+};
 
 const removeSpot = (spotId) => {
   return {
     type: REMOVE_SPOT,
-    payload: spotId,
+    spotId,
   };
 };
 
@@ -63,7 +63,7 @@ export const allSpots = () => async (dispatch) => {
     console.log("spot data", data);
     console.log("data.Spots", data.Spots);
     dispatch(readSpots(data.Spots));
-    return response;
+    return data; //switched to return data from return response
   } else {
     const errors = await response.json();
     return errors;
@@ -76,7 +76,7 @@ export const singleSpot = (spotId) => async (dispatch) => {
   if (response.ok) {
     const spot = await response.json();
     dispatch(oneSpot(spot));
-    return response;
+    return spot; //switched to return spot from return response
   } else {
     const errors = await response.json();
     return errors;
@@ -89,7 +89,7 @@ export const userSpots = () => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(readSpots(data.Spots));
-    return response;
+    return data; //switched to return data from return response
   } else {
     const errors = await response.json();
     return errors;
@@ -97,61 +97,110 @@ export const userSpots = () => async (dispatch) => {
 };
 
 export const addSpot = (spotData) => async (dispatch) => {
-  const response = await csrfFetch("/api/spots", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(spotData),
-  });
-
-  if (response.ok) {
-    console.log("ADDING A SPOT", response);
-    const data = await response.json();
-    console.log("NEW SPOT DATA CHECK", data);
-    dispatch(oneSpot(data)); //CHECK DISPATCH
-    return data;
-  } else {
-    const errors = await response.json();
+  console.log("start to add");
+  //Maybe a .then is needed
+  try {
+    const response = await csrfFetch("/api/spots", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(spotData),
+    });
+    if (response.ok) {
+      console.log("ADDING A SPOT", response);
+      const data = await response.json();
+      console.log("NEW SPOT DATA CHECK", data);
+      dispatch(oneSpot(data)); //CHECK DISPATCH
+      return data;
+    }
+  } catch (error) {
+    console.log("ERROR STRUCK");
+    const errors = await error.json();
     return errors;
   }
+
+  // await csrfFetch("/api/spots", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(spotData),
+  // })
+  //   .then((response) => {
+  //     const data = response.json();
+  //     dispatch(oneSpot(data));
+  //     return response.json();
+  //   })
+  //   .catch((error) => {
+  //     console.log("ERROR HIT::", error)
+  //     error;
+  //   });
+
+  //  else {
+  //   console.log("ERROR STRUCK");
+  //   const errors = await response.json();
+  //   return errors;
+  // }
 };
 
-export const addSpotImages = (imageData, spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}/images`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(imageData),
-  });
-
-  if (response.ok) {
-    console.log("ADDING AN IMAGE", response);
-    const data = await response.json();
-    console.log("NEW IMAGE DATA CHECK", data);
-    dispatch(readImages(data)); //CHECK DISPATCH
-    return data;
-  } else {
-    const errors = await response.json();
+export const addSpotImage = (imageData, spotId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(imageData),
+    });
+    if (response.ok) {
+      console.log("ADDING AN IMAGE", response);
+      const data = await response.json();
+      console.log("NEW IMAGE DATA CHECK", data);
+      dispatch(readImages(data)); //CHECK DISPATCH
+      return data;
+    }
+  } catch (error) {
+    const errors = await error.json();
     return errors;
   }
+
+  // const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(imageData),
+  // });
+
+  // if (response.ok) {
+  //   console.log("ADDING AN IMAGE", response);
+  //   const data = await response.json();
+  //   console.log("NEW IMAGE DATA CHECK", data);
+  //   dispatch(readImages(data)); //CHECK DISPATCH
+  //   return data;
+  // } else {
+  //   const errors = await response.json();
+  //   return errors;
+  // }
 };
 
-export const updateSpot = (spotData, spotId) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(spotData),
-  });
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(updateSpot(data));
-    return data;
-  } else {
-    const errors = await response.json();
+export const thunkUpdateSpot = (spotData, spotId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(spotData),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateSpot(data));
+      return data;
+    }
+  } catch (error) {
+    const errors = await error.json();
     return errors;
   }
 };
@@ -176,9 +225,10 @@ const spotsReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case READ_SPOT:
-      // newState = {...state, spots: action.payload};
-      newState = Object.assign({}, state);
-      newState.spots = action.payload;
+      newState = { ...state, spots: action.payload };
+      console.log("NEWSTATE:: ", newState);
+      // newState = Object.assign({}, state);
+      // newState.spots = action.payload;
       return newState;
     case READ_ONE:
       newState = { ...state, spot: action.payload };
@@ -186,9 +236,13 @@ const spotsReducer = (state = initialState, action) => {
     case READ_IMAGES:
       newState = { ...state, images: action.payload };
       return newState;
+    case UPDATE_SPOT:
+      newState = { ...state };
+      newState[action.spotId] = action.spotData;
+      return newState;
     case REMOVE_SPOT:
       newState = { ...state };
-      delete newState[action.payload];
+      delete newState[action.spotId];
       return newState;
     default:
       return state;

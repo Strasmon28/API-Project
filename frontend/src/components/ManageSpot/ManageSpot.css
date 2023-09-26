@@ -1,8 +1,22 @@
-.spot{
-    border: solid red;
-    width: 25%
+#title{
+    font-family: "Georgia", serif;
 }
 
+/* #create-button{
+
+} */
+
 .spotsContainer{
-    border: solid orange;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    /* border: solid orange; */
+    width: 100%;
+    padding: 10px;
+}
+
+.spot{
+    border: solid red;
+    height: 200px;
+    padding: 10px;
+    margin: 10px;
 }

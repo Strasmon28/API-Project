@@ -24,7 +24,7 @@ function Home() {
   return (
     <div className="border">
       {spots.map((spot) => (
-        <NavLink to={`/spotDetail/${spot.id}`}>
+        <NavLink className="spot-preview" to={`/spotDetail/${spot.id}`}>
           <div className="oneSpot" key={spot.id}>
             <div className="imageHover">
               <span className="tooltipText">{spot.name}</span>
@@ -36,8 +36,8 @@ function Home() {
             </div>
             <div className="section2">
               <div className="leftInfo">
-                <p>{spot.city} {spot.state}</p>
-                <p>${spot.price} night</p>
+                <p className="city-state">{spot.city}, {spot.state}</p>
+                <p className="price-per-night">${spot.price} <span>night</span></p>
               </div>
               {spot.avgRating ? (
                 <i className="fa-solid fa-star rating">{spot.avgRating.toFixed(2)}</i>

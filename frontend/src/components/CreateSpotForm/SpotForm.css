@@ -4,7 +4,11 @@
     align-items: center;
     justify-content: center;
     align-content: center;
-    border: solid red;
+    /* border: solid red; */
+}
+
+#form-container{
+    width: 500px;
 }
 
 .imageInputs{
@@ -12,8 +16,18 @@
     flex-direction: column;
 }
 
-.citystate{
+.city-state{
     display: flex;
+    align-items: center;
+    width: 100%;
+    height: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.lat-lng{
+    display: flex;
+    width: 100%;
 }
 
 textarea{
@@ -36,5 +50,6 @@ textarea{
 }
 
 .titleWrap{
-    overflow-wrap: break-word;
+    word-wrap: break-word;
+    /* color: red; */
 }

@@ -36,15 +36,18 @@ function NoUserProfileButton() {
 
   return (
     <div className="nouserContainer">
-      <button onClick={openMenu} className="fa-solid fa-user noUserButton"></button>
+      <button onClick={openMenu} className="noUserButton">
+        <i className="fa-solid fa-bars"></i>
+        <i className="fa-solid fa-user"></i>
+      </button>
       <div className={ulClassName} ref={ulRef}>
-        <div>
+        <div className="login-button">
           <OpenModalButton
             buttonText="Log In"
             modalComponent={<LoginFormModal />}
           />
         </div>
-        <div>
+        <div className="signup-button">
           <OpenModalButton
             buttonText="Sign Up"
             modalComponent={<SignupFormModal />}

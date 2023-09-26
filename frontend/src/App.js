@@ -16,6 +16,8 @@ function App() {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
+  //reconsider route path wildcards?
+
   return (
     <>
       <Navigation isLoaded={isLoaded} />
