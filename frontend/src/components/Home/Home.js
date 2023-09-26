@@ -12,9 +12,12 @@ function Home() {
     dispatch(allSpots());
   }, [dispatch]);
 
-  const spots = useSelector((state) => state.spotsStore.spots);
+  // const spots = useSelector((state) => state.spotsStore.spots);
+  const spots = Object.values(useSelector((state) => state.spotsStore));
+  const spotcheck = useSelector((state) => console.log("THESTATE::", state))
+  console.log("New allspots", spots)
 
-  if (!spots) {
+  if (!spots || spots[0] === null) {
     //check this
     return null;
   }

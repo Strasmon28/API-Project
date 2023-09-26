@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, NavLink } from "react-router-dom";
-import { deleteSpot, userSpots } from "../../store/spots";
+import { userSpots } from "../../store/spots";
 import "./ManageSpot.css";
 // import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteSpotModal from "../DeleteSpotModal/DeleteSpot";
@@ -12,17 +12,18 @@ import OpenModalButton from "../OpenModalButton";
 function ManageSpot() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const spots = useSelector((state) => state.spotsStore.spots);
-  const spotcheck = useSelector((state) => console.log("THE STATE::", state.spotsStore))
-  const [modalCheck, setModalCheck] = useState(false);
+
+  const spots = Object.values(useSelector((state) => state.spotsStore));
+  // const spotcheck = useSelector((state) => console.log("THE STATE::", state.spotsStore))
+  // const [modalCheck, setModalCheck] = useState(false);
   // console.log("THE SPOTS", typeof spots);
   //should useEffect should trigger again on a modal close? use context?
-
+  console.log("The managing spots", spots)
   useEffect(() => {
     dispatch(userSpots());
   }, [dispatch]);
 
-  if (!spots) {
+  if (!spots || spots[0] === null) {
     console.log("checking undefined");
     return null;
   }

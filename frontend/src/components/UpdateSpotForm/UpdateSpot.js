@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { thunkUpdateSpot } from "../../store/spots";
@@ -16,7 +16,7 @@ function UpdateSpotForm() {
   const [lng, setLng] = useState(100);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(""); //price should be a number
   const [errors, setErrors] = useState({});
 
 
