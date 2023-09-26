@@ -18,8 +18,6 @@ const READ_IMAGES = "spots/spotImages";
 //     }
 // };
 
-//How should I have the action creators?
-//Multiple and single?
 const readSpots = (spots) => {
   return {
     type: READ_SPOT,
@@ -147,26 +145,25 @@ export const addSpot = (spotData) => async (dispatch) => {
 };
 
 export const addSpotImage = (imageData, spotId) => async (dispatch) => {
-  try{
-  const response = await csrfFetch(`/api/spots/${spotId}/images`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(imageData),
-  });
-  if (response.ok) {
-    console.log("ADDING AN IMAGE", response);
-    const data = await response.json();
-    console.log("NEW IMAGE DATA CHECK", data);
-    dispatch(readImages(data)); //CHECK DISPATCH
-    return data;
-  }
-  } catch(error) {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(imageData),
+    });
+    if (response.ok) {
+      console.log("ADDING AN IMAGE", response);
+      const data = await response.json();
+      console.log("NEW IMAGE DATA CHECK", data);
+      dispatch(readImages(data)); //CHECK DISPATCH
+      return data;
+    }
+  } catch (error) {
     const errors = await error.json();
     return errors;
   }
-
 
   // const response = await csrfFetch(`/api/spots/${spotId}/images`, {
   //   method: "POST",
@@ -189,19 +186,21 @@ export const addSpotImage = (imageData, spotId) => async (dispatch) => {
 };
 
 export const thunkUpdateSpot = (spotData, spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(spotData),
-  });
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(updateSpot(data));
-    return data;
-  } else {
-    const errors = await response.json();
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(spotData),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateSpot(data));
+      return data;
+    }
+  } catch (error) {
+    const errors = await error.json();
     return errors;
   }
 };

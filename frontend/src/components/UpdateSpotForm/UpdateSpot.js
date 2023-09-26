@@ -86,7 +86,7 @@ function UpdateSpotForm() {
           placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          required
+          // required
         ></input>
         {errors.country && <p>{errors.country}</p>}
         <p>Street Address</p>
@@ -95,7 +95,7 @@ function UpdateSpotForm() {
           placeholder="Street Address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          required
+          // required
         ></input>
         {errors.address && <p>{errors.address}</p>}
         <div className="cityState">
@@ -105,7 +105,7 @@ function UpdateSpotForm() {
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          required
+          // required
         ></input>
         {errors.city && <p>{errors.city}</p>}
         <p>State</p>
@@ -114,7 +114,7 @@ function UpdateSpotForm() {
           placeholder="State"
           value={state}
           onChange={(e) => setState(e.target.value)}
-          required
+          // required
         ></input>
         {errors.state && <p>{errors.state}</p>}
         </div>
@@ -128,7 +128,6 @@ function UpdateSpotForm() {
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          //Check if there is 30 characters
         ></textarea>
         {errors.description && <p>{errors.description}</p>}
         {description.length < 30 && <p>Description needs a minimum of 30 characters</p>}
@@ -142,7 +141,7 @@ function UpdateSpotForm() {
           placeholder="Name your spot"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
+          // required
         ></input>
         {errors.name && <p>{errors.name}</p>}
         <h2>Set a base price for your spot</h2>
@@ -157,7 +156,7 @@ function UpdateSpotForm() {
           placeholder="Price per night (USD)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          required
+          // required
         ></input>
         {errors.price && <p>{errors.price}</p>}
         </div>

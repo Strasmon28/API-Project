@@ -34,7 +34,7 @@ module.exports = {
       },
       {
         ownerId: 2,
-        address: "Big lans 124",
+        address: "Big lane 124",
         city: "Houston",
         state: "Texas",
         country: "United States of America",
@@ -43,7 +43,43 @@ module.exports = {
         name: "Big House",
         description: "Come to the bighouse",
         price: 123
-      }
+      },
+      {
+        ownerId: 2,
+        address: "Larger street 345",
+        city: "San Antonio",
+        state: "Texas",
+        country: "United States of America",
+        lat: 79,
+        lng: 100,
+        name: "Mega Apartment",
+        description: "Most spacious apartment ever",
+        price: 220
+      },
+      {
+        ownerId: 3,
+        address: "Parakeet roadway 740",
+        city: "San Antonio",
+        state: "Texas",
+        country: "United States of America",
+        lat: 80,
+        lng: 108,
+        name: "The cafe",
+        description: "Most tasty coffee",
+        price: 350
+      },
+      {
+        ownerId: 3,
+        address: "Highway avenue 550",
+        city: "Corpus Christi",
+        state: "Texas",
+        country: "United States of America",
+        lat: 82,
+        lng: 94,
+        name: "Mega Apartment",
+        description: "Most spacious apartment ever",
+        price: 400
+      },
     ], { validate: true })
   },
 
@@ -57,7 +93,7 @@ module.exports = {
     options.tableName = "Spots";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['App Academy', "Big House"] }
+      name: { [Op.in]: ['App Academy', "Big House", "Mega Apartment"] }
     }, {});
   }
 };
