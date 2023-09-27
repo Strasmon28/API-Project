@@ -226,14 +226,15 @@ const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case READ_SPOT:
       // const spotState = { ...state, spots: action.spots };
+      //allspots returns an array of objects
+      //Could react see the change?
       const spotState = {};
 
       action.spots.forEach(spot => {
         spotState[spot.id] = spot;
       });
       console.log("NEWSTATE:: ", spotState);
-      // newState = Object.assign({}, state);
-      // newState.spots = action.payload;
+
       return spotState;
     case READ_ONE:
       newState = { ...state, spot: action.spot };

@@ -17,7 +17,7 @@ function Home() {
   const spotcheck = useSelector((state) => console.log("THESTATE::", state))
   console.log("New allspots", spots)
 
-  if (!spots || spots[0] === null) {
+  if (!spots || spots[0] === null) { //make store empty and check if spots.length > 0? since .values will give an array
     //check this
     return null;
   }

@@ -6,6 +6,7 @@ import "./ManageSpot.css";
 // import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteSpotModal from "../DeleteSpotModal/DeleteSpot";
 import OpenModalButton from "../OpenModalButton";
+import noImage from "../ManageSpot/ManageSpotImages/na.jpg"
 
 //Should take all the current user's spots and have them displayed
 //Simliar layout to homepage, but with 2 buttons for update and delete
@@ -49,13 +50,26 @@ function ManageSpot() {
       <button id="create-button" onClick={formRedirect}>Create a New Spot</button>
       <div className="spotsContainer">
         {spots.map((spot) => (
-          <div key={spot.id} className="spot">
-            <div>image placeholder</div>
-            <p>
-              {spot.city}, {spot.state}
-            </p>
-            <p>star rating</p>
-            <p>${spot.price} per night</p>
+          <div className="oneSpot" key={spot.id}>
+          <div className="imageHover">
+            <span className="tooltipText">{spot.name}</span>
+            {spot.previewImage ? (
+              <p className="placeholder">{spot.previewImage}</p>
+            ) : (
+              <img class="spotImage" src={noImage} alt="preview" />
+            )}
+          </div>
+          <div className="section2">
+            <div className="leftInfo">
+              <p className="city-state">{spot.city}, {spot.state}</p>
+              <p className="price-per-night">${spot.price} <span>night</span></p>
+            </div>
+            {spot.avgRating ? (
+              <i className="fa-solid fa-star rating">{spot.avgRating.toFixed(2)}</i>
+            ) : (
+              <i className="fa-solid fa-star rating">New</i>
+            )}
+          </div>
             <NavLink to={`/updateform/${spot.id}`}>
             <button>UPDATE</button>
             </NavLink>
@@ -70,4 +84,19 @@ function ManageSpot() {
   );
 }
 
+{/* <div key={spot.id} className="spot">
+            <div>image placeholder</div>
+            <p>
+              {spot.city}, {spot.state}
+            </p>
+            <p>star rating</p>
+            <p>${spot.price} per night</p>
+            <NavLink to={`/updateform/${spot.id}`}>
+            <button>UPDATE</button>
+            </NavLink>
+            <OpenModalButton
+              buttonText="DELETE"
+              modalComponent={<DeleteSpotModal spotId={spot.id} />}
+            />
+          </div> */}
 export default ManageSpot;
