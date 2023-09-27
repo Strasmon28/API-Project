@@ -56,7 +56,7 @@ function ManageSpot() {
             {spot.previewImage ? (
               <p className="placeholder">{spot.previewImage}</p>
             ) : (
-              <img class="spotImage" src={noImage} alt="preview" />
+              <img className="spotImage" src={noImage} alt="preview" />
             )}
           </div>
           <div className="section2">

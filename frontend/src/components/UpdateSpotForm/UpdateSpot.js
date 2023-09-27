@@ -21,8 +21,8 @@ function UpdateSpotForm() {
   const [price, setPrice] = useState(""); //price should be a number
   const [errors, setErrors] = useState({});
 
-  const spotcheck = useSelector((store) => console.log("The Store:: ", store));
-  const spot = useSelector((store) => store.spotsStore.spot);
+  const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
+  const spot = useSelector((store) => store.spotsStore[spotId]);
 
 
   useEffect(() => {
