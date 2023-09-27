@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { thunkUpdateSpot } from "../../store/spots";
-import './UpdateSpot.css';
+import { singleSpot } from "../../store/spots";
+import "./UpdateSpot.css";
 
 function UpdateSpotForm() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   const history = useHistory();
+
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -16,23 +18,31 @@ function UpdateSpotForm() {
   const [lng, setLng] = useState(100);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(""); //price should be a number
   const [errors, setErrors] = useState({});
 
+  const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
+  const spot = useSelector((store) => store.spotsStore[spotId]);
 
-  // const spot = useSelector(store => store.spotStore.spot[spotId]);
 
-  // if(!spot){
-  //   return null;
-  // }
+  useEffect(() => {
+    console.log("spot BEFORE dispatch", spot)
+    dispatch(singleSpot(spotId));
+    console.log("spot AFTER dispatch", spot)
+    if(spot){
+    setCountry(spot.country);
+    setAddress(spot.address);
+    setCity(spot.city);
+    setState(spot.state);
+    setDescription(spot.description);
+    setName(spot.name);
+    setPrice(spot.price);
+    }
+  }, [dispatch, spotId]);
 
-  // setCountry(spot.country);
-  // setAddress(spot.address);
-  // setCity(spot.city);
-  // setState(spot.state);
-  // setDescription(spot.description);
-  // setName(spot.name);
-  // setPrice(spot.errors);
+  if (!spot) {
+    return null;
+  }
 
   //useStates needed
   //is a useSelector needed?
@@ -40,8 +50,8 @@ function UpdateSpotForm() {
   //use an onSubmit event, take info from the input fields to update the chosen spot
 
   //Update the spot, then add images after
-  const onSubmit = async(e) => {
-    //Should we async?
+  const onSubmit = async (e) => {
+
     e.preventDefault();
     setLat(40);
     setLng(100);
@@ -61,13 +71,12 @@ function UpdateSpotForm() {
     //Should update the info
     const updatedSpot = await dispatch(thunkUpdateSpot(spotData, spotId));
     //If there are errors, display those errors and do not redirect
-    if(updatedSpot.errors){
+    if (updatedSpot.errors) {
       setErrors(updatedSpot.errors);
     } else {
-    history.push(`/spotDetail/${updatedSpot.id}`); //or is it spotId useparams?
+      history.push(`/spotDetail/${updatedSpot.id}`); //or is it spotId useparams?
     }
   };
-
 
   //LAT AND LNG ARE OPTIONAL
   //Lat range is -90 to 90 and lng range is -180 to 180
@@ -99,24 +108,24 @@ function UpdateSpotForm() {
         ></input>
         {errors.address && <p>{errors.address}</p>}
         <div className="cityState">
-        <p>City</p>
-        <input
-          type="text"
-          placeholder="City"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          // required
-        ></input>
-        {errors.city && <p>{errors.city}</p>}
-        <p>State</p>
-        <input
-          type="text"
-          placeholder="State"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-          // required
-        ></input>
-        {errors.state && <p>{errors.state}</p>}
+          <p>City</p>
+          <input
+            type="text"
+            placeholder="City"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            // required
+          ></input>
+          {errors.city && <p>{errors.city}</p>}
+          <p>State</p>
+          <input
+            type="text"
+            placeholder="State"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            // required
+          ></input>
+          {errors.state && <p>{errors.state}</p>}
         </div>
         <h2>Describe your place to guests</h2>
         <h3 className="titleWrap">
@@ -130,7 +139,9 @@ function UpdateSpotForm() {
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
         {errors.description && <p>{errors.description}</p>}
-        {description.length < 30 && <p>Description needs a minimum of 30 characters</p>}
+        {description.length < 30 && (
+          <p>Description needs a minimum of 30 characters</p>
+        )}
         <h2>Create a title for your spot</h2>
         <p>
           Catch guests' attention with a spot title that highlights what makes
@@ -150,15 +161,15 @@ function UpdateSpotForm() {
           search results.
         </h3>
         <div className="pricing">
-        <p>$</p>
-        <input
-          type="number"
-          placeholder="Price per night (USD)"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          // required
-        ></input>
-        {errors.price && <p>{errors.price}</p>}
+          <p>$</p>
+          <input
+            type="number"
+            placeholder="Price per night (USD)"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            // required
+          ></input>
+          {errors.price && <p>{errors.price}</p>}
         </div>
         <button type="submit">Update Spot</button>
       </form>

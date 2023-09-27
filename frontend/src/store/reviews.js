@@ -90,9 +90,9 @@ const reviewsReducer = (state = initialState, action) => {
     let newState;
     switch(action.type){
         case LOAD_REVIEWS:
-            // newState = {...state, reviews: action.payload }
-            newState = Object.assign({}, state);
-            newState.reviews = action.payload;
+            newState = {...state, reviews: action.payload }
+            // newState = Object.assign({}, state);
+            // newState.reviews = action.payload;
             return newState;
         case ADD_REVIEW:
             newState = {...state, review: action.payload }

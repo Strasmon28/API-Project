@@ -21,21 +21,21 @@ const READ_IMAGES = "spots/spotImages";
 const readSpots = (spots) => {
   return {
     type: READ_SPOT,
-    payload: spots,
+    spots,
   };
 };
 
 const readImages = (images) => {
   return {
     type: READ_IMAGES,
-    payload: images,
+    images,
   };
 };
 
 const oneSpot = (spot) => {
   return {
     type: READ_ONE,
-    payload: spot,
+    spot,
   };
 };
 
@@ -218,23 +218,29 @@ export const deleteSpot = (spotId) => async (dispatch) => {
   }
 };
 
-const initialState = {};
+const initialState = { spots: null, spot: null, images: null};
 
 //Reducer
 const spotsReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case READ_SPOT:
-      newState = { ...state, spots: action.payload };
-      console.log("NEWSTATE:: ", newState);
-      // newState = Object.assign({}, state);
-      // newState.spots = action.payload;
-      return newState;
+      // const spotState = { ...state, spots: action.spots };
+      //allspots returns an array of objects
+      //Could react see the change?
+      const spotState = {};
+
+      action.spots.forEach(spot => {
+        spotState[spot.id] = spot;
+      });
+      console.log("NEWSTATE:: ", spotState);
+
+      return spotState;
     case READ_ONE:
-      newState = { ...state, spot: action.payload };
+      newState = { ...state, spot: action.spot };
       return newState;
     case READ_IMAGES:
-      newState = { ...state, images: action.payload };
+      newState = { ...state, images: action.images };
       return newState;
     case UPDATE_SPOT:
       newState = { ...state };
@@ -242,6 +248,7 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     case REMOVE_SPOT:
       newState = { ...state };
+      console.log("THIS IS THE DELETION STATE SHALLOW COPY", newState)
       delete newState[action.spotId];
       return newState;
     default:

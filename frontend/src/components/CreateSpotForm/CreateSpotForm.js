@@ -83,7 +83,7 @@ function CreateSpotForm() {
     // console.log("New spot in the frontend", newSpot.spot);
     // console.log("New spot's id check", newSpot.spot.id);
 
-    //if no spot was created, don't add the image
+    //if a spot was created, add the image, otherwise continue and set then display errors.
     if (newSpot.id) {
       const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
     }
