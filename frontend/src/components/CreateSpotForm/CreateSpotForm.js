@@ -118,7 +118,6 @@ function CreateSpotForm() {
           value={country}
           onChange={(e) => setCountry(e.target.value)}
           // required
-          optional
         ></input>
         {errors.country && <p>{errors.country}</p>}
         <p>Street Address</p>
@@ -210,6 +209,7 @@ function CreateSpotForm() {
             onChange={(e) => setPrice(e.target.value)}
             // required
           ></input>
+          {errors.price && <p>{errors.price}</p>}
         </div>
         <h2>Liven up your spot with photos</h2>
         <h3>Submit a link to at least one photo to publish your spot.</h3>

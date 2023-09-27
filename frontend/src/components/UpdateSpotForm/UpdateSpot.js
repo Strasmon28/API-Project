@@ -22,8 +22,8 @@ function UpdateSpotForm() {
   const [errors, setErrors] = useState({});
 
   const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
-  const spot = useSelector((store) => store.spotsStore[spotId]);
-
+  // const spot = useSelector((store) => store.spotsStore[spotId]);
+  const spot = useSelector((store) => store.spotsStore.singleSpot);
 
   useEffect(() => {
     console.log("spot BEFORE dispatch", spot)
@@ -40,7 +40,7 @@ function UpdateSpotForm() {
     }
   }, [dispatch, spotId]);
 
-  if (!spot) {
+  if (!spot || Object.values(spot).length <= 0) {
     return null;
   }
 

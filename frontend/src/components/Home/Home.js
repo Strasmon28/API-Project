@@ -13,28 +13,29 @@ function Home() {
   }, [dispatch]);
 
   // const spots = useSelector((state) => state.spotsStore.spots);
-  const spots = Object.values(useSelector((state) => state.spotsStore));
-  const spotcheck = useSelector((state) => console.log("THESTATE::", state))
+  const spots = Object.values(useSelector((state) => state.spotsStore.allSpots));
+  const spotcheck = useSelector((state) => console.log("THESTATE::", state.spotsStore.allSpots))
   console.log("New allspots", spots)
 
-  if (!spots || spots[0] === null) { //make store empty and check if spots.length > 0? since .values will give an array
+  if (spots.length <= 0) { //make store empty and check if spots.length > 0? since .values will give an array
     //check this
+    console.log("undefinedd trigger")
     return null;
   }
   //City, state review avg, price
   //For each spot, make an element
-
+  console.log("ALL SPOTS BEFORE RENDER", spots)
   return (
     <div className="border">
       {spots.map((spot) => (
-        <NavLink className="spot-preview" to={`/spotDetail/${spot.id}`}>
-          <div className="oneSpot" key={spot.id}>
+        <NavLink key={spot.id} className="spot-preview" to={`/spotDetail/${spot.id}`}>
+          <div className="oneSpot">
             <div className="imageHover">
               <span className="tooltipText">{spot.name}</span>
               {spot.previewImage ? (
                 <p className="placeholder">{spot.previewImage}</p>
               ) : (
-                <img class="spotImage" src={noImage} alt="preview" />
+                <img className="spotImage" src={noImage} alt="preview" />
               )}
             </div>
             <div className="section2">

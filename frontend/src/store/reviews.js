@@ -13,21 +13,21 @@ const REMOVE_REVIEW = "reviews/removeReview";
 const loadReviews = (reviews) => {
     return{
         type: LOAD_REVIEWS,
-        payload: reviews
+        reviews
     }
 }
 
 const addReview = (review) => {
     return{
         type: ADD_REVIEW,
-        payload: review
+        review
     }
 }
 
 const removeReview = (reviewId) => {
     return{
         type: REMOVE_REVIEW,
-        payload: reviewId
+        reviewId
     }
 }
 
@@ -38,6 +38,7 @@ export const allReviews = (spotId) => async(dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: "GET"
     });
+    
     if(response.ok){
         const data = await response.json();
         console.log("data", data);
@@ -49,11 +50,6 @@ export const allReviews = (spotId) => async(dispatch) => {
         return errors;
     }
 }
-
-//THIS IS FOR MANAGE REVIEWS, is this required for MVP?
-// export const userReviews = () => async(dispatch) => {
-//     const response = await csrfFetch(`/review/current`)
-// }
 
 //Create a new review
 export const createReview = (reviewData, spotId) => async(dispatch) => {
@@ -90,16 +86,20 @@ const reviewsReducer = (state = initialState, action) => {
     let newState;
     switch(action.type){
         case LOAD_REVIEWS:
-            newState = {...state, reviews: action.payload }
-            // newState = Object.assign({}, state);
-            // newState.reviews = action.payload;
-            return newState;
+            // newState = {...state, reviews: action.reviews}
+            const reviewState = {};
+
+            action.reviews.forEach(review => {
+                reviewState[review.id] = review;
+            });
+            console.log("allReview state: ", reviewState)
+            return reviewState;
         case ADD_REVIEW:
-            newState = {...state, review: action.payload }
+            newState = {...state, [action.review.id]: action.review}
             return newState;
         case REMOVE_REVIEW:
             newState = {...state}
-            delete newState[action.payload];
+            delete newState[action.reviewId];
             return newState;
         default:
             return state;

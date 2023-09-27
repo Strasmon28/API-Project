@@ -14,7 +14,8 @@ function ManageSpot() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const spots = Object.values(useSelector((state) => state.spotsStore));
+  // const spots = Object.values(useSelector((state) => state.spotsStore));
+  const spots = useSelector((state) => state.spotsStore.allSpots);
   // const spotcheck = useSelector((state) => console.log("THE STATE::", state.spotsStore))
   // const [modalCheck, setModalCheck] = useState(false);
   // console.log("THE SPOTS", typeof spots);
@@ -29,9 +30,9 @@ function ManageSpot() {
     return null;
   }
 
-  //   if(Object.keys(spots).length === 0){
-  //     return null;
-  //   }
+    if(Object.keys(spots).length <= 0){
+      return null;
+    }
 
 
   const formRedirect = (e) => {
@@ -84,19 +85,4 @@ function ManageSpot() {
   );
 }
 
-{/* <div key={spot.id} className="spot">
-            <div>image placeholder</div>
-            <p>
-              {spot.city}, {spot.state}
-            </p>
-            <p>star rating</p>
-            <p>${spot.price} per night</p>
-            <NavLink to={`/updateform/${spot.id}`}>
-            <button>UPDATE</button>
-            </NavLink>
-            <OpenModalButton
-              buttonText="DELETE"
-              modalComponent={<DeleteSpotModal spotId={spot.id} />}
-            />
-          </div> */}
 export default ManageSpot;

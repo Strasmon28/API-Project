@@ -155,7 +155,7 @@ router.get("/current", requireAuth, async(req, res) => {
     res.json({ Spots }) //Should the responses be objects?
 });
 
-//Get spot details from an id
+//Get details of a spot from an id
 router.get("/:spotId", async(req, res) => {
     const id = req.params.spotId;
     console.log(id);
