@@ -10,35 +10,41 @@ function UpdateSpotForm() {
   const { spotId } = useParams();
   const history = useHistory();
 
-  const [country, setCountry] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const spotState = useSelector((store) => store.spotsStore.allSpots);
+  console.log("The spot state before filter", spotState)
+
+  const spot = spotState.filter(onespot => onespot.id === parseInt(spotId))[0];
+  console.log("spot", spot)
+
+  const [country, setCountry] = useState(spot.country);
+  const [address, setAddress] = useState(spot.address);
+  const [city, setCity] = useState(spot.city);
+  const [state, setState] = useState(spot.state);
   const [lat, setLat] = useState(40);
   const [lng, setLng] = useState(100);
-  const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(""); //price should be a number
+  const [description, setDescription] = useState(spot.description);
+  const [name, setName] = useState(spot.name);
+  const [price, setPrice] = useState(spot.price); //price should be a number
   const [errors, setErrors] = useState({});
 
-  const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
+  // const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
   // const spot = useSelector((store) => store.spotsStore[spotId]);
-  const spot = useSelector((store) => store.spotsStore.singleSpot);
 
+  console.log("UPDATING SPOT", spot);
   useEffect(() => {
     console.log("spot BEFORE dispatch", spot)
     dispatch(singleSpot(spotId));
     console.log("spot AFTER dispatch", spot)
-    if(spot){
-    setCountry(spot.country);
-    setAddress(spot.address);
-    setCity(spot.city);
-    setState(spot.state);
-    setDescription(spot.description);
-    setName(spot.name);
-    setPrice(spot.price);
-    }
-  }, [dispatch, spotId]);
+    // if(spotId === spot.id){
+    // setCountry(spot.country);
+    // setAddress(spot.address);
+    // setCity(spot.city);
+    // setState(spot.state);
+    // setDescription(spot.description);
+    // setName(spot.name);
+    // setPrice(spot.price);
+    // }
+  }, [dispatch]);
 
   if (!spot || Object.values(spot).length <= 0) {
     return null;
@@ -80,6 +86,8 @@ function UpdateSpotForm() {
 
   //LAT AND LNG ARE OPTIONAL
   //Lat range is -90 to 90 and lng range is -180 to 180
+  console.log(description);
+  console.log("UPDATING SPOT BEFORE RENDER", spot)
   return (
     <div className="createContainer">
       <form onSubmit={onSubmit}>
@@ -138,7 +146,7 @@ function UpdateSpotForm() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
-        {errors.description && <p>{errors.description}</p>}
+        {/* {errors.description && <p>{errors.description}</p>} */}
         {description.length < 30 && (
           <p>Description needs a minimum of 30 characters</p>
         )}

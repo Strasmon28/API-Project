@@ -145,7 +145,7 @@ function GetOneSpot() {
             <p id="price-per-night">${spot.price} <span>night</span></p>
             <div className="reserveReviews">
               <i className="fa-solid fa-star">
-                {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
+                {reviews.length > 0 && spot.avgStarRating ? spot.avgStarRating.toFixed(2) : "New"}
               </i>
               {reviewDot}
               {reviewCounter}
@@ -156,7 +156,7 @@ function GetOneSpot() {
       </div>
       <div className="reviewNumbers">
         <i className="fa-solid fa-star">
-          {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
+          {reviews.length > 0 && spot.avgStarRating ? spot.avgStarRating.toFixed(2) : "New"}
         </i>
         {reviewDot}
         {reviewCounter}

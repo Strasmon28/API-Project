@@ -246,8 +246,12 @@ const spotsReducer = (state = initialState, action) => {
       // Find the correct array and update its info to make a new ref
       // const filterSpot = newState.allSpots.filter(spot => spot.id === action.spotId);
       newState = { ...state, singleSpot: {[action.spotId]: action.spotData}}
+
       // newState = action.spotData;
       //action.spotId = action.spotData
+      // newState = { ...state };
+      // newState[action.spotId] = action.spotData;
+      // return newState;
       return newState;
     case REMOVE_SPOT:
       // console.log("THIS IS THE DELETION STATE SHALLOW COPY", newState)
