@@ -15,7 +15,7 @@ function CreateReviewModal({ spotId }) {
   const { closeModal } = useModal();
   const disabled = false;
   //Dispatch to store with corresponding spotId and create the review
-  const onSubmit = (e) => {
+  const onSubmit = async(e) => {
     //Should we async?
     e.preventDefault();
     const reviewData = {
@@ -24,8 +24,8 @@ function CreateReviewModal({ spotId }) {
     };
 
     //The thunk should return a response with data or an error message
-    const newReview = dispatch(createReview(reviewData, spotId));
-    if(newReview.message){
+    const newReview = await dispatch(createReview(reviewData, spotId));
+    if(newReview && newReview.message){
       setErrors(newReview.message);
     } else{
       closeModal();

@@ -60,8 +60,6 @@ export const allSpots = () => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    console.log("spot data", data);
-    console.log("data.Spots", data.Spots);
     dispatch(readSpots(data.Spots));
     return data; //switched to return data from return response
   } else {
@@ -218,26 +216,27 @@ export const deleteSpot = (spotId) => async (dispatch) => {
   }
 };
 
-const initialState = { spots: null, spot: null, images: null};
+// const initialState = { spots: null, spot: null, images: null};
+const initialState = { allSpots: {}, singleSpot: {} }
+//add isLoading = true?
 
 //Reducer
 const spotsReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case READ_SPOT:
-      // const spotState = { ...state, spots: action.spots };
       //allspots returns an array of objects
       //Could react see the change?
-      const spotState = {};
+      newState = { ...state, allSpots: action.spots };
 
-      action.spots.forEach(spot => {
-        spotState[spot.id] = spot;
-      });
-      console.log("NEWSTATE:: ", spotState);
+      // action.spots.forEach(spot => {
+      //   spotState.allSpots[spot.id] = spot;
+      // });
+      // console.log("NEWSTATE: ", spotState);
 
-      return spotState;
+      return newState;
     case READ_ONE:
-      newState = { ...state, spot: action.spot };
+      newState = { ...state, singleSpot: action.spot };
       return newState;
     case READ_IMAGES:
       newState = { ...state, images: action.images };
@@ -247,9 +246,11 @@ const spotsReducer = (state = initialState, action) => {
       newState[action.spotId] = action.spotData;
       return newState;
     case REMOVE_SPOT:
-      newState = { ...state };
+      newState = { ...state.allSpots.filter(spot => spot.id !== action.spotId) };
       console.log("THIS IS THE DELETION STATE SHALLOW COPY", newState)
-      delete newState[action.spotId];
+      // console.log("DELETION allspot shallow", newState.allSpots);
+      // console.log(newState.allSpots.filter(spot => action.spotId === spot.id))
+      // const deleteKey = newState.allSpots.filter(spot => spot.id === action.spotId);
       return newState;
     default:
       return state;

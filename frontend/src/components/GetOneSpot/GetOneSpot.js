@@ -14,28 +14,30 @@ import secondaryImage from "./OneSpotImages/No-Image-Placeholder.png";
 function GetOneSpot() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  console.log(spotId);
 
   const sessionUser = useSelector((state) => state.session.user);
-  const spot = useSelector((state) => state.spotsStore.spot);
-  const reviews = useSelector((state) => state.reviewsStore.reviews);
+  // const spot = useSelector((state) => state.spotsStore[spotId]);//Maybe change these?
+  const spot = useSelector((state) => state.spotsStore.singleSpot)
+  // const reviews = useSelector((state) => state.reviewsStore.reviews);
+  // const reviewcheck = useSelector((state) => console.log("REVIEW CHECKING: ", state))
+  console.log("THE SPOT", spot);
+  const reviews = Object.values(useSelector((state) => state.reviewsStore));
+  //This useselector may need reviewing
   useEffect(() => {
     dispatch(singleSpot(spotId));
     dispatch(allReviews(spotId));
   }, [dispatch, spotId]);
 
-  // const reviews = useSelector((state) => state.reviewsStore.reviews);
-  // if(Object.keys(spot).length === 0){ //check this, object truthy returns falsy
-  //     return null;
-  // }
+  console.log("THE SPOT BEFORE RENDER", spot);
+  console.log("THE REVIEWS BEFORE RENDER", reviews);
 
   const featureAlert = (e) => {
     e.preventDefault();
     window.alert("Feature coming soon");
   };
-  console.log(spot);
+  // console.log(spot);
   // console.log(spot.Owner.firstName);
-
+  // console.log(typeof reviews)
   if (!spot || !reviews) {
     return null;
   }
@@ -65,13 +67,29 @@ function GetOneSpot() {
     }
   });
 
+  if(Object.values(spot).length <= 0){
+    return null;
+  }
+
   let firstName = null;
   let lastName = null;
-  if (spot.Owner.firstName) {
+  if (spot.hasOwnProperty('Owner')) { //CHECK THIS
     firstName = spot.Owner.firstName;
-  }
-  if (spot.Owner.lastName) {
     lastName = spot.Owner.lastName;
+  }
+  // if (spot.Owner.lastName) { //CHECK THIS
+  //   lastName = spot.Owner.lastName;
+  // }
+  //Check if the any of the reviews are missing the User key
+  let reviewsValid = true;
+  reviews.forEach(review => {
+    if (!review.hasOwnProperty('User')){
+      reviewsValid = false;
+    }
+  })
+
+  if(reviewsValid === false){
+    return null;
   }
 
   let reviewDot = null;
@@ -86,9 +104,13 @@ function GetOneSpot() {
     firstReview = null;
   }
 
+  //let reviewDecimal = stuff
+  //find
+
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
-  console.log("THE SPOT", spot);
+
+
   return (
     <div className="primary">
       <div className="secondary">
