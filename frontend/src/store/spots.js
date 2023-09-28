@@ -242,16 +242,19 @@ const spotsReducer = (state = initialState, action) => {
       newState = { ...state, images: action.images };
       return newState;
     case UPDATE_SPOT:
-      newState = { ...state };
-      newState[action.spotId] = action.spotData;
+      newState = { ...state }; //THIS NEEDS WORK
+      // Find the correct array and update its info to make a new ref
+      // const filterSpot = newState.allSpots.filter(spot => spot.id === action.spotId);
+      newState = { ...state, allSpots: {[action.spotId]: action.spotData}}
+      // newState = action.spotData;
+      //action.spotId = action.spotData
       return newState;
     case REMOVE_SPOT:
-      newState = { ...state.allSpots.filter(spot => spot.id !== action.spotId) };
-      console.log("THIS IS THE DELETION STATE SHALLOW COPY", newState)
+      // console.log("THIS IS THE DELETION STATE SHALLOW COPY", newState)
       // console.log("DELETION allspot shallow", newState.allSpots);
       // console.log(newState.allSpots.filter(spot => action.spotId === spot.id))
       // const deleteKey = newState.allSpots.filter(spot => spot.id === action.spotId);
-      return newState;
+      return { ...state, allSpots: state.allSpots.filter(spot => spot.id !== action.spotId) };
     default:
       return state;
   }

@@ -19,9 +19,10 @@ function GetOneSpot() {
   // const spot = useSelector((state) => state.spotsStore[spotId]);//Maybe change these?
   const spot = useSelector((state) => state.spotsStore.singleSpot)
   // const reviews = useSelector((state) => state.reviewsStore.reviews);
-  // const reviewcheck = useSelector((state) => console.log("REVIEW CHECKING: ", state))
+  const reviewcheck = useSelector((state) => console.log("REVIEW CHECKING: ", state.reviewsStore.spotReviews))
   console.log("THE SPOT", spot);
-  const reviews = Object.values(useSelector((state) => state.reviewsStore));
+
+  const reviews = Object.values(useSelector((state) => state.reviewsStore.spotReviews));
   //This useselector may need reviewing
   useEffect(() => {
     dispatch(singleSpot(spotId));
@@ -61,6 +62,7 @@ function GetOneSpot() {
   }
 
   //Iterate through reviews of this spot to see if one matches, if so don't show the create button.
+  console.log(reviews)
   reviews.forEach((review) => {
     if (sessionUser && sessionUser.id === review.userId) {
       makeNewReview = null;
