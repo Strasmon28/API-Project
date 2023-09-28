@@ -245,7 +245,7 @@ const spotsReducer = (state = initialState, action) => {
       newState = { ...state }; //THIS NEEDS WORK
       // Find the correct array and update its info to make a new ref
       // const filterSpot = newState.allSpots.filter(spot => spot.id === action.spotId);
-      newState = { ...state, allSpots: {[action.spotId]: action.spotData}}
+      newState = { ...state, singleSpot: {[action.spotId]: action.spotData}}
       // newState = action.spotData;
       //action.spotId = action.spotData
       return newState;

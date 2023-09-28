@@ -19,15 +19,15 @@ function GetOneSpot() {
   // const spot = useSelector((state) => state.spotsStore[spotId]);//Maybe change these?
   const spot = useSelector((state) => state.spotsStore.singleSpot)
   // const reviews = useSelector((state) => state.reviewsStore.reviews);
-  const reviewcheck = useSelector((state) => console.log("REVIEW CHECKING: ", state.reviewsStore.spotReviews))
-  console.log("THE SPOT", spot);
+  // const reviewcheck = useSelector((state) => console.log("REVIEW CHECKING: ", state.reviewsStore.spotReviews))
+  // console.log("THE SPOT", spot);
 
-  const reviews = Object.values(useSelector((state) => state.reviewsStore.spotReviews));
+  const reviews = Object.values(useSelector((state) => state.reviewsStore));
   //This useselector may need reviewing
   useEffect(() => {
     dispatch(singleSpot(spotId));
     dispatch(allReviews(spotId));
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId, reviews.length]);
 
   console.log("THE SPOT BEFORE RENDER", spot);
   console.log("THE REVIEWS BEFORE RENDER", reviews);
@@ -84,13 +84,15 @@ function GetOneSpot() {
   // }
   //Check if the any of the reviews are missing the User key
   let reviewsValid = true;
+  console.log("reviewValidBoolDefault", reviewsValid)
   reviews.forEach(review => {
     if (!review.hasOwnProperty('User')){
       reviewsValid = false;
     }
   })
-
+  console.log("reviewValidBoolchecked", reviewsValid)
   if(reviewsValid === false){
+    console.log("ReviewValid check failed");
     return null;
   }
 
@@ -106,6 +108,7 @@ function GetOneSpot() {
     firstReview = null;
   }
 
+  //if
   //let reviewDecimal = stuff
   //find
 

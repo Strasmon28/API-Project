@@ -82,31 +82,32 @@ export const deleteReview = (reviewId) => async (dispatch) => {
   }
 };
 
-const initialState = { spotReviews: {} };
+const initialState = { }; //spotReviews: {}
 
 //Reducer
 const reviewsReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case LOAD_REVIEWS:
-      newState = {...state };
-      // const reviewState = {};
+      // newState = {...state, spotReviews: {} };
+      const reviewState = {};
 
     if(action.reviews.length > 0){
       action.reviews.forEach((review) => {
-        newState.spotReviews[review.id] = review;
+        reviewState[review.id] = review;
       });
       console.log("allReview state: ", newState);
     }
       console.log("allReview state: ", newState);
-    return newState;
+    return reviewState;
     case ADD_REVIEW:
-      newState = { ...state, spotReviews: { [action.review.id]: action.review } };
+      // newState = { ...state, spotReviews: action.review };
+      newState = { ...state, [action.review.id]: action.review };
       return newState;
     case REMOVE_REVIEW:
       // return { ...state, spotReviews: state.spotReviews.filter(review => review.id !== action.spotId) };
-      newState = { ...state }
-      delete newState.spotReviews[action.reviewId];
+      newState = { ...state };
+      delete newState[action.reviewId];
       return newState;
     default:
       return state;
