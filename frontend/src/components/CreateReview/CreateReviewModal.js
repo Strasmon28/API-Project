@@ -25,7 +25,7 @@ function CreateReviewModal({ spotId }) {
 
     //The thunk should return a response with data or an error message
     const newReview = await dispatch(createReview(reviewData, spotId));
-    if(newReview.message){
+    if(newReview && newReview.message){
       setErrors(newReview.message);
     } else{
       closeModal();

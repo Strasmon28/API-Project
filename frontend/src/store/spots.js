@@ -218,6 +218,7 @@ export const deleteSpot = (spotId) => async (dispatch) => {
 
 // const initialState = { spots: null, spot: null, images: null};
 const initialState = { allSpots: {}, singleSpot: {} }
+//add isLoading = true?
 
 //Reducer
 const spotsReducer = (state = initialState, action) => {
@@ -245,9 +246,11 @@ const spotsReducer = (state = initialState, action) => {
       newState[action.spotId] = action.spotData;
       return newState;
     case REMOVE_SPOT:
-      newState = { ...state };
+      newState = { ...state.allSpots.filter(spot => spot.id !== action.spotId) };
       console.log("THIS IS THE DELETION STATE SHALLOW COPY", newState)
-      delete newState[action.spotId];
+      // console.log("DELETION allspot shallow", newState.allSpots);
+      // console.log(newState.allSpots.filter(spot => action.spotId === spot.id))
+      // const deleteKey = newState.allSpots.filter(spot => spot.id === action.spotId);
       return newState;
     default:
       return state;

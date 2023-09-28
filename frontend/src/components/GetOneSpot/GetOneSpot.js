@@ -28,6 +28,8 @@ function GetOneSpot() {
     dispatch(allReviews(spotId));
   }, [dispatch, spotId]);
 
+  console.log("THE SPOT BEFORE RENDER", spot);
+  console.log("THE REVIEWS BEFORE RENDER", reviews);
 
   const featureAlert = (e) => {
     e.preventDefault();
@@ -69,14 +71,26 @@ function GetOneSpot() {
     return null;
   }
 
-  // let firstName = null;
-  // let lastName = null;
-  // if (spot.Owner.firstName) { //CHECK THIS
-  //   firstName = spot.Owner.firstName;
-  // }
+  let firstName = null;
+  let lastName = null;
+  if (spot.hasOwnProperty('Owner')) { //CHECK THIS
+    firstName = spot.Owner.firstName;
+    lastName = spot.Owner.lastName;
+  }
   // if (spot.Owner.lastName) { //CHECK THIS
   //   lastName = spot.Owner.lastName;
   // }
+  //Check if the any of the reviews are missing the User key
+  let reviewsValid = true;
+  reviews.forEach(review => {
+    if (!review.hasOwnProperty('User')){
+      reviewsValid = false;
+    }
+  })
+
+  if(reviewsValid === false){
+    return null;
+  }
 
   let reviewDot = null;
   let reviewCounter = null;
@@ -95,8 +109,7 @@ function GetOneSpot() {
 
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
-  console.log("THE SPOT", spot);
-  console.log("THE REVIEWS", reviews);
+
 
   return (
     <div className="primary">
@@ -118,7 +131,7 @@ function GetOneSpot() {
       <div className="hosting">
         <div className="hostDetails">
           <h3>
-            HOSTED BY {spot.Owner.firstName} {spot.Owner.lastName}{" "}
+            HOSTED BY {firstName} {lastName}{" "}
           </h3>
           <p>{spot.description}</p>
         </div>
