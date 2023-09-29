@@ -37,7 +37,7 @@ function CreateSpotForm() {
     if (!previewImage) {
       setPhotoErrors({ errors: "Preview image is required" });
     }
-    console.log("another submit check");
+
     const spotData = {
       country,
       address,
@@ -51,7 +51,8 @@ function CreateSpotForm() {
     };
 
     const imageData = {
-      previewImage,
+      url: previewImage,
+      preview: true
     };
 
     // const imageData1 = {
@@ -79,21 +80,18 @@ function CreateSpotForm() {
 
     //Try, catch needed?
     console.log("New spot check in frontend code", newSpot);
-    // console.log("newSpot.id", newSpot.id);
-    // console.log("New spot in the frontend", newSpot.spot);
-    // console.log("New spot's id check", newSpot.spot.id);
+
 
     //if a spot was created, add the image, otherwise continue and set then display errors.
-    if (newSpot.id) {
-      const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
-    }
 
+    const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
+    if (newImage && newImage.message) setPhotoErrors(newImage.message);
     //Image data WILL be a URL, API will only return a
     //If creating the spot had an error, set those errors
     if (newSpot && newSpot.errors) {
       setErrors(newSpot.errors);
       //If adding an image had an error, set those errors
-      // if (newImage && newImage.message) setPhotoErrors(newImage.message);
+
     } else {
       //(!newSpot.errors && !newImage.errors)
       history.push(`/spotDetail/${newSpot.id}`);

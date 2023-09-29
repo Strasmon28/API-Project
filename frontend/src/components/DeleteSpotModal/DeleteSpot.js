@@ -25,12 +25,14 @@ function DeleteSpotModal({spotId}) {
 
   //Confirm will delete the spot, cancel will just close the modal
   return (
-    <>
-      <h1>Confirm Delete</h1>
-      <h2>Are you sure you want to remove this spot?</h2>
+    <div className="delete-modal">
+      <h1 className="delete-title">Confirm Delete</h1>
+      <h2 className="confirm-message">Are you sure you want to remove this spot?</h2>
+      <div className="buttons-container">
       <button className="confirmDelete" onClick={confirmDeleteSpot}>Yes (Delete Spot)</button>
       <button className="cancelDelete" onClick={cancelDelete}>No (Keep Spot)</button>
-    </>
+      </div>
+    </div>
   );
 }
 

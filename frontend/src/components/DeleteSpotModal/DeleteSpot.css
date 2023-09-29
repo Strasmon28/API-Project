@@ -1,3 +1,33 @@
+.delete-modal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.delete-title{
+    font-family: Georgia, serif;
+}
+
+.confirm-message{
+    font-family: Georgia, serif;
+    font-size: 20px;
+}
+
+.buttons-container{
+    display: flex;
+    flex-direction: column;
+    height: 55px;
+    justify-content: space-between;
+    margin-top: 50px;
+    width: 90%;
+    height: 110px;
+}
+
+.buttons-container button{
+    height: 45px;
+    box-shadow: 2px 2px black;
+}
+
 .confirmDelete{
     background-color: red;
     color: white

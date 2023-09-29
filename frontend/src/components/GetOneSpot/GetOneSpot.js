@@ -124,7 +124,7 @@ function GetOneSpot() {
           {spot.city}, {spot.state}, {spot.country}
         </h2>
         <div className="imageContainer">
-          <img className="previewImage" src={preview} alt="Preview" />
+          <img className="previewImage" src={spot.SpotImages[0].url} alt="Preview" />
           <div className="secondary-images">
             <img className="image" src={secondaryImage} alt="First pic" />
             <img className="image" src={secondaryImage} alt="Second pic" />
