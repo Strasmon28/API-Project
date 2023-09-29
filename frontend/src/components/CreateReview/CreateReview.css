@@ -1,5 +1,27 @@
 .starRating {
     display: flex;
+    height: 50px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.review-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.review-text-input {
+    width: 90%;
+}
+
+.starRating {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.fa-star{
+    height: 20px;
 }
 
 .starRating .filled {
@@ -8,4 +30,17 @@
 
 .starRating .empty {
     color: blue
+}
+
+.review-submit:disabled{
+    width: 90%;
+    height: 60px;
+}
+
+.review-submit:enabled{
+    width: 90%;
+    height: 60px;
+    background-color: #ff4545;
+    color: white;
+    box-shadow: 2px 2px black;
 }

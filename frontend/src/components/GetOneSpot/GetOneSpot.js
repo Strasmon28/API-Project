@@ -7,7 +7,8 @@ import "./GetOneSpot.css";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "../CreateReview/CreateReviewModal";
 import DeleteReviewModal from "../DeleteReview/DeleteReviewModal";
-import preview from "./OneSpotImages/na.jpg";
+// import preview from "./OneSpotImages/na.jpg";
+import noImage from '../GetOneSpot/OneSpotImages/na.jpg'
 import secondaryImage from "./OneSpotImages/No-Image-Placeholder.png";
 
 //Should get all info of one spot and display its information
@@ -111,10 +112,16 @@ function GetOneSpot() {
   //if
   //let reviewDecimal = stuff
   //find
+  const invalidImage = (e) => {
+    e.currentTarget.src = noImage;
+  };
 
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
-
+  let preview = null;
+  if(spot.SpotImages.length > 0){
+    preview = spot.SpotImages[0].url
+  }
 
   return (
     <div className="primary">
@@ -124,7 +131,7 @@ function GetOneSpot() {
           {spot.city}, {spot.state}, {spot.country}
         </h2>
         <div className="imageContainer">
-          <img className="previewImage" src={spot.SpotImages[0].url} alt="Preview" />
+          <img className="previewImage" src={preview} alt="Preview" onError={invalidImage}/>
           <div className="secondary-images">
             <img className="image" src={secondaryImage} alt="First pic" />
             <img className="image" src={secondaryImage} alt="Second pic" />

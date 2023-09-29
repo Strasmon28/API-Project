@@ -38,6 +38,9 @@ function CreateSpotForm() {
       setPhotoErrors({ errors: "Preview image is required" });
     }
 
+    setLat(40);
+    setLng(100);
+
     const spotData = {
       country,
       address,
@@ -55,24 +58,29 @@ function CreateSpotForm() {
       preview: true
     };
 
-    // const imageData1 = {
-    //   img1,
-    // };
+    const imageData1 = {
+      url: img1,
+      preview: false
+    };
 
-    // const imageData2 = {
-    //   img2,
-    // };
+    const imageData2 = {
+      url: img2,
+      preview: false
+    };
 
-    // const imageData3 = {
-    //   img3,
-    // };
+    const imageData3 = {
+      url: img3,
+      preview: false
+    };
 
-    // const imageData4 = {
-    //   img4,
-    // };
+    const imageData4 = {
+      url: img4,
+      preview: false
+    };
 
     //Dispatch info to have it add it to the store
     const newSpot = await dispatch(addSpot(spotData));
+
     console.log("newSpot submit check");
     //Give the image data to the spot, use the newSpot's id
     //Image creation takes a single url string
@@ -85,6 +93,11 @@ function CreateSpotForm() {
     //if a spot was created, add the image, otherwise continue and set then display errors.
 
     const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
+    // await dispatch(addSpotImage(imageData1, newSpot.id));
+    // await dispatch(addSpotImage(imageData2, newSpot.id));
+    // await dispatch(addSpotImage(imageData3, newSpot.id));
+    // await dispatch(addSpotImage(imageData4, newSpot.id));
+    
     if (newImage && newImage.message) setPhotoErrors(newImage.message);
     //Image data WILL be a URL, API will only return a
     //If creating the spot had an error, set those errors
@@ -147,7 +160,7 @@ function CreateSpotForm() {
           ></input>
           {errors.state && <p>{errors.state}</p>}
         </div>
-        <div className="lat-lng">
+        {/* <div className="lat-lng">
           <p>Latitude</p>
           <input
             type="number"
@@ -164,7 +177,7 @@ function CreateSpotForm() {
             onChange={(e) => setLng(e.target.value)}
           ></input>
           {errors.lng && <p>{errors.lng}</p>}
-        </div>
+        </div> */}
         <h2>Describe your place to guests</h2>
         <h3 className="titleWrap">
           Mention the best features of your space, any special amentities like
