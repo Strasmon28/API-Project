@@ -55,27 +55,27 @@ function CreateSpotForm() {
 
     const imageData = {
       url: previewImage,
-      preview: true
+      preview: true,
     };
 
     const imageData1 = {
       url: img1,
-      preview: false
+      preview: false,
     };
 
     const imageData2 = {
       url: img2,
-      preview: false
+      preview: false,
     };
 
     const imageData3 = {
       url: img3,
-      preview: false
+      preview: false,
     };
 
     const imageData4 = {
       url: img4,
-      preview: false
+      preview: false,
     };
 
     //Dispatch info to have it add it to the store
@@ -89,7 +89,6 @@ function CreateSpotForm() {
     //Try, catch needed?
     console.log("New spot check in frontend code", newSpot);
 
-
     //if a spot was created, add the image, otherwise continue and set then display errors.
 
     const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
@@ -97,15 +96,14 @@ function CreateSpotForm() {
     // await dispatch(addSpotImage(imageData2, newSpot.id));
     // await dispatch(addSpotImage(imageData3, newSpot.id));
     // await dispatch(addSpotImage(imageData4, newSpot.id));
-    
-    if (newImage && newImage.message) setPhotoErrors(newImage.message);
+
+    // if (newImage && newImage.message) setPhotoErrors(newImage.message);
     //Image data WILL be a URL, API will only return a
     //If creating the spot had an error, set those errors
     if (newSpot && newSpot.errors) {
       setErrors(newSpot.errors);
       //If adding an image had an error, set those errors
-
-    } else {
+    } else if(!photoErrors) {
       //(!newSpot.errors && !newImage.errors)
       history.push(`/spotDetail/${newSpot.id}`);
     }
@@ -113,6 +111,9 @@ function CreateSpotForm() {
 
   //LAT AND LNG ARE OPTIONAL
   //Lat range is -90 to 90 and lng range is -180 to 180
+
+  //if condition to see if the
+
   return (
     <div className="createContainer">
       <form id="form-container" onSubmit={onSubmit}>
@@ -123,6 +124,7 @@ function CreateSpotForm() {
           reservation.
         </p>
         <p>Country</p>
+
         <input
           type="text"
           placeholder="Country"
@@ -130,8 +132,9 @@ function CreateSpotForm() {
           onChange={(e) => setCountry(e.target.value)}
           // required
         ></input>
-        {errors.country && <p>{errors.country}</p>}
+        {errors.country && <p className="errors">{errors.country}</p>}
         <p>Street Address</p>
+
         <input
           type="text"
           placeholder="Street Address"
@@ -139,26 +142,32 @@ function CreateSpotForm() {
           onChange={(e) => setAddress(e.target.value)}
           // required
         ></input>
-        {errors.address && <p>{errors.address}</p>}
-        <div className="city-state">
-          <p>City</p>
-          <input
-            type="text"
-            placeholder="City"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            // required
-          ></input>
-          {errors.city && <p>{errors.city}</p>}
-          <p>State</p>
-          <input
-            type="text"
-            placeholder="State"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            // required
-          ></input>
-          {errors.state && <p>{errors.state}</p>}
+        {errors.address && <p className="errors">{errors.address}</p>}
+        <div className="create-city-state">
+          <div className="create-city-container">
+            <p>City</p>
+            <input
+              type="text"
+              placeholder="City"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              // required
+            ></input>
+            <span>, </span>
+            {errors.city && <p className="errors">{errors.city}</p>}
+          </div>
+          <div className="create-state-container">
+            <p>State</p>
+
+            <input
+              type="text"
+              placeholder="State"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              // required
+            ></input>
+            {errors.state && <p className="errors">{errors.state}</p>}
+          </div>
         </div>
         {/* <div className="lat-lng">
           <p>Latitude</p>
@@ -185,12 +194,12 @@ function CreateSpotForm() {
         </h3>
         <textarea
           type="text"
+          className="description-input"
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          //Check if there is 30 characters
         ></textarea>
-        {errors.description && <p>{errors.description}</p>}
+        {errors.description && <p className="errors">{errors.description}</p>}
         {description.length < 30 && (
           <p>Description needs a minimum of 30 characters</p>
         )}
@@ -201,6 +210,7 @@ function CreateSpotForm() {
         </p>
         <input
           type="text"
+          className="title-input"
           placeholder="Name your spot"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -211,16 +221,19 @@ function CreateSpotForm() {
           Competitive pricing can help your listing stand out and rank higher in
           search results.
         </h3>
-        <div className="pricing">
-          <p>$</p>
-          <input
-            type="number"
-            placeholder="Price per night (USD)"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            // required
-          ></input>
-          {errors.price && <p>{errors.price}</p>}
+        <div className="create-pricing-container">
+          <div className="price-input-container">
+            <p>$</p>
+            <input
+              type="number"
+              className="pricing-input"
+              placeholder="Price per night (USD)"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              // required
+            ></input>
+          </div>
+          {errors.price && <p className="errors">{errors.price}</p>}
         </div>
         <h2>Liven up your spot with photos</h2>
         <h3>Submit a link to at least one photo to publish your spot.</h3>
@@ -232,7 +245,7 @@ function CreateSpotForm() {
             onChange={(e) => setPreviewImage(e.target.value)}
             // required
           ></input>
-          {photoErrors.errors && <p>{photoErrors.errors}</p>}
+          {photoErrors.errors && <p className="errors">{photoErrors.errors}</p>}
           <input
             type="url"
             placeholder="Image URL"
@@ -258,7 +271,11 @@ function CreateSpotForm() {
             onChange={(e) => setImg4(e.target.value)}
           ></input>
         </div>
-        <button type="submit">Create Spot</button>
+        <div className="create-button-border">
+          <button className="create-button" type="submit">
+            Create Spot
+          </button>
+        </div>
       </form>
     </div>
   ); //CHECK IF IMAGE INPUTS END WITH .png, .jpg, or .jpeg
