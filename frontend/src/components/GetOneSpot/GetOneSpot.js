@@ -7,7 +7,8 @@ import "./GetOneSpot.css";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "../CreateReview/CreateReviewModal";
 import DeleteReviewModal from "../DeleteReview/DeleteReviewModal";
-import preview from "./OneSpotImages/na.jpg";
+// import preview from "./OneSpotImages/na.jpg";
+import noImage from '../GetOneSpot/OneSpotImages/na.jpg'
 import secondaryImage from "./OneSpotImages/No-Image-Placeholder.png";
 
 //Should get all info of one spot and display its information
@@ -19,14 +20,15 @@ function GetOneSpot() {
   // const spot = useSelector((state) => state.spotsStore[spotId]);//Maybe change these?
   const spot = useSelector((state) => state.spotsStore.singleSpot)
   // const reviews = useSelector((state) => state.reviewsStore.reviews);
-  // const reviewcheck = useSelector((state) => console.log("REVIEW CHECKING: ", state))
-  console.log("THE SPOT", spot);
+  // const reviewcheck = useSelector((state) => console.log("REVIEW CHECKING: ", state.reviewsStore.spotReviews))
+  // console.log("THE SPOT", spot);
+
   const reviews = Object.values(useSelector((state) => state.reviewsStore));
   //This useselector may need reviewing
   useEffect(() => {
     dispatch(singleSpot(spotId));
     dispatch(allReviews(spotId));
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId, reviews.length]);
 
   console.log("THE SPOT BEFORE RENDER", spot);
   console.log("THE REVIEWS BEFORE RENDER", reviews);
@@ -61,6 +63,7 @@ function GetOneSpot() {
   }
 
   //Iterate through reviews of this spot to see if one matches, if so don't show the create button.
+  console.log(reviews)
   reviews.forEach((review) => {
     if (sessionUser && sessionUser.id === review.userId) {
       makeNewReview = null;
@@ -82,13 +85,15 @@ function GetOneSpot() {
   // }
   //Check if the any of the reviews are missing the User key
   let reviewsValid = true;
+  console.log("reviewValidBoolDefault", reviewsValid)
   reviews.forEach(review => {
     if (!review.hasOwnProperty('User')){
       reviewsValid = false;
     }
   })
-
+  console.log("reviewValidBoolchecked", reviewsValid)
   if(reviewsValid === false){
+    console.log("ReviewValid check failed");
     return null;
   }
 
@@ -104,12 +109,37 @@ function GetOneSpot() {
     firstReview = null;
   }
 
+  //if
   //let reviewDecimal = stuff
   //find
+  const invalidImage = (e) => {
+    e.currentTarget.src = noImage;
+  };
 
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
+  let preview = null;
+  let img1 = null;
+  let img2 = null;
+  let img3 = null;
+  let img4 = null;
 
+  console.log(spot.SpotImages)
+
+  if(spot.hasOwnProperty("SpotImages") && spot.SpotImages.length > 0){
+    if(spot.SpotImages.length >= 1)
+    preview = spot.SpotImages[0].url;
+    if(spot.SpotImages.length >= 2)
+    img1 = spot.SpotImages[1].url;
+    if(spot.SpotImages.length >= 3)
+    img2 = spot.SpotImages[2].url;
+    if(spot.SpotImages.length >= 4)
+    img3 = spot.SpotImages[3].url;
+    if(spot.SpotImages.length >= 5)
+    img4 = spot.SpotImages[4].url;
+  }
+
+  //insert secondary images
 
   return (
     <div className="primary">
@@ -119,12 +149,12 @@ function GetOneSpot() {
           {spot.city}, {spot.state}, {spot.country}
         </h2>
         <div className="imageContainer">
-          <img className="previewImage" src={preview} alt="Preview" />
+        <img className="previewImage" src={preview} alt="Preview" onError={invalidImage}/>
           <div className="secondary-images">
-            <img className="image" src={secondaryImage} alt="First pic" />
-            <img className="image" src={secondaryImage} alt="Second pic" />
-            <img className="image" src={secondaryImage} alt="Third pic" />
-            <img className="image" src={secondaryImage} alt="Fourth pic" />
+            <img className="image" src={img1} alt="First pic" onError={invalidImage}/>
+            <img className="image" src={img2} alt="Second pic" onError={invalidImage}/>
+            <img className="image" src={img3} alt="Third pic" onError={invalidImage}/>
+            <img className="image" src={img4} alt="Fourth pic" onError={invalidImage}/>
           </div>
         </div>
       </div>
@@ -140,7 +170,7 @@ function GetOneSpot() {
             <p id="price-per-night">${spot.price} <span>night</span></p>
             <div className="reserveReviews">
               <i className="fa-solid fa-star">
-                {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
+                {reviews.length > 0 && spot.avgStarRating ? spot.avgStarRating.toFixed(2) : "New"}
               </i>
               {reviewDot}
               {reviewCounter}
@@ -151,7 +181,7 @@ function GetOneSpot() {
       </div>
       <div className="reviewNumbers">
         <i className="fa-solid fa-star">
-          {reviews.length > 0 ? spot.avgStarRating.toFixed(2) : "New"}
+          {reviews.length > 0 && spot.avgStarRating ? spot.avgStarRating.toFixed(2) : "New"}
         </i>
         {reviewDot}
         {reviewCounter}

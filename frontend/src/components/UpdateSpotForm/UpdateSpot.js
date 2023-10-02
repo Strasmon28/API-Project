@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { thunkUpdateSpot } from "../../store/spots";
+import { allSpots, thunkUpdateSpot } from "../../store/spots";
 import { singleSpot } from "../../store/spots";
 import "./UpdateSpot.css";
 
@@ -10,6 +10,23 @@ function UpdateSpotForm() {
   const { spotId } = useParams();
   const history = useHistory();
 
+  let spotState = useSelector((store) => store.spotsStore.allSpots);
+  console.log("The spot state before filter", spotState);
+  console.log(typeof spotState);
+
+
+
+  // console.log("spot", spot);
+
+  // const [country, setCountry] = useState(spot?.country);
+  // const [address, setAddress] = useState(spot?.address);
+  // const [city, setCity] = useState(spot?.city);
+  // const [state, setState] = useState(spot?.state);
+  // const [lat, setLat] = useState(40);
+  // const [lng, setLng] = useState(100);
+  // const [description, setDescription] = useState(spot?.description);
+  // const [name, setName] = useState(spot?.name);
+  // const [price, setPrice] = useState(spot?.price); //price should be a number
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -18,31 +35,37 @@ function UpdateSpotForm() {
   const [lng, setLng] = useState(100);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(""); //price should be a number
+  const [price, setPrice] = useState("")
   const [errors, setErrors] = useState({});
 
-  const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
+  // const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
   // const spot = useSelector((store) => store.spotsStore[spotId]);
-  const spot = useSelector((store) => store.spotsStore.singleSpot);
-
+  let spot;
+  // console.log("UPDATING SPOT", spot);
   useEffect(() => {
-    console.log("spot BEFORE dispatch", spot)
+    // console.log("spot BEFORE dispatch", spot);
     dispatch(singleSpot(spotId));
-    console.log("spot AFTER dispatch", spot)
-    if(spot){
-    setCountry(spot.country);
-    setAddress(spot.address);
-    setCity(spot.city);
-    setState(spot.state);
-    setDescription(spot.description);
-    setName(spot.name);
-    setPrice(spot.price);
-    }
-  }, [dispatch, spotId]);
+    // dispatch(allSpots());
+    // console.log("spot AFTER dispatch", spot);
+    // if(spotId === spot.id){
+    setCountry(spot?.country);
+    setAddress(spot?.address);
+    setCity(spot?.city);
+    setState(spot?.state);
+    setDescription(spot?.description);
+    setName(spot?.name);
+    setPrice(spot?.price);
+    // }
+  }, [dispatch]);
 
-  if (!spot || Object.values(spot).length <= 0) {
+  if (!spotState || Object.values(spotState).length <= 0) {
+    dispatch(allSpots());
     return null;
   }
+
+  spot = spotState.filter(
+    (onespot) => onespot.id === parseInt(spotId)
+  )[0];
 
   //useStates needed
   //is a useSelector needed?
@@ -51,7 +74,6 @@ function UpdateSpotForm() {
 
   //Update the spot, then add images after
   const onSubmit = async (e) => {
-
     e.preventDefault();
     setLat(40);
     setLng(100);
@@ -80,9 +102,11 @@ function UpdateSpotForm() {
 
   //LAT AND LNG ARE OPTIONAL
   //Lat range is -90 to 90 and lng range is -180 to 180
+  console.log(description);
+  console.log("UPDATING SPOT BEFORE RENDER", spot);
   return (
-    <div className="createContainer">
-      <form onSubmit={onSubmit}>
+    <div className="updateContainer">
+      <form className="update-form-container" onSubmit={onSubmit}>
         <h1>Update this Spot</h1>
         <h2>Where's your place located?</h2>
         <p>
@@ -97,7 +121,7 @@ function UpdateSpotForm() {
           onChange={(e) => setCountry(e.target.value)}
           // required
         ></input>
-        {errors.country && <p>{errors.country}</p>}
+        {errors.country && <p className="errors">{errors.country}</p>}
         <p>Street Address</p>
         <input
           type="text"
@@ -106,26 +130,31 @@ function UpdateSpotForm() {
           onChange={(e) => setAddress(e.target.value)}
           // required
         ></input>
-        {errors.address && <p>{errors.address}</p>}
-        <div className="cityState">
-          <p>City</p>
-          <input
-            type="text"
-            placeholder="City"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            // required
-          ></input>
-          {errors.city && <p>{errors.city}</p>}
-          <p>State</p>
-          <input
-            type="text"
-            placeholder="State"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            // required
-          ></input>
-          {errors.state && <p>{errors.state}</p>}
+        {errors.address && <p className="errors">{errors.address}</p>}
+        <div className="update-city-state">
+          <div className="update-city-container">
+            <p>City</p>
+            <input
+              type="text"
+              placeholder="City"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              // required
+            ></input>
+            <span>, </span>
+            {errors.city && <p className="errors">{errors.city}</p>}
+          </div>
+          <div className="update-state-container">
+            <p>State</p>
+            <input
+              type="text"
+              placeholder="State"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              // required
+            ></input>
+            {errors.state && <p className="errors">{errors.state}</p>}
+          </div>
         </div>
         <h2>Describe your place to guests</h2>
         <h3 className="titleWrap">
@@ -134,12 +163,13 @@ function UpdateSpotForm() {
         </h3>
         <textarea
           type="text"
+          className="update-description-input"
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
-        {errors.description && <p>{errors.description}</p>}
-        {description.length < 30 && (
+        {errors.description && <p className="errors">{errors.description}</p>}
+        {description?.length < 30 && (
           <p>Description needs a minimum of 30 characters</p>
         )}
         <h2>Create a title for your spot</h2>
@@ -149,29 +179,37 @@ function UpdateSpotForm() {
         </p>
         <input
           type="text"
+          className="title-input"
           placeholder="Name your spot"
           value={name}
           onChange={(e) => setName(e.target.value)}
           // required
         ></input>
-        {errors.name && <p>{errors.name}</p>}
+        {errors.name && <p className="errors">{errors.name}</p>}
         <h2>Set a base price for your spot</h2>
         <h3>
           Competitive pricing can help your listing stand out and rank higher in
           search results.
         </h3>
-        <div className="pricing">
-          <p>$</p>
-          <input
-            type="number"
-            placeholder="Price per night (USD)"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            // required
-          ></input>
-          {errors.price && <p>{errors.price}</p>}
+        <div className="update-pricing-container">
+          <div className="price-input-container">
+            <p>$</p>
+            <input
+              type="number"
+              className="pricing-input"
+              placeholder="Price per night (USD)"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              // required
+            ></input>
+          </div>
+          {errors.price && <p className="errors">{errors.price}</p>}
         </div>
-        <button type="submit">Update Spot</button>
+        <div className="update-button-border">
+        <button className="update-button" type="submit">
+          Update Spot
+        </button>
+        </div>
       </form>
     </div>
   ); //CHECK IF IMAGE INPUTS END WITH .png, .jpg, or .jpeg

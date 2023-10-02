@@ -61,7 +61,10 @@ li{
     position: absolute;
     border: black;
     border-radius: 30px;
-    background: lightgray;
+    background: #7bdfff;
+    right: 40px;
+    top: 60px;
+    padding: 20px;
 }
 
 /* No user profile button */
@@ -105,4 +108,8 @@ li{
 .userButtonList{
     display: flex;
     justify-content: center;
+}
+
+.user-button{
+    border-radius: 20px;
 }

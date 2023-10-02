@@ -2,9 +2,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     /* border: solid black; */
-    width: 100%;
+    width: 85%;
     height: 100%;
-    padding: 10px;
+    padding: 0px;
+    margin-left: 80px;
 }
 
 .oneSpot{
@@ -43,7 +44,7 @@
 
 .city-state{
     font-family: "Gill Sans", sans-serif;
-    font-size: 22px;
+    font-size: 15px;
 }
 
 .price-per-night{

@@ -41,10 +41,10 @@ export const allReviews = (spotId) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    console.log("data", data);
+    // console.log("data", data);
     console.log("data.Reviews", data.Reviews);
     dispatch(loadReviews(data.Reviews));
-    return response;
+    return data;
   } else {
     const errors = await response.json();
     return errors;
@@ -61,9 +61,10 @@ export const createReview = (reviewData, spotId) => async (dispatch) => {
     if (response.ok) {
       const review = await response.json();
       dispatch(addReview(review));
+      return review;
     }
   } catch (error) {
-    const errors = await response.json();
+    const errors = await error.json();
     return errors;
   }
 };
@@ -81,25 +82,30 @@ export const deleteReview = (reviewId) => async (dispatch) => {
   }
 };
 
-const initialState = {};
+const initialState = { }; //spotReviews: {}
 
 //Reducer
 const reviewsReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case LOAD_REVIEWS:
-      // newState = {...state, reviews: action.reviews}
+      // newState = {...state, spotReviews: {} };
       const reviewState = {};
 
+    if(action.reviews.length > 0){
       action.reviews.forEach((review) => {
         reviewState[review.id] = review;
       });
-      console.log("allReview state: ", reviewState);
-      return reviewState;
+      console.log("allReview state: ", newState);
+    }
+      console.log("allReview state: ", newState);
+    return reviewState;
     case ADD_REVIEW:
+      // newState = { ...state, spotReviews: action.review };
       newState = { ...state, [action.review.id]: action.review };
       return newState;
     case REMOVE_REVIEW:
+      // return { ...state, spotReviews: state.spotReviews.filter(review => review.id !== action.spotId) };
       newState = { ...state };
       delete newState[action.reviewId];
       return newState;

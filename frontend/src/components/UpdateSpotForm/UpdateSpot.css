@@ -1,0 +1,125 @@
+.updateContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    /* border: solid red; */
+}
+
+.updateContainer input{
+    border: solid black;
+    background-color: #adebff;
+}
+
+.update-form-container{
+    width: 500px;
+    font-family: "Gill Sans", sans-serif;
+}
+
+.imageInputs{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.update-city-state{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 98px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid black;
+    padding-bottom: 15px;
+}
+
+.update-city-container{
+    width: 310px;
+}
+
+.update-city-container span{
+    font-size: 18px;
+}
+
+.update-city-container input{
+    width: 90%;
+    margin-right: 5px;
+}
+
+.update-state-container{
+    margin-left: 10px;
+}
+
+.city-state .errors{
+    font-size: 14px;
+}
+
+/* .lat-lng{
+    display: flex;
+    width: 100%;
+} */
+
+.update-description-input{
+    width: 98%;
+    height: 150px;
+    border: solid black;
+    background-color: #adebff;
+}
+
+.errors{
+    color: red;
+}
+
+.update-pricing-container {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid black;
+    padding-bottom: 15px;
+    flex-direction: column;
+}
+
+.pricing-input{
+    height: 15px;
+    width: 100%;
+    margin-left: 10px;
+    align-self: center;
+}
+
+.price-input-container{
+    display: flex;
+    width: 100%;
+}
+
+.imageInputs input{
+    margin-bottom: 10px;
+    width: 98%;
+}
+
+.titleWrap{
+    word-wrap: break-word;
+    /* color: red; */
+}
+
+.title-input{
+    width: 98%;
+}
+
+.update-button-border{
+    display: flex;
+    justify-content: center;
+    /* border-top: 2px solid black; */
+    padding-top: 25px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.update-button{
+    background-color: #ff4545;
+    color: white;
+    box-shadow: 2px 2px black;
+    height: 30px;
+    width: 100px;
+    cursor: pointer;
+}

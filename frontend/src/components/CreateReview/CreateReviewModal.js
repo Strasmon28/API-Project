@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { createReview } from "../../store/reviews";
@@ -13,9 +13,9 @@ function CreateReviewModal({ spotId }) {
   const [starRating, setStarRating] = useState(0);
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
-  const disabled = false;
+  // const reviewButtonClassName = "review-submit";
   //Dispatch to store with corresponding spotId and create the review
-  const onSubmit = async(e) => {
+  const onSubmit = async (e) => {
     //Should we async?
     e.preventDefault();
     const reviewData = {
@@ -25,9 +25,9 @@ function CreateReviewModal({ spotId }) {
 
     //The thunk should return a response with data or an error message
     const newReview = await dispatch(createReview(reviewData, spotId));
-    if(newReview && newReview.message){
+    if (newReview && newReview.message) {
       setErrors(newReview.message);
-    } else{
+    } else {
       closeModal();
     }
   };
@@ -36,15 +36,16 @@ function CreateReviewModal({ spotId }) {
     setStars(number);
   };
 
-  console.log('stars', stars);
-  console.log('Actual star rating', starRating)
+  console.log("stars", stars);
+  console.log("Actual star rating", starRating);
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <form className="review-modal" onSubmit={onSubmit}>
         <h1>How was your stay?</h1>
         {errors.errors && <p>{errors.errors}</p>}
         <textarea
           type="text"
+          className="review-text-input"
           placeholder="Leave your review here..."
           value={review}
           onChange={(e) => setReview(e.target.value)}
@@ -55,10 +56,10 @@ function CreateReviewModal({ spotId }) {
               className="fa-regular fa-star"
               onClick={() => onClick(1)}
               onMouseEnter={() => {
-                if (!disabled) setStarRating(1);
+                setStarRating(1);
               }}
               onMouseLeave={() => {
-                if (!disabled) setStarRating(stars);
+                setStarRating(stars);
               }}
             ></i>
           </div>
@@ -67,10 +68,10 @@ function CreateReviewModal({ spotId }) {
               className="fa-regular fa-star"
               onClick={() => onClick(2)}
               onMouseEnter={() => {
-                if (!disabled) setStarRating(2);
+                setStarRating(2);
               }}
               onMouseLeave={() => {
-                if (!disabled) setStarRating(stars);
+                setStarRating(stars);
               }}
             ></i>
           </div>
@@ -79,10 +80,10 @@ function CreateReviewModal({ spotId }) {
               className="fa-regular fa-star"
               onClick={() => onClick(3)}
               onMouseEnter={() => {
-                if (!disabled) setStarRating(3);
+                setStarRating(3);
               }}
               onMouseLeave={() => {
-                if (!disabled) setStarRating(stars);
+                setStarRating(stars);
               }}
             ></i>
           </div>
@@ -91,10 +92,10 @@ function CreateReviewModal({ spotId }) {
               className="fa-regular fa-star"
               onClick={() => onClick(4)}
               onMouseEnter={() => {
-                if (!disabled) setStarRating(4);
+                setStarRating(4);
               }}
               onMouseLeave={() => {
-                if (!disabled) setStarRating(stars);
+                setStarRating(stars);
               }}
             ></i>
           </div>
@@ -103,15 +104,21 @@ function CreateReviewModal({ spotId }) {
               className="fa-regular fa-star"
               onClick={() => onClick(5)}
               onMouseEnter={() => {
-                if (!disabled) setStarRating(5);
+                setStarRating(5);
               }}
               onMouseLeave={() => {
-                if (!disabled) setStarRating(stars);
+                setStarRating(stars);
               }}
             ></i>
           </div>
         </div>
-        <button type="submit" disabled={review.length < 10 || stars === 0}>Submit Your Review</button>
+        <button
+          className="review-submit"
+          type="submit"
+          disabled={review.length < 10 || stars === 0}
+        >
+          Submit Your Review
+        </button>
       </form>
     </div>
   );

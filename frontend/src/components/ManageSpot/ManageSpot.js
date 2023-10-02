@@ -25,19 +25,28 @@ function ManageSpot() {
     dispatch(userSpots());
   }, [dispatch]);
 
-  // if (!spots) {
-  //   console.log("checking undefined");
-  //   return null;
-  // }
-  console.log("USERS SPOT BEFORE RENDER: ", spots);
-  if (Object.keys(spots).length <= 0) {
-    return null;
-  }
-
   const formRedirect = (e) => {
     e.preventDefault();
     history.push("/form");
   };
+
+  const invalidImage = (e) => {
+    e.currentTarget.src = noImage;
+  };
+
+  // if (!spots) {
+  //   console.log("checking undefined");
+  //   return null;
+  // }
+
+  console.log("USERS SPOT BEFORE RENDER: ", spots);
+  if (Object.keys(spots).length <= 0) {
+    return (<><h1 id="title">Manage Your Spots</h1>
+      <button id="create-button" onClick={formRedirect}>
+        Create a New Spot
+      </button>
+      </>)
+  }
 
   //   const ownedSpots = spots.Spots;
   //Delete button will be a modal menu
@@ -56,7 +65,12 @@ function ManageSpot() {
             <div className="imageHover">
               <span className="tooltipText">{spot.name}</span>
               {spot.previewImage ? (
-                <p className="placeholder">{spot.previewImage}</p>
+                <img
+                className="spotImage"
+                src={spot.previewImage}
+                alt="preview"
+                onError={invalidImage}
+              />
               ) : (
                 <img className="spotImage" src={noImage} alt="preview" />
               )}
