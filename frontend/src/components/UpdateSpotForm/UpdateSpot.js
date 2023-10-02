@@ -10,51 +10,62 @@ function UpdateSpotForm() {
   const { spotId } = useParams();
   const history = useHistory();
 
-  const spotState = useSelector((store) => store.spotsStore.allSpots);
+  let spotState = useSelector((store) => store.spotsStore.allSpots);
   console.log("The spot state before filter", spotState);
   console.log(typeof spotState);
 
 
-  const spot = spotState.filter(
-    (onespot) => onespot.id === parseInt(spotId)
-  )[0];
 
-  console.log("spot", spot);
+  // console.log("spot", spot);
 
-  const [country, setCountry] = useState(spot?.country);
-  const [address, setAddress] = useState(spot?.address);
-  const [city, setCity] = useState(spot?.city);
-  const [state, setState] = useState(spot?.state);
+  // const [country, setCountry] = useState(spot?.country);
+  // const [address, setAddress] = useState(spot?.address);
+  // const [city, setCity] = useState(spot?.city);
+  // const [state, setState] = useState(spot?.state);
+  // const [lat, setLat] = useState(40);
+  // const [lng, setLng] = useState(100);
+  // const [description, setDescription] = useState(spot?.description);
+  // const [name, setName] = useState(spot?.name);
+  // const [price, setPrice] = useState(spot?.price); //price should be a number
+  const [country, setCountry] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
   const [lat, setLat] = useState(40);
   const [lng, setLng] = useState(100);
-  const [description, setDescription] = useState(spot?.description);
-  const [name, setName] = useState(spot?.name);
-  const [price, setPrice] = useState(spot?.price); //price should be a number
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("")
   const [errors, setErrors] = useState({});
 
   // const spotcheck = useSelector((store) => console.log("The Store:: ", store.spotsStore));
   // const spot = useSelector((store) => store.spotsStore[spotId]);
-
-  console.log("UPDATING SPOT", spot);
+  let spot;
+  // console.log("UPDATING SPOT", spot);
   useEffect(() => {
-    console.log("spot BEFORE dispatch", spot);
+    // console.log("spot BEFORE dispatch", spot);
     dispatch(singleSpot(spotId));
-    dispatch(allSpots());
-    console.log("spot AFTER dispatch", spot);
+    // dispatch(allSpots());
+    // console.log("spot AFTER dispatch", spot);
     // if(spotId === spot.id){
-    // setCountry(spot.country);
-    // setAddress(spot.address);
-    // setCity(spot.city);
-    // setState(spot.state);
-    // setDescription(spot.description);
-    // setName(spot.name);
-    // setPrice(spot.price);
+    setCountry(spot?.country);
+    setAddress(spot?.address);
+    setCity(spot?.city);
+    setState(spot?.state);
+    setDescription(spot?.description);
+    setName(spot?.name);
+    setPrice(spot?.price);
     // }
   }, [dispatch]);
 
-  if (!spot || Object.values(spot).length <= 0) {
+  if (!spotState || Object.values(spotState).length <= 0) {
+    dispatch(allSpots());
     return null;
   }
+
+  spot = spotState.filter(
+    (onespot) => onespot.id === parseInt(spotId)
+  )[0];
 
   //useStates needed
   //is a useSelector needed?

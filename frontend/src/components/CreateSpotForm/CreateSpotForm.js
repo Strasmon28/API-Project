@@ -91,11 +91,11 @@ function CreateSpotForm() {
 
     //if a spot was created, add the image, otherwise continue and set then display errors.
 
-    const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
-    await dispatch(addSpotImage(imageData1, newSpot.id));
-    await dispatch(addSpotImage(imageData2, newSpot.id));
-    await dispatch(addSpotImage(imageData3, newSpot.id));
     await dispatch(addSpotImage(imageData4, newSpot.id));
+    await dispatch(addSpotImage(imageData3, newSpot.id));
+    await dispatch(addSpotImage(imageData2, newSpot.id));
+    await dispatch(addSpotImage(imageData1, newSpot.id));
+    await dispatch(addSpotImage(imageData, newSpot.id));
 
     // if (newImage && newImage.message) setPhotoErrors(newImage.message);
     //Image data WILL be a URL, API will only return a

@@ -125,11 +125,17 @@ function GetOneSpot() {
   let img4 = null;
 
   console.log(spot.SpotImages)
-  if(spot.SpotImages.length > 0){
+
+  if(spot.hasOwnProperty("SpotImages") && spot.SpotImages.length > 0){
+    if(spot.SpotImages.length >= 1)
     preview = spot.SpotImages[0].url;
+    if(spot.SpotImages.length >= 2)
     img1 = spot.SpotImages[1].url;
+    if(spot.SpotImages.length >= 3)
     img2 = spot.SpotImages[2].url;
+    if(spot.SpotImages.length >= 4)
     img3 = spot.SpotImages[3].url;
+    if(spot.SpotImages.length >= 5)
     img4 = spot.SpotImages[4].url;
   }
 
