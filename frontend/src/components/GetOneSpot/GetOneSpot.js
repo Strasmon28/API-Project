@@ -149,12 +149,12 @@ function GetOneSpot() {
           {spot.city}, {spot.state}, {spot.country}
         </h2>
         <div className="imageContainer">
-        <img className="previewImage" src={preview} alt="Preview" onError={invalidImage}/>
+        <img className="previewImage" src={img4} alt="Preview" onError={invalidImage}/>
           <div className="secondary-images">
-            <img className="image" src={img1} alt="First pic" onError={invalidImage}/>
+            <img className="image" src={img3} alt="First pic" onError={invalidImage}/>
             <img className="image" src={img2} alt="Second pic" onError={invalidImage}/>
-            <img className="image" src={img3} alt="Third pic" onError={invalidImage}/>
-            <img className="image" src={img4} alt="Fourth pic" onError={invalidImage}/>
+            <img className="image" src={img1} alt="Third pic" onError={invalidImage}/>
+            <img className="image" src={preview} alt="Fourth pic" onError={invalidImage}/>
           </div>
         </div>
       </div>
