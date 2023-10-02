@@ -92,10 +92,10 @@ function CreateSpotForm() {
     //if a spot was created, add the image, otherwise continue and set then display errors.
 
     const newImage = await dispatch(addSpotImage(imageData, newSpot.id));
-    // await dispatch(addSpotImage(imageData1, newSpot.id));
-    // await dispatch(addSpotImage(imageData2, newSpot.id));
-    // await dispatch(addSpotImage(imageData3, newSpot.id));
-    // await dispatch(addSpotImage(imageData4, newSpot.id));
+    await dispatch(addSpotImage(imageData1, newSpot.id));
+    await dispatch(addSpotImage(imageData2, newSpot.id));
+    await dispatch(addSpotImage(imageData3, newSpot.id));
+    await dispatch(addSpotImage(imageData4, newSpot.id));
 
     // if (newImage && newImage.message) setPhotoErrors(newImage.message);
     //Image data WILL be a URL, API will only return a
@@ -103,7 +103,7 @@ function CreateSpotForm() {
     if (newSpot && newSpot.errors) {
       setErrors(newSpot.errors);
       //If adding an image had an error, set those errors
-    } else if(!photoErrors) {
+    } else {
       //(!newSpot.errors && !newImage.errors)
       history.push(`/spotDetail/${newSpot.id}`);
     }
@@ -203,7 +203,7 @@ function CreateSpotForm() {
         {description.length < 30 && (
           <p>Description needs a minimum of 30 characters</p>
         )}
-        <h2>Create a title for your spot</h2>
+        <h2 className="create-title-prompt">Create a title for your spot</h2>
         <p>
           Catch guests' attention with a spot title that highlights what makes
           your place special.

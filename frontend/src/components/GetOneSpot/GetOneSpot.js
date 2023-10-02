@@ -119,9 +119,21 @@ function GetOneSpot() {
   //if the review belongs to the user, show delete button
   //IF NO REVIEWS, SET TO "NEW"
   let preview = null;
+  let img1 = null;
+  let img2 = null;
+  let img3 = null;
+  let img4 = null;
+
+  console.log(spot.SpotImages)
   if(spot.SpotImages.length > 0){
-    preview = spot.SpotImages[0].url
+    preview = spot.SpotImages[0].url;
+    img1 = spot.SpotImages[1].url;
+    img2 = spot.SpotImages[2].url;
+    img3 = spot.SpotImages[3].url;
+    img4 = spot.SpotImages[4].url;
   }
+
+  //insert secondary images
 
   return (
     <div className="primary">
@@ -131,12 +143,12 @@ function GetOneSpot() {
           {spot.city}, {spot.state}, {spot.country}
         </h2>
         <div className="imageContainer">
-          <img className="previewImage" src={preview} alt="Preview" onError={invalidImage}/>
+        <img className="previewImage" src={preview} alt="Preview" onError={invalidImage}/>
           <div className="secondary-images">
-            <img className="image" src={secondaryImage} alt="First pic" />
-            <img className="image" src={secondaryImage} alt="Second pic" />
-            <img className="image" src={secondaryImage} alt="Third pic" />
-            <img className="image" src={secondaryImage} alt="Fourth pic" />
+            <img className="image" src={img1} alt="First pic" onError={invalidImage}/>
+            <img className="image" src={img2} alt="Second pic" onError={invalidImage}/>
+            <img className="image" src={img3} alt="Third pic" onError={invalidImage}/>
+            <img className="image" src={img4} alt="Fourth pic" onError={invalidImage}/>
           </div>
         </div>
       </div>

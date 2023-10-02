@@ -25,15 +25,6 @@ function ManageSpot() {
     dispatch(userSpots());
   }, [dispatch]);
 
-  // if (!spots) {
-  //   console.log("checking undefined");
-  //   return null;
-  // }
-  console.log("USERS SPOT BEFORE RENDER: ", spots);
-  if (Object.keys(spots).length <= 0) {
-    return null;
-  }
-
   const formRedirect = (e) => {
     e.preventDefault();
     history.push("/form");
@@ -42,6 +33,20 @@ function ManageSpot() {
   const invalidImage = (e) => {
     e.currentTarget.src = noImage;
   };
+
+  // if (!spots) {
+  //   console.log("checking undefined");
+  //   return null;
+  // }
+
+  console.log("USERS SPOT BEFORE RENDER: ", spots);
+  if (Object.keys(spots).length <= 0) {
+    return (<><h1 id="title">Manage Your Spots</h1>
+      <button id="create-button" onClick={formRedirect}>
+        Create a New Spot
+      </button>
+      </>)
+  }
 
   //   const ownedSpots = spots.Spots;
   //Delete button will be a modal menu

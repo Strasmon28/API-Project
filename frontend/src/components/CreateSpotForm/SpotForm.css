@@ -68,6 +68,11 @@
     background-color: #adebff;
 }
 
+.create-title-prompt{
+    border-top: 2px solid black;
+    padding-top: 15px;
+}
+
 .errors{
     color: red;
 }
